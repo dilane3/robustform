@@ -1,3 +1,4 @@
+import "@styles/globals.css";
 import React from "react";
 import { AppProps } from "next/app";
 import type { NextPage } from "next";
@@ -12,7 +13,6 @@ import routerProvider, {
   UnsavedChangesNotifier,
   DocumentTitleHandler,
 } from "@refinedev/nextjs-router";
-
 import { dataProvider } from "@refinedev/supabase";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import CssBaseline from "@mui/material/CssBaseline";

@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "OutfitThin";
+  src: url("../assets/fonts/Outfit-Thin.ttf");
+}
+
+@font-face {
+  font-family: "OutfitLight";
+  src: url("../assets/fonts/Outfit-Light.ttf");
+}
+
+@font-face {
+  font-family: "OutfitRegular";
+  src: url("../assets/fonts/Outfit-Regular.ttf");
+}
+
+@font-face {
+  font-family: "OutfitMedium";
+  src: url("../assets/fonts/Outfit-Medium.ttf");
+}
+
+@font-face {
+  font-family: "OutfitBold";
+  src: url("../assets/fonts/Outfit-Bold.ttf");
+}
+
+@font-face {
+  font-family: "OutfitBlack";
+  src: url("../assets/fonts/Outfit-Black.ttf");
+}
+
+:root {
+  color: #333;
+  background-color: #fff;
+
+  --primary-color: #00A6FB;
+  --secondary-color: #004F77;
+  --white-color: #fff;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "OutfitRegular";
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+}
