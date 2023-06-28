@@ -1,7 +1,4 @@
-import { AuthPage, ThemedTitleV2 } from "@refinedev/mui";
-
 import { GetServerSideProps } from "next";
-
 import { authProvider } from "src/authProvider";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import AuthLayout from "@components/layout/AuthLayout";
@@ -11,6 +8,8 @@ import Button from "@components/buttons/Button";
 import Image from "next/image";
 import loginImage from "src/assets/images/login.png";
 import googleImage from "src/assets/images/google.png";
+import Link from "next/link";
+
 
 export default function Login() {
   return (
@@ -30,7 +29,9 @@ export default function Login() {
                 />
               </Box>
 
-              <Typography sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 4 }}>
+              <Typography
+                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 4 }}
+              >
                 Signin with google
               </Typography>
             </Box>
@@ -90,9 +91,12 @@ export default function Login() {
           <Box sx={styles.boxRow}>
             <Typography component="span" sx={styles.accountQuestion}>
               Don't have an account yet ?{" "}
-              <Typography component="span" sx={styles.action}>
-                Sign up
-              </Typography>
+
+              <Link href="/register">
+                <Typography component="span" sx={styles.action}>
+                  Sign up
+                </Typography>
+              </Link>
             </Typography>
           </Box>
         </Box>
@@ -244,7 +248,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     ml: 2,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   accountQuestion: {
