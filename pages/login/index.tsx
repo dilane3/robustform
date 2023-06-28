@@ -7,6 +7,7 @@ import { Box, Typography } from "@mui/material";
 import AuthLayout from "@components/layout/AuthLayout";
 import { Colors } from "src/constants";
 import Input from "@components/inputs/Input";
+import Button from "@components/buttons/Button";
 
 export default function Login() {
   return (
@@ -75,6 +76,17 @@ export default function Login() {
               }}
               size="small"
             />
+
+            <Button>
+              <Typography>Login</Typography>
+            </Button>
+          </Box>
+
+          <Box sx={styles.boxRow}>
+            <Typography sx={styles.accountQuestion}>
+              Don't have an account yet ?{" "}
+            </Typography>
+            <Typography sx={styles.action}>Sign up</Typography>
           </Box>
         </Box>
 
@@ -143,6 +155,12 @@ const styles = {
     marginTop: 5,
   },
 
+  boxRow: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: 5,
+  },
+
   googleLogin: {
     width: "100%",
     height: 50,
@@ -154,4 +172,17 @@ const styles = {
     fontSize: 16,
     fontFamily: "OutfitMedium",
   },
+
+  accountQuestion: {
+    fontFamily: "OutfitMedium",
+    fontSize: 16,
+    color: Colors.background,
+  },
+
+  action: {
+    fontFamily: "OutfitBold",
+    fontSize: 16,
+    color: Colors.primary,
+    marginLeft: 2,
+  }
 };
