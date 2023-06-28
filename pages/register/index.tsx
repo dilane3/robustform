@@ -122,8 +122,7 @@ export default function Register() {
                 textAlign: "center",
               }}
             >
-              Join us and start generating your forms quickly and in an easy way
-              by using Robustform tool.
+              Join us and start generating your forms quickly, in an easy way.
             </Typography>
           </Box>
         </Box>

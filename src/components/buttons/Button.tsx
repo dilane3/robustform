@@ -27,6 +27,7 @@ export default function Button({
         outline: "none !important",
         backgroundColor:
           variant === "contained" ? Colors.primary : Colors.background,
+        ...styles
       }}
       variant={variant}
       onClick={onClick}

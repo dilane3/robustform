@@ -7,7 +7,13 @@ type MainProps = {
 export default function Main({ children }: MainProps) {
   return (
     <Box
-      sx={{ margin: 0, padding: 0, width: "100vw", minHeight: "100vh" }}
+      sx={{
+        margin: 0,
+        padding: 0,
+        width: "100%",
+        minHeight: "100vh",
+        overflowX: "hidden",
+      }}
       component="main"
     >
       {children}
