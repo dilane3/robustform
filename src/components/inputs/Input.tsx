@@ -44,6 +44,7 @@ const inputStyles: React.CSSProperties = {
   borderRadius: "10px",
   outline: "none !important",
   fontSize: "16px",
+  fontFamily: "OutfitRegular",
 };
 
 Input.defaultProps = {

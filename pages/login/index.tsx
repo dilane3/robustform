@@ -3,32 +3,37 @@ import { AuthPage, ThemedTitleV2 } from "@refinedev/mui";
 import { GetServerSideProps } from "next";
 
 import { authProvider } from "src/authProvider";
-import { Box, Typography } from "@mui/material";
+import { Box, SxProps, Theme, Typography } from "@mui/material";
 import AuthLayout from "@components/layout/AuthLayout";
 import { Colors } from "src/constants";
 import Input from "@components/inputs/Input";
 import Button from "@components/buttons/Button";
+import Image from "next/image";
+import loginImage from "src/assets/images/login.png";
+import googleImage from "src/assets/images/google.png";
 
 export default function Login() {
   return (
     <AuthLayout>
-      <Box
-        component="section"
-        sx={{
-          margin: 0,
-          padding: 0,
-          width: "100%",
-          height: "100vh",
-          backgroundColor: Colors.background,
-          display: "flex",
-          overflowY: "hidden"
-        }}
-      >
+      <Box component="section" sx={styles.container}>
         <Box sx={styles.authSection} component="section">
           <Typography sx={styles.title}>Login into your account</Typography>
 
           <Box sx={styles.box}>
-            <Box sx={styles.googleLogin}></Box>
+            <Box sx={styles.googleLogin}>
+              <Box sx={styles.googleIcon}>
+                <Image
+                  src={googleImage}
+                  alt="Google login"
+                  width={30}
+                  height={30}
+                />
+              </Box>
+
+              <Typography sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 4 }}>
+                Signin with google
+              </Typography>
+            </Box>
 
             <Box sx={{ mt: 5, position: "relative" }}>
               <hr />
@@ -46,7 +51,7 @@ export default function Login() {
                   justifyContent: "center",
                   width: 100,
                   height: 30,
-                  backgroundColor: Colors.secondary
+                  backgroundColor: Colors.secondary,
                 }}
               >
                 or
@@ -83,29 +88,40 @@ export default function Login() {
           </Box>
 
           <Box sx={styles.boxRow}>
-            <Typography sx={styles.accountQuestion}>
+            <Typography component="span" sx={styles.accountQuestion}>
               Don't have an account yet ?{" "}
+              <Typography component="span" sx={styles.action}>
+                Sign up
+              </Typography>
             </Typography>
-            <Typography sx={styles.action}>Sign up</Typography>
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            margin: 0,
-            padding: 0,
-            width: "50%",
-            minHeight: "100%",
-          }}
-          component="section"
-        >
-          <Box>
-            <Input
-              label="Username"
-              helperText="At least 5 characters"
-              error
-              styles={{ width: 200 }}
+        <Box sx={styles.infoSection} component="section">
+          <Typography sx={styles.logo}>Robustform</Typography>
+
+          <Box
+            sx={{ ...styles.box, ...styles.imageContainer } as SxProps<Theme>}
+          >
+            <Image
+              src={loginImage}
+              alt="Login"
+              width={500}
+              style={styles.image as React.CSSProperties}
             />
+          </Box>
+
+          <Box sx={styles.box}>
+            <Typography
+              sx={{
+                fontFamily: "OutfitMedium",
+                fontSize: 22,
+                textAlign: "center",
+              }}
+            >
+              Robustform is a form builder that allows you to create forms
+              easily and quickly.
+            </Typography>
           </Box>
         </Box>
       </Box>
@@ -133,20 +149,70 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   };
 };
 
-const styles = {
-  authSection: {
+// key values type
+
+const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
+  container: (theme) => ({
+    margin: 0,
+    padding: 0,
+    width: "100%",
+    height: "100vh",
+    backgroundColor: Colors.background,
+    display: "flex",
+    overflowY: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column-reverse",
+      overflowY: "auto",
+      height: "auto",
+    },
+  }),
+
+  authSection: (theme) => ({
     margin: 0,
     padding: "2rem 5rem",
     width: "50%",
     minHeight: "100%",
     backgroundColor: Colors.secondary,
     overflowY: "auto",
-  },
+    [theme.breakpoints.down("md")]: {
+      padding: "2rem 2rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      overflowY: "hidden",
+      height: "auto",
+    },
+  }),
 
-  title: {
+  infoSection: (theme) => ({
+    margin: 0,
+    padding: "2rem 5rem",
+    width: "50%",
+    minHeight: "100%",
+    overflowY: "auto",
+    [theme.breakpoints.down("md")]: {
+      padding: "2rem 2rem",
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      overflowY: "hidden",
+      height: "auto",
+    },
+  }),
+
+  title: (theme) => ({
     fontFamily: "OutfitBold",
     fontSize: "2.5rem",
     color: Colors.background,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2rem",
+    },
+  }),
+
+  logo: {
+    fontFamily: "OutfitBold",
+    fontSize: "2rem",
+    color: Colors.primary,
   },
 
   box: {
@@ -162,15 +228,23 @@ const styles = {
   },
 
   googleLogin: {
+    position: "relative",
     width: "100%",
     height: 50,
     borderRadius: 2,
     backgroundColor: Colors.background,
-    display: "row",
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontSize: 16,
     fontFamily: "OutfitMedium",
+  },
+
+  googleIcon: {
+    ml: 2,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   accountQuestion: {
@@ -184,5 +258,16 @@ const styles = {
     fontSize: 16,
     color: Colors.primary,
     marginLeft: 2,
-  }
+  },
+
+  image: {
+    width: "100%",
+    height: "auto",
+  },
+
+  imageContainer: (theme) => ({
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  }),
 };

@@ -20,6 +20,7 @@ import { authProvider } from "src/authProvider";
 import { supabaseClient } from "src/utility";
 import { ColorModeContextProvider } from "@contexts";
 import { Header } from "@components/header";
+import { StyledEngineProvider } from "@mui/material/styles";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -43,8 +44,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   };
 
   return (
-    <>
-      {/* <GitHubBanner /> */}
+    <StyledEngineProvider injectFirst>
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <CssBaseline />
@@ -90,7 +90,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
           </RefineSnackbarProvider>
         </ColorModeContextProvider>
       </RefineKbarProvider>
-    </>
+    </StyledEngineProvider>
   );
 }
 
