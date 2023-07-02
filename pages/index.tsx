@@ -1,5 +1,7 @@
 import Main from "@components/layout/Main";
+import Block from "@components/pages/home/Block";
 import Hero from "@components/pages/home/Hero";
+import Start from "@components/pages/home/Start";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import Head from "next/head";
 import { Colors } from "src/constants";
@@ -23,6 +25,30 @@ export default function Home() {
 
         <Main>
           <Hero />
+
+          <Block
+            title="Create a form in an easy way"
+            description={
+              "Choose the different type of question that you want and generate your form"
+            }
+          />
+
+          <Block
+            type="right"
+            title="Share your form link"
+            description={
+              "Generate a link of your form and share it with people around you"
+            }
+          />
+
+          <Block
+            title="Access to all responses"
+            description={
+              "See all responses received from people and export them into an excel file easily."
+            }
+          />
+
+          <Start />
         </Main>
       </>
     </>
@@ -49,8 +75,8 @@ const styles: Record<string, SxProps<Theme>> = {
     },
     [theme.breakpoints.down("sm")]: {
       padding: "0 1.5rem",
-      height: 60
-    }
+      height: 60,
+    },
   }),
 
   logo: (theme) => ({
@@ -60,6 +86,6 @@ const styles: Record<string, SxProps<Theme>> = {
 
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.5rem",
-    }
-  })
-}
+    },
+  }),
+};

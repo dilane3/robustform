@@ -1,15 +1,16 @@
 import Button from "@components/buttons/Button";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { Colors } from "src/constants";
+import HeroBg from "src/assets/images/home/bg.png";
 
 export default function Hero() {
   return (
     <Box sx={styles.container}>
       <Typography sx={styles.title}>
         <Typography component="span" sx={styles.titleEmphasis}>
-          Robustform
+          Robustform ,
         </Typography>{" "}
-        , Form Generation Tool only for you
+        Form Generation Tool only for you
       </Typography>
 
       <Typography component="span" sx={styles.description}>
@@ -17,7 +18,7 @@ export default function Hero() {
         you through you network
       </Typography>
 
-      <Button styles={{ borderRadius: 5, mt: 6, width: 250 }}>Join us</Button>
+      <Button styles={{ borderRadius: 5, mt: 6, width: 250 }}>Join us now</Button>
     </Box>
   );
 }
@@ -31,13 +32,19 @@ const styles: Record<string, SxProps<Theme>> = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    mb: 12,
+    mb: 4,
+    backgroundImage: `url(${HeroBg.src})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
 
     [theme.breakpoints.down("md")]: {
       padding: "0 3rem",
     },
     [theme.breakpoints.down("sm")]: {
       padding: "0 1.5rem",
+      backgroundSize: "contain",
+      backgroundPositionY: "0"
     },
   }),
 
