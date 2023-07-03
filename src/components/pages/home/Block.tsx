@@ -41,11 +41,11 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     width: "100%",
     minHeight: "calc(100vh - 80px)",
     padding: "0 5rem",
-    backgroundColor: Colors.background,
+    backgroundColor: `#f8f8f8`,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    mb: 5,
+    pb: 5,
     gap: "5rem",
 
     [theme.breakpoints.down("md")]: {
@@ -59,15 +59,17 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     },
   }),
 
+  // linear gradient
+
   containerRight: (theme) => ({
     width: "100%",
     minHeight: "calc(100vh - 80px)",
     padding: "0 5rem",
-    backgroundColor: Colors.background,
+    backgroundColor: `#f8f8f8`,
     display: "flex",
     flexDirection: "row-reverse",
     alignItems: "center",
-    mb: 5,
+    pb: 5,
     gap: "5rem",
 
     [theme.breakpoints.down("md")]: {

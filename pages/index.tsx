@@ -1,5 +1,6 @@
 import Main from "@components/layout/Main";
 import Block from "@components/pages/home/Block";
+import Footer from "@components/pages/home/Footer";
 import Hero from "@components/pages/home/Hero";
 import Start from "@components/pages/home/Start";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
@@ -49,6 +50,8 @@ export default function Home() {
           />
 
           <Start />
+
+          <Footer />
         </Main>
       </>
     </>

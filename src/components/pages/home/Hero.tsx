@@ -32,7 +32,7 @@ const styles: Record<string, SxProps<Theme>> = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    mb: 4,
+    pb: 4,
     backgroundImage: `url(${HeroBg.src})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
