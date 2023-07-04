@@ -31,7 +31,8 @@ export default function Input({
       variant={variant}
       value={value}
       onChange={onChange}
-      sx={{ ...styles, inputStyles }}
+      sx={styles}
+      style={inputStyles}
       helperText={helperText}
       error={error}
       size={size}
@@ -39,7 +40,7 @@ export default function Input({
   );
 }
 
-const inputStyles: React.CSSProperties = {
+const inputStyles = {
   width: "100%",
   borderRadius: "10px",
   outline: "none !important",
