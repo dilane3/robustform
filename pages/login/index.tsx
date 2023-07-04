@@ -102,7 +102,9 @@ export default function Login() {
         </Box>
 
         <Box sx={styles.infoSection} component="section">
-          <Typography sx={styles.logo}>Robustform</Typography>
+          <Link href="/">
+            <Typography sx={styles.logo}>Robustform</Typography>
+          </Link>
 
           <Box
             sx={{ ...styles.box, ...styles.imageContainer } as SxProps<Theme>}

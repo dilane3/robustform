@@ -1,5 +1,6 @@
 import Button from "@components/buttons/Button";
 import { Box, Typography, SxProps, Theme } from "@mui/material";
+import Link from "next/link";
 import { Colors } from "src/constants";
 
 export default function Start() {
@@ -8,9 +9,11 @@ export default function Start() {
       <Typography sx={styles.title}>Are you ready ?</Typography>
 
       <Box sx={styles.box}>
-        <Button styles={{ borderRadius: 5, width: 250 }}>
-          Join us now
-        </Button>
+        <Link href="/register">
+          <Button styles={{ borderRadius: 5, width: 250 }}>
+            Join us now
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

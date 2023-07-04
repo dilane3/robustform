@@ -2,6 +2,7 @@ import Button from "@components/buttons/Button";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { Colors } from "src/constants";
 import HeroBg from "src/assets/images/home/bg.png";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -18,7 +19,11 @@ export default function Hero() {
         you through you network
       </Typography>
 
-      <Button styles={{ borderRadius: 5, mt: 6, width: 250 }}>Join us now</Button>
+      <Link href="/login">
+        <Button styles={{ borderRadius: 5, mt: 6, width: 250 }}>
+          Join us now
+        </Button>
+      </Link>
     </Box>
   );
 }
@@ -26,7 +31,7 @@ export default function Hero() {
 const styles: Record<string, SxProps<Theme>> = {
   container: (theme) => ({
     width: "100%",
-    minHeight: "calc(100vh - 80px)",
+    minHeight: "calc(100vh - 60px)",
     padding: "0 5rem",
     backgroundColor: Colors.background,
     display: "flex",
@@ -44,7 +49,7 @@ const styles: Record<string, SxProps<Theme>> = {
     [theme.breakpoints.down("sm")]: {
       padding: "0 1.5rem",
       backgroundSize: "contain",
-      backgroundPositionY: "0"
+      backgroundPositionY: "0",
     },
   }),
 

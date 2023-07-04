@@ -63,7 +63,7 @@ Home.noLayout = true;
 const styles: Record<string, SxProps<Theme>> = {
   header: (theme) => ({
     width: "100%",
-    height: 80,
+    height: 60,
     backgroundColor: Colors.background,
     display: "flex",
     justifyContent: "space-between",
@@ -83,12 +83,12 @@ const styles: Record<string, SxProps<Theme>> = {
   }),
 
   logo: (theme) => ({
-    fontSize: "2rem",
-    fontFamily: "OutfitBold",
+    fontSize: "1.5rem",
+    fontFamily: "OutfitBlack",
     color: Colors.primary,
 
     [theme.breakpoints.down("sm")]: {
-      fontSize: "1.5rem",
+      fontSize: "1.3rem",
     },
   }),
 };

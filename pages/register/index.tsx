@@ -101,7 +101,9 @@ export default function Register() {
         </Box>
 
         <Box sx={styles.infoSection} component="section">
-          <Typography sx={styles.logo}>Robustform</Typography>
+          <Link href="/">
+            <Typography sx={styles.logo}>Robustform</Typography>
+          </Link>
 
           <Box
             sx={{ ...styles.box, ...styles.imageContainer } as SxProps<Theme>}
@@ -263,8 +265,9 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   },
 
   image: {
-    width: "100%",
+    width: "90%",
     height: "auto",
+    margin: "0 auto",
   },
 
   imageContainer: (theme) => ({
