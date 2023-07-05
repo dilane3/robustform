@@ -5,4 +5,5 @@ export const Colors = {
   sidenav: "#F5F5F5",
   black: "#333",
   gray: "#888",
+  grayLight: "#eee"
 }

@@ -44,7 +44,7 @@ export default function Sidenav() {
 
         <Box sx={styles.folders}>
           <SidenavItem text="Corbeille">
-            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="error" />
+            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
           </SidenavItem>
         </Box>
       </Box>

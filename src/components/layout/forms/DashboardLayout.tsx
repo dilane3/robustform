@@ -75,9 +75,9 @@ const styles: Record<string, SxProps<Theme>> = {
     overflowX: "hidden",
     borderRight: "1px solid #eee",
 
-    [theme.breakpoints.down("md")]: {
-      width: 50,
-    }
+    // [theme.breakpoints.down("md")]: {
+    //   width: 50,
+    // }
   }),
 
   content: (theme) => ({
