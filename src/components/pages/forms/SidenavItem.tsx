@@ -10,7 +10,7 @@ export default function SidenavItem({ children, text }: FolderProps) {
     <Box component="div" sx={styles.folder}>
       {children}
 
-      <Typography sx={{ fontSize: "1.2rem", fontFamily: "OutfitRegular" }}>
+      <Typography sx={{ fontSize: "1.1rem", fontFamily: "OutfitRegular" }}>
         {text}
       </Typography>
     </Box>
@@ -26,7 +26,8 @@ const styles: Record<string, SxProps<Theme>> = {
     justifyContent: "flex-start",
     padding: "0.5rem",
     transition: "all 0.2s ease-in-out",
-    borderRadius: 2,
+    borderRadius: 3,
+    mb: 0.5,
 
     "&:hover": {
       cursor: "pointer",

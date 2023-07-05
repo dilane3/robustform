@@ -9,9 +9,9 @@ import FolderIcon from "@mui/icons-material/Folder";
 export default function Sidenav() {
   return (
     <Box component="section" sx={styles.container}>
-      <Button styles={{ borderRadius: 2, width: "100%", height: 40 }}>
+      <Button styles={{ borderRadius: 3, width: "100%", height: 40 }}>
         <AddCircleIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
-        <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitBold" }}>
+        <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
           Create new form
         </Typography>
       </Button>
@@ -20,8 +20,8 @@ export default function Sidenav() {
         <Typography sx={styles.title}>My forms</Typography>
 
         <Box sx={styles.folders}>
-          <SidenavItem text="Form 1">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+          <SidenavItem text="All forms">
+            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="warning" />
           </SidenavItem>
           <SidenavItem text="Form 2">
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
@@ -30,15 +30,6 @@ export default function Sidenav() {
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
           </SidenavItem>
           <SidenavItem text="Form 2">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
-          <SidenavItem text="Form 2">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
-          <SidenavItem text="Form 2">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
-          <SidenavItem text="Form 3">
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
           </SidenavItem>
 
@@ -53,7 +44,7 @@ export default function Sidenav() {
 
         <Box sx={styles.folders}>
           <SidenavItem text="Corbeille">
-            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="error" />
           </SidenavItem>
         </Box>
       </Box>
@@ -82,12 +73,12 @@ const styles: Record<string, SxProps<Theme>> = {
   },
 
   title: {
-    fontSize: "1.5rem",
+    fontSize: "1.3rem",
     fontFamily: "OutfitMedium",
     color: Colors.black,
   },
 
   folders: {
-    mt: 3,
+    mt: 2,
   },
 };

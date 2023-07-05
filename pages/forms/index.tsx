@@ -1,9 +1,10 @@
 import DashboardLayout from "@components/layout/forms/DashboardLayout";
+import EmptyForm from "@components/pages/forms/Empty";
 
 export default function Forms() {
   return (
     <DashboardLayout>
-      <h1>Forms</h1>
+      <EmptyForm />
     </DashboardLayout>
   )
 }
