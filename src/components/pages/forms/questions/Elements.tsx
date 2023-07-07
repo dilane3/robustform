@@ -10,6 +10,7 @@ import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import TextFieldsOutlinedIcon from '@mui/icons-material/TextFieldsOutlined';
 
 export default function Elements() {
   // Local state
@@ -39,6 +40,9 @@ export default function Elements() {
       </Box>
 
       <Box sx={styles.elementsContainer}>
+        <SidenavItem text={isExpanded ? "Heading" : ""} className="not-expanded">
+          <TextFieldsOutlinedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        </SidenavItem>
         <SidenavItem text={isExpanded ? "Short Input" : ""} className="not-expanded">
           <InputRoundedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
         </SidenavItem>
