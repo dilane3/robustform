@@ -2,6 +2,7 @@ import { Box, SxProps, Theme } from "@mui/material";
 import Elements from "./Elements";
 import TitleCard from "./components/TitleCard";
 import React from "react";
+import ShortTextCard from "./components/ShortTextCard";
 
 export default function QuestionContainer() {
   const [active, setActive] = React.useState(false);
@@ -14,19 +15,13 @@ export default function QuestionContainer() {
   };
 
   return (
-    <Box sx={styles.container}>
+    <Box sx={styles.container} >
       <Elements />
 
       <Box sx={styles.formContainer}>
         <Box sx={styles.form}>
           <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <TitleCard active={active} onActive={() => handleActive(true)} />
+          <ShortTextCard active={active} onActive={() => handleActive(true)} />
         </Box>
 
         <Box sx={styles.bg} onClick={() => handleActive(false)} />

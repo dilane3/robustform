@@ -4,51 +4,48 @@ import React from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 
-type TitleCardProps = {
+type ShortTextCardProps = {
   active: boolean;
   onActive: () => void;
 };
 
-export default function TitleCard({ active, onActive }: TitleCardProps) {
+export default function ShortTextCard({
+  active,
+  onActive,
+}: ShortTextCardProps) {
   return (
     <Box sx={cardStyles.container} onClick={onActive} className={`${active ? "active" : ""}`}>
       {active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>Edit card</Typography>
 
-          <Input size="small" variant="standard" label="Title" styles={{ marginBottom: 2 }} />
-          <Input size="small" variant="standard" label="Description" />
+          <Input
+            size="small"
+            label="Label"
+            variant="standard"
+            styles={{ marginBottom: 2 }}
+          />
         </Box>
       ) : (
         <Box sx={cardStyles.box}>
-          <Typography component="h1" sx={styles.title}>
-            Untitled form
-          </Typography>
-          <Typography component="span" sx={styles.description}>
-            Description
-          </Typography>
+          <Typography component="h1" sx={cardStyles.label}>Donnez votre nom</Typography>
+
+          <Input
+            size="small"
+            label="Your answer"
+            styles={{ marginBottom: 2 }}
+          />
         </Box>
       )}
     </Box>
   );
 }
 
-TitleCard.defaultProps = {
+ShortTextCard.defaultProps = {
   active: false,
   onActive: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {
-  title: {
-    fontSize: "1.5rem",
-    fontFamily: "OutfitBold",
-    color: Colors.black,
-  },
-
-  description: {
-    mt: 1,
-    fontSize: "1rem",
-    fontFamily: "OutfitRegular",
-    color: Colors.gray,
-  },
+  
 };
