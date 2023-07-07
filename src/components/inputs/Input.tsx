@@ -47,6 +47,9 @@ export default function Input({
         startAdornment: icon ? (
           <InputAdornment position="start">{icon}</InputAdornment>
         ) : undefined,
+        style: {
+          fontFamily: "OutfitRegular",
+        },
       }}
     />
   );

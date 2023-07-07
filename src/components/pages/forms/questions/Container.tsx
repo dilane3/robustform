@@ -3,6 +3,7 @@ import Elements from "./Elements";
 import TitleCard from "./components/TitleCard";
 import React from "react";
 import ShortTextCard from "./components/ShortTextCard";
+import LongTextCard from "./components/LongTextCard";
 
 export default function QuestionContainer() {
   const [active, setActive] = React.useState(false);
@@ -22,6 +23,7 @@ export default function QuestionContainer() {
         <Box sx={styles.form}>
           <TitleCard active={active} onActive={() => handleActive(true)} />
           <ShortTextCard active={active} onActive={() => handleActive(true)} />
+          <LongTextCard  onActive={() => handleActive(true)} />
         </Box>
 
         <Box sx={styles.bg} onClick={() => handleActive(false)} />

@@ -16,7 +16,7 @@ export default function TitleCard({ active, onActive }: TitleCardProps) {
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>Edit card</Typography>
 
-          <Input size="small" variant="standard" label="Title" styles={{ marginBottom: 2 }} />
+          <Input size="small" value="aba" variant="standard" label="Title" styles={{ marginBottom: 2 }} />
           <Input size="small" variant="standard" label="Description" />
         </Box>
       ) : (
