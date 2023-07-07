@@ -1,7 +1,7 @@
 import DashboardLayout from "@components/layout/dashboard/DashboardLayout";
 import FormItem from "@components/layout/dashboard/FormItem";
-import EmptyForm from "@components/pages/forms/Empty";
-import FormsContainer from "@components/pages/forms/FormsContainer";
+import EmptyForm from "@components/pages/dashboard/Empty";
+import FormsContainer from "@components/pages/dashboard/FormsContainer";
 import { Box, SxProps, Theme } from "@mui/material";
 
 export default function Forms() {

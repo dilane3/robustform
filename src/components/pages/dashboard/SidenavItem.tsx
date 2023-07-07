@@ -3,14 +3,15 @@ import { Box, SxProps, Theme, Typography } from "@mui/material";
 type FolderProps = {
   children?: React.ReactNode;
   text: string;
+  className?: string;
 };
 
-export default function SidenavItem({ children, text }: FolderProps) {
+export default function SidenavItem({ children, text, className }: FolderProps) {
   return (
     <Box component="div" sx={styles.folder}>
       {children}
 
-      <Typography sx={{ fontSize: "1.1rem", fontFamily: "OutfitRegular" }}>
+      <Typography sx={{ fontSize: "1.1rem", fontFamily: "OutfitRegular" }} className={className}>
         {text}
       </Typography>
     </Box>

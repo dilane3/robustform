@@ -2,7 +2,7 @@ import Button from "@components/buttons/Button";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Colors } from "src/constants";
-import SidenavItem from "@components/pages/forms/SidenavItem";
+import SidenavItem from "@components/pages/dashboard/SidenavItem";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 
@@ -43,7 +43,9 @@ export default function Sidenav() {
               backgroundColor: "transparent",
             }}
           >
-            <AddCircleIcon sx={{ fontSize: "1.5rem", mr: 2, color: Colors.primary }} />
+            <AddCircleIcon
+              sx={{ fontSize: "1.5rem", mr: 2, color: Colors.primary }}
+            />
             <Typography
               sx={{
                 fontSize: "0.9rem",
