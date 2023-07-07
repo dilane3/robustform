@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               size="small"
               value=""
               icon={
-                <SearchIcon sx={{ }} color="action" />
+                <SearchIcon color="action" />
               }
             />
           </Box>
