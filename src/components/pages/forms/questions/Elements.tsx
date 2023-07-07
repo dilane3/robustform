@@ -122,6 +122,7 @@ const styles: Record<string, SxProps<Theme>> = {
 
     [theme.breakpoints.down("md")]: {
       transform: "rotate(180deg)",
+      marginLeft: "auto"
     },
   }),
 

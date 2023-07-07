@@ -44,13 +44,9 @@ export default function Input({
       error={error}
       size={size}
       InputProps={{
-        startAdornment: (
-          <>
-            {icon ? (
-              <InputAdornment position="start">{icon}</InputAdornment>
-            ) : null}
-          </>
-        ),
+        startAdornment: icon ? (
+          <InputAdornment position="start">{icon}</InputAdornment>
+        ) : undefined,
       }}
     />
   );
