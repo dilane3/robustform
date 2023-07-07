@@ -34,6 +34,13 @@ export default function LongTextCard({ active, onActive }: LongTextCardProps) {
             variant="standard"
             styles={{ marginBottom: 2 }}
           />
+
+          <Input
+            size="small"
+            label="Subtitle"
+            variant="standard"
+            styles={{ marginBottom: 2 }}
+          />
         </Box>
       ) : (
         <Box sx={cardStyles.box}>
@@ -47,6 +54,10 @@ export default function LongTextCard({ active, onActive }: LongTextCardProps) {
             placeholder="Your answer"
             style={styles.textarea as React.CSSProperties}
           />
+
+          <Typography component="h5" sx={cardStyles.subtitle}>
+            Sous titre ici
+          </Typography>
         </Box>
       )}
     </Box>
@@ -72,5 +83,6 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     fontFamily: "OutfitRegular",
     color: Colors.black,
     outlineColor: Colors.primary,
+    marginBottom: 10,
   },
 };

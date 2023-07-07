@@ -71,6 +71,7 @@ const styles: Record<string, SxProps<Theme>> = {
     borderColor: "divider",
     padding: "1rem",
     transition: "width 0.3s ease-in-out",
+    overflowY: "auto",
 
     "&.not-expanded": {
       width: 75,

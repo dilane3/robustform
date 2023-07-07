@@ -33,5 +33,11 @@ export const styles: Record<string, SxProps<Theme>> = {
     fontSize: "1rem",
     fontFamily: "OutfitRegular",
     marginBottom: 2
+  },
+
+  subtitle: {
+    fontSize: "0.8rem",
+    fontFamily: "OutfitLight",
+    color: Colors.gray
   }
 };

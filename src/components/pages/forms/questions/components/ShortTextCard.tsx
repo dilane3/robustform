@@ -14,10 +14,16 @@ export default function ShortTextCard({
   onActive,
 }: ShortTextCardProps) {
   return (
-    <Box sx={cardStyles.container} onClick={onActive} className={`${active ? "active" : ""}`}>
+    <Box
+      sx={cardStyles.container}
+      onClick={onActive}
+      className={`${active ? "active" : ""}`}
+    >
       {active ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>Edit card</Typography>
+          <Typography component="h4" sx={cardStyles.editTitle}>
+            Edit card
+          </Typography>
 
           <Input
             size="small"
@@ -25,16 +31,29 @@ export default function ShortTextCard({
             variant="standard"
             styles={{ marginBottom: 2 }}
           />
+
+          <Input
+            size="small"
+            label="Subtitle"
+            variant="standard"
+            styles={{ marginBottom: 2 }}
+          />
         </Box>
       ) : (
         <Box sx={cardStyles.box}>
-          <Typography component="h1" sx={cardStyles.label}>Donnez votre nom</Typography>
+          <Typography component="h1" sx={cardStyles.label}>
+            Donnez votre nom
+          </Typography>
 
           <Input
             size="small"
             label="Your answer"
             styles={{ marginBottom: 2 }}
           />
+
+          <Typography component="h5" sx={cardStyles.subtitle}>
+            Sous titre ici
+          </Typography>
         </Box>
       )}
     </Box>
@@ -46,6 +65,4 @@ ShortTextCard.defaultProps = {
   onActive: () => {},
 };
 
-const styles: Record<string, SxProps<Theme>> = {
-  
-};
+const styles: Record<string, SxProps<Theme>> = {};
