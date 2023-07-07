@@ -56,6 +56,7 @@ Forms.noLayout = true;
 const styles: Record<string, SxProps<Theme>> = {
   formItem: (theme) => ({
     width: "calc((100% / 4) - 1rem)",
+    mx: "auto",
 
     [theme.breakpoints.down(1000)]: {
       width: "calc((100% / 3) - 1rem)",
@@ -67,6 +68,6 @@ const styles: Record<string, SxProps<Theme>> = {
 
     [theme.breakpoints.down(650)]: {
       width: "100%",
-    }
-  })
+    },
+  }),
 };

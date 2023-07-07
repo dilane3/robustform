@@ -1,6 +1,7 @@
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Colors } from "src/constants";
 
 export default function FormItem() {
   return (
@@ -40,7 +41,7 @@ const styles: Record<string, SxProps<Theme>> = {
   formHeader: {
     width: "100%",
     height: "1rem",
-    backgroundColor: "red",
+    backgroundColor: Colors.primary,
     borderRadius: "0.3rem 0.3rem 0 0",
   },
 
