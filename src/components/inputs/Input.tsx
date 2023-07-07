@@ -1,5 +1,10 @@
 import React from "react";
-import { SxProps, TextField as TextInput, Theme } from "@mui/material";
+import {
+  InputAdornment,
+  SxProps,
+  TextField as TextInput,
+  Theme,
+} from "@mui/material";
 
 type InputProps = {
   label: string;
@@ -11,6 +16,7 @@ type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   styles: SxProps<Theme>;
   size: "small" | "medium";
+  icon?: React.ReactNode;
 };
 
 export default function Input({
@@ -23,6 +29,7 @@ export default function Input({
   helperText,
   error,
   size,
+  icon,
 }: InputProps) {
   return (
     <TextInput
@@ -36,6 +43,15 @@ export default function Input({
       helperText={helperText}
       error={error}
       size={size}
+      InputProps={{
+        startAdornment: (
+          <>
+            {icon ? (
+              <InputAdornment position="start">{icon}</InputAdornment>
+            ) : null}
+          </>
+        ),
+      }}
     />
   );
 }

@@ -33,9 +33,27 @@ export default function Sidenav() {
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
           </SidenavItem>
 
-          <SidenavItem text="Add new folder">
-            <AddCircleIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
+          <Button
+            variant="text"
+            styles={{
+              borderRadius: 3,
+              width: "100%",
+              height: 40,
+              justifyContent: "flex-start",
+              backgroundColor: "transparent",
+            }}
+          >
+            <AddCircleIcon sx={{ fontSize: "1.5rem", mr: 2, color: Colors.primary }} />
+            <Typography
+              sx={{
+                fontSize: "0.9rem",
+                fontFamily: "OutfitBold",
+                color: Colors.primary,
+              }}
+            >
+              Add new folder
+            </Typography>
+          </Button>
         </Box>
       </Box>
 

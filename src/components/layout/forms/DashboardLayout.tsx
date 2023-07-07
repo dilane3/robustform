@@ -5,6 +5,7 @@ import { styles as headerStyles } from "src/styles/mui-styles/header";
 import { Colors } from "src/constants";
 import Input from "@components/inputs/Input";
 import Sidenav from "./Sidenav";
+import SearchIcon from '@mui/icons-material/Search';
 
 export type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -26,7 +27,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <Input 
               label="Search"
               size="small"
-              value="Juin"
+              value=""
+              icon={
+                <SearchIcon sx={{ }} color="action" />
+              }
             />
           </Box>
 
