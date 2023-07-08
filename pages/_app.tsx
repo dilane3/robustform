@@ -21,6 +21,9 @@ import { supabaseClient } from "src/utility";
 import { ColorModeContextProvider } from "@contexts";
 import { Header } from "@components/header";
 import { StyledEngineProvider } from "@mui/material/styles";
+import ModalProvider from "@components/modals/ModalProvider";
+import GXProvider from "@dilane3/gx";
+import { store } from "src/gx/store";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -82,9 +85,15 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
                 warnWhenUnsavedChanges: true,
               }}
             >
-              {renderComponent()}
-              <RefineKbar />
+              <GXProvider store={store}>
+                <>
+                  {renderComponent()}
+                  <ModalProvider />
+                </>
+              </GXProvider>
+
               <UnsavedChangesNotifier />
+              <RefineKbar />
               <DocumentTitleHandler />
             </Refine>
           </RefineSnackbarProvider>

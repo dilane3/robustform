@@ -83,17 +83,18 @@ export default function Register() {
             />
 
             <Button>
-              <Typography>Sign up</Typography>
+              <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
+                Sign up
+              </Typography>
             </Button>
           </Box>
 
           <Box sx={styles.boxRow}>
             <Typography component="span" sx={styles.accountQuestion}>
               Already have an account ?{" "}
-
               <Link href="/login">
                 <Typography component="span" sx={styles.action}>
-                    Sign in
+                  Sign in
                 </Typography>
               </Link>
             </Typography>

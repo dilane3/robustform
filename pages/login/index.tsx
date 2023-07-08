@@ -10,7 +10,6 @@ import loginImage from "src/assets/images/login.png";
 import googleImage from "src/assets/images/google.png";
 import Link from "next/link";
 
-
 export default function Login() {
   return (
     <AuthLayout>
@@ -84,14 +83,15 @@ export default function Login() {
             />
 
             <Button>
-              <Typography>Login</Typography>
+              <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
+                Login
+              </Typography>
             </Button>
           </Box>
 
           <Box sx={styles.boxRow}>
             <Typography component="span" sx={styles.accountQuestion}>
               Don't have an account yet ?{" "}
-
               <Link href="/register">
                 <Typography component="span" sx={styles.action}>
                   Sign up

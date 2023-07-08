@@ -5,11 +5,28 @@ import { Colors } from "src/constants";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
+import { useActions } from "@dilane3/gx";
+import { ModalType } from "src/gx/signals";
 
 export default function Sidenav() {
+  // Global state
+  const { open } = useActions("modal");
+
+  // Handlers
+  const handleOpenCreateFolder = () => {
+    open(ModalType.CREATE_FOLDER);
+  };
+
+  const handleOpenCreateForm = () => {
+    open(ModalType.CREATE_FORM);
+  };
+
   return (
     <Box component="section" sx={styles.container}>
-      <Button styles={{ borderRadius: 3, width: "100%", height: 40 }}>
+      <Button
+        styles={{ borderRadius: 3, width: "100%", height: 40 }}
+        onClick={handleOpenCreateForm}
+      >
         <AddCircleIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
         <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
           Create new form
@@ -42,6 +59,7 @@ export default function Sidenav() {
               justifyContent: "flex-start",
               backgroundColor: "transparent",
             }}
+            onClick={handleOpenCreateFolder}
           >
             <AddCircleIcon
               sx={{ fontSize: "1.5rem", mr: 2, color: Colors.primary }}

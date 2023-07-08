@@ -1,6 +1,6 @@
-    module.exports = {
-        experimental: {
-            newNextLinkBehavior: true,
-        },
-    };
-
+module.exports = {
+  experimental: {
+    newNextLinkBehavior: true,
+  },
+  reactStrictMode: false,
+};

@@ -23,7 +23,7 @@ export default function Button({
       sx={{
         width: "100%",
         height: "50px",
-        borderRadius: "5px",
+        borderRadius: "10px",
         outline: "none !important",
         backgroundColor:
           variant === "contained" ? Colors.primary : Colors.background,

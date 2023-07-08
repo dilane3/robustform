@@ -53,8 +53,9 @@ export default function DateCard({
               sx={{
                 "& .MuiInputBase-root": {
                   height: 40,
-                  mb: 1
-                }
+                  mb: 1,
+                },
+                padding: "0.4rem 0"
               }}
             />
           </LocalizationProvider>

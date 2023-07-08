@@ -15,6 +15,7 @@ import Icon from "@components/icons/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AdjustIcon from "@mui/icons-material/Adjust";
+import Link from "next/link";
 
 export default function FormItem() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -31,7 +32,9 @@ export default function FormItem() {
       <Box sx={styles.formHeader} />
 
       <Box sx={styles.formBody}>
-        <Typography sx={styles.title}>Untitled form</Typography>
+        <Link href="/forms/2" style={{ width: "auto" }}>
+          <Typography sx={styles.title}>Untitled form</Typography>
+        </Link>
 
         <Box sx={styles.formBottom}>
           <Box sx={styles.date}>
@@ -111,11 +114,13 @@ const styles: Record<string, SxProps<Theme>> = {
   title: {
     fontSize: "1rem",
     fontFamily: "OutfitBold",
+    color: Colors.black,
   },
 
   date: {
     display: "flex",
     alignItems: "center",
+    color: Colors.black,
   },
 
   icon: {
