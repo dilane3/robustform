@@ -4,7 +4,7 @@ import { Colors } from "src/constants";
 
 type IconProps = {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick: (event?: any) => void;
   className: string;
   style: React.CSSProperties;
 };

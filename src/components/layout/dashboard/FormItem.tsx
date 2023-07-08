@@ -1,9 +1,31 @@
+import React from "react";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-import { Box, SxProps, Theme, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Menu,
+  MenuItem,
+  SxProps,
+  Theme,
+  Typography,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Colors } from "src/constants";
+import Icon from "@components/icons/Icon";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import AdjustIcon from "@mui/icons-material/Adjust";
 
 export default function FormItem() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Box component="div" sx={styles.formItem}>
       <Box sx={styles.formHeader} />
@@ -21,9 +43,39 @@ export default function FormItem() {
             </Typography>
           </Box>
 
-          <Box sx={styles.icon}>
+          <Icon onClick={handleClick}>
             <MoreVertIcon sx={{ fontSize: "1rem" }} color="action" />
-          </Box>
+          </Icon>
+
+          <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <MenuItem onClick={handleClose}>
+              <AdjustIcon sx={styles.menuItemIcon} color="action" />
+              <Typography sx={styles.menuItemText}>Open</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <ModeEditIcon sx={styles.menuItemIcon} color="action" />
+              <Typography sx={styles.menuItemText}>Update</Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleClose}>
+              <DeleteIcon sx={styles.menuItemIcon} color="action" />
+              <Typography sx={styles.menuItemText}>Delete</Typography>
+            </MenuItem>
+          </Menu>
         </Box>
       </Box>
     </Box>
@@ -75,6 +127,16 @@ const styles: Record<string, SxProps<Theme>> = {
     "&:hover": {
       backgroundColor: "#eee",
       cursor: "pointer",
-    }
+    },
+  },
+
+  menuItemIcon: {
+    fontSize: "1.5rem",
+    mr: 2,
+  },
+
+  menuItemText: {
+    fontSize: "1rem",
+    fontFamily: "OutfitRegular",
   },
 };
