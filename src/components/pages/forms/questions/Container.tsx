@@ -8,6 +8,7 @@ import SubmitCard from "./components/SubmitCard";
 import MultiChoiceCard from "./components/MultiChoice";
 import UniqueChoiceCard from "./components/UniqueChoice";
 import ChoiceListCard from "./components/ChoiceListCard";
+import DateCard from "./components/DateCard";
 
 export default function QuestionContainer() {
   const [active, setActive] = React.useState(false);
@@ -31,6 +32,7 @@ export default function QuestionContainer() {
           <MultiChoiceCard active={active} onActive={() => handleActive(true)} />
           <UniqueChoiceCard active={active} onActive={() => handleActive(true)} />
           <ChoiceListCard active={active} onActive={() => handleActive(true)} />
+          <DateCard onActive={() => handleActive(true)} />
           <SubmitCard />
         </Box>
 
