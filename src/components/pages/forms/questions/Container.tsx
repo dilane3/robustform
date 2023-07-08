@@ -6,6 +6,7 @@ import ShortTextCard from "./components/ShortTextCard";
 import LongTextCard from "./components/LongTextCard";
 import SubmitCard from "./components/SubmitCard";
 import MultiChoiceCard from "./components/MultiChoice";
+import UniqueChoiceCard from "./components/UniqueChoice";
 
 export default function QuestionContainer() {
   const [active, setActive] = React.useState(false);
@@ -27,6 +28,7 @@ export default function QuestionContainer() {
           <ShortTextCard active={active} onActive={() => handleActive(true)} />
           <LongTextCard  onActive={() => handleActive(true)} />
           <MultiChoiceCard active={active} onActive={() => handleActive(true)} />
+          <UniqueChoiceCard active={active} onActive={() => handleActive(true)} />
           <SubmitCard />
         </Box>
 
