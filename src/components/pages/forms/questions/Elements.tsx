@@ -4,13 +4,14 @@ import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDou
 import React from "react";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
 import FolderIcon from "@mui/icons-material/Folder";
-import InputRoundedIcon from '@mui/icons-material/InputRounded';
-import WrapTextRoundedIcon from '@mui/icons-material/WrapTextRounded';
-import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
-import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
-import RadioButtonCheckedOutlinedIcon from '@mui/icons-material/RadioButtonCheckedOutlined';
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import TextFieldsOutlinedIcon from '@mui/icons-material/TextFieldsOutlined';
+import InputRoundedIcon from "@mui/icons-material/InputRounded";
+import WrapTextRoundedIcon from "@mui/icons-material/WrapTextRounded";
+import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import RadioButtonCheckedOutlinedIcon from "@mui/icons-material/RadioButtonCheckedOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
+import Icon from "@components/icons/Icon";
 
 export default function Elements() {
   // Local state
@@ -30,36 +31,71 @@ export default function Elements() {
           Elements
         </Typography>
 
-        <Box
-          sx={styles.icon}
+        <Icon
           className={`${!isExpanded ? "not-expanded" : ""}`}
           onClick={() => setIsExpanded((prev) => !prev)}
         >
           <KeyboardDoubleArrowLeftOutlinedIcon color="action" />
-        </Box>
+        </Icon>
       </Box>
 
       <Box sx={styles.elementsContainer}>
-        <SidenavItem text={isExpanded ? "Heading" : ""} className="not-expanded">
-          <TextFieldsOutlinedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        <SidenavItem
+          text={isExpanded ? "Heading" : ""}
+          className="not-expanded"
+        >
+          <TextFieldsOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
         </SidenavItem>
-        <SidenavItem text={isExpanded ? "Short Input" : ""} className="not-expanded">
+        <SidenavItem
+          text={isExpanded ? "Short Input" : ""}
+          className="not-expanded"
+        >
           <InputRoundedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
         </SidenavItem>
-        <SidenavItem text={isExpanded ? "Long Input" : ""} className="not-expanded">
-          <WrapTextRoundedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        <SidenavItem
+          text={isExpanded ? "Long Input" : ""}
+          className="not-expanded"
+        >
+          <WrapTextRoundedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
         </SidenavItem>
-        <SidenavItem text={isExpanded ? "Multi Choice" : ""} className="not-expanded">
-          <ChecklistRoundedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        <SidenavItem
+          text={isExpanded ? "Multi Choice" : ""}
+          className="not-expanded"
+        >
+          <ChecklistRoundedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
         </SidenavItem>
-        <SidenavItem text={isExpanded ? "Unique Choice" : ""} className="not-expanded">
-          <RadioButtonCheckedOutlinedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        <SidenavItem
+          text={isExpanded ? "Unique Choice" : ""}
+          className="not-expanded"
+        >
+          <RadioButtonCheckedOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
         </SidenavItem>
-        <SidenavItem text={isExpanded ? "Choice List" : ""} className="not-expanded">
-          <FactCheckOutlinedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        <SidenavItem
+          text={isExpanded ? "Choice List" : ""}
+          className="not-expanded"
+        >
+          <FactCheckOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
         </SidenavItem>
         <SidenavItem text={isExpanded ? "Date" : ""} className="not-expanded">
-          <CalendarMonthOutlinedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
         </SidenavItem>
       </Box>
     </Box>
@@ -127,7 +163,7 @@ const styles: Record<string, SxProps<Theme>> = {
 
     [theme.breakpoints.down("md")]: {
       transform: "rotate(180deg)",
-      marginLeft: "auto"
+      marginLeft: "auto",
     },
   }),
 
@@ -139,7 +175,7 @@ const styles: Record<string, SxProps<Theme>> = {
     [theme.breakpoints.down("md")]: {
       "& .not-expanded": {
         display: "none",
-      }
-    }
+      },
+    },
   }),
 };

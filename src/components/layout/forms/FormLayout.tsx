@@ -10,8 +10,9 @@ import Head from "next/head";
 import Main from "../Main";
 import { styles as headerStyles } from "src/styles/mui-styles/header";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
+import ColorLensOutlinedIcon from "@mui/icons-material/ColorLensOutlined";
 import { Colors } from "src/constants";
+import Icon from "@components/icons/Icon";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
@@ -39,12 +40,12 @@ export default function FormLayout({ children, title }: FormLayoutProps) {
 
           <Box sx={styles.headerRight}>
             <Box sx={styles.icons}>
-              <Box sx={styles.icon}>
+              <Icon style={{ marginRight: 20 }}>
                 <ColorLensOutlinedIcon color="action" />
-              </Box>
-              <Box sx={styles.icon}>
+              </Icon>
+              <Icon>
                 <VisibilityOutlinedIcon color="action" />
-              </Box>
+              </Icon>
             </Box>
 
             <Avatar sx={headerStyles.avatar}>J</Avatar>
@@ -103,7 +104,7 @@ const styles: Record<string, SxProps<Theme>> = {
     marginRight: "10px",
 
     "&:hover": {
-      backgroundColor: Colors.grayLight
-    }
-  }
+      backgroundColor: Colors.grayLight,
+    },
+  },
 };

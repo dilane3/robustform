@@ -23,6 +23,11 @@ export const styles: Record<string, SxProps<Theme>> = {
     flexDirection: "column",
   },
 
+  boxRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
+
   editTitle: {
     fontSize: "0.9rem",
     fontFamily: "OutfitMedium",

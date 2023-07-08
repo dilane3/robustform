@@ -17,6 +17,7 @@ type InputProps = {
   styles: SxProps<Theme>;
   size: "small" | "medium";
   icon?: React.ReactNode;
+  width: string | number;
 };
 
 export default function Input({
@@ -30,6 +31,7 @@ export default function Input({
   error,
   size,
   icon,
+  width
 }: InputProps) {
   return (
     <TextInput
@@ -49,6 +51,7 @@ export default function Input({
         ) : undefined,
         style: {
           fontFamily: "OutfitRegular",
+          width
         },
       }}
     />
@@ -70,4 +73,5 @@ Input.defaultProps = {
   onChange: () => {},
   styles: {},
   size: "normal",
+  width: "100%"
 };
