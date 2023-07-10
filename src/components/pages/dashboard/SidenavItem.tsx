@@ -1,4 +1,5 @@
 import { Box, SxProps, Theme, Typography } from "@mui/material";
+import { truncate } from "src/utility/stringOperations";
 
 type FolderProps = {
   children?: React.ReactNode;
@@ -27,8 +28,9 @@ export default function SidenavItem({
       <Typography
         sx={styles.folderText}
         className={className}
+        title={text}
       >
-        {text}
+        {truncate(text, 18)}
       </Typography>
     </Box>
   );

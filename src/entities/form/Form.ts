@@ -2,7 +2,7 @@ type FormData = {
   id: number;
   title: string;
   description: string;
-  folderId: number | null;
+  folderId?: number | null;
   createdAt: Date;
   updatedAt: Date;
   ownerId: string;
@@ -21,7 +21,7 @@ export default class Form {
     this._id = data.id;
     this._title = data.title;
     this._description = data.description;
-    this._folderId = data.folderId;
+    this._folderId = data.folderId || null;
     this._createdAt = data.createdAt;
     this._updatedAt = data.updatedAt;
     this._ownerId = data.ownerId;

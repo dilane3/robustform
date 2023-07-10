@@ -19,9 +19,11 @@ export default function Forms() {
         title={selectedFolder ? selectedFolder.name : "All forms"}
         count={selectedFolder ? selectedFolder.forms.length : 1}
       >
-        <Box sx={styles.formItem}>
-          <FormItem />
-        </Box>
+        {selectedFolder?.forms.map((form) => (
+          <Box sx={styles.formItem} key={form.id}>
+            <FormItem form={form} />
+          </Box>
+        ))}
       </FormsContainer>
     </DashboardLayout>
   );
