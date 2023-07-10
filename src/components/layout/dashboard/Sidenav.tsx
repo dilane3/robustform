@@ -5,11 +5,13 @@ import { Colors } from "src/constants";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
-import { useActions } from "@dilane3/gx";
-import { ModalType } from "src/gx/signals";
+import { useActions, useSignal } from "@dilane3/gx";
+import { FormsState, ModalType } from "src/gx/signals";
 
 export default function Sidenav() {
   // Global state
+  const { forms } = useSignal<FormsState>("forms");
+
   const { open } = useActions("modal");
 
   // Handlers
@@ -40,15 +42,12 @@ export default function Sidenav() {
           <SidenavItem text="All forms">
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="warning" />
           </SidenavItem>
-          <SidenavItem text="Form 2">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
-          <SidenavItem text="Form 2">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
-          <SidenavItem text="Form 2">
-            <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-          </SidenavItem>
+
+          {forms.map((folder) => (
+            <SidenavItem key={folder.id} text={folder.name}>
+              <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+            </SidenavItem>
+          ))}
 
           <Button
             variant="text"

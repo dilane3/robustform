@@ -30,7 +30,9 @@
     "next": "^13.0.6",
     "nookies": "^2.5.2",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "sharp": "^0.32.1",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/node": "^12.20.11",

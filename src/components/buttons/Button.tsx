@@ -6,6 +6,7 @@ type ButtonProps = {
   variant?: "outlined" | "contained" | "text";
   onClick: () => void;
   styles: SxProps<Theme>;
+  disabled?: boolean;
 };
 
 export default function Button({
@@ -13,6 +14,7 @@ export default function Button({
   variant,
   onClick,
   styles,
+  disabled,
 }: ButtonProps) {
   return (
     <BaseButton
@@ -31,6 +33,8 @@ export default function Button({
       }}
       variant={variant}
       onClick={onClick}
+      disabled={disabled}
+      
     >
       {children}
     </BaseButton>
