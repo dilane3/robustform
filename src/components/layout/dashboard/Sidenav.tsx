@@ -7,6 +7,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState, ModalType } from "src/gx/signals";
+import { FOLDER_BIN } from "src/gx/signals/forms/constants";
+import { useMemo } from "react";
 
 export default function Sidenav() {
   // Global state
@@ -15,6 +17,11 @@ export default function Sidenav() {
   const { open } = useActions("modal");
   const { selectFolder } = useActions("forms");
 
+  // Memoized values
+  const folderBin = useMemo(() => {
+    return forms.find((folder) => folder.name === FOLDER_BIN);
+  }, [forms]);
+
   // Handlers
   const handleOpenCreateFolder = () => {
     open(ModalType.CREATE_FOLDER);
@@ -22,6 +29,29 @@ export default function Sidenav() {
 
   const handleOpenCreateForm = () => {
     open(ModalType.CREATE_FORM);
+  };
+
+  // Methods
+  const renderFolders = () => {
+    return forms.map((folder) => {
+      if (folder.name === FOLDER_BIN) {
+        return null;
+      }
+
+      return (
+        <SidenavItem
+          key={folder.id}
+          text={folder.name}
+          onClick={() => selectFolder(folder)}
+          active={selectedFolder?.id === folder.id}
+          className={`${
+            selectedFolder && selectedFolder.id === folder.id && "active"
+          }`}
+        >
+          <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+        </SidenavItem>
+      );
+    });
   };
 
   return (
@@ -49,17 +79,7 @@ export default function Sidenav() {
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="warning" />
           </SidenavItem>
 
-          {forms.map((folder) => (
-            <SidenavItem
-              key={folder.id}
-              text={folder.name}
-              onClick={() => selectFolder(folder)}
-              active={selectedFolder?.id === folder.id}
-              className={`${selectedFolder?.id === folder.id && "active"}`}
-            >
-              <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
-            </SidenavItem>
-          ))}
+          {renderFolders()}
 
           <Button
             variant="text"
@@ -92,7 +112,14 @@ export default function Sidenav() {
         <Typography sx={styles.title}>Plus</Typography>
 
         <Box sx={styles.folders}>
-          <SidenavItem text="Corbeille">
+          <SidenavItem 
+            text={FOLDER_BIN}
+            onClick={() => selectFolder(folderBin)}
+            active={selectedFolder?.id === folderBin?.id}
+            className={`${
+              selectedFolder && selectedFolder.id === folderBin?.id && "active"
+            }`}
+          >
             <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
           </SidenavItem>
         </Box>
