@@ -2,15 +2,23 @@ import DashboardLayout from "@components/layout/dashboard/DashboardLayout";
 import FormItem from "@components/layout/dashboard/FormItem";
 import EmptyForm from "@components/pages/dashboard/Empty";
 import FormsContainer from "@components/pages/dashboard/FormsContainer";
+import { useSignal } from "@dilane3/gx";
 import { Box, SxProps, Theme } from "@mui/material";
 import Link from "next/link";
+import { FormsState } from "src/gx/signals";
 
 export default function Forms() {
+  // Global state
+  const { selectedFolder } = useSignal<FormsState>("forms");
+
   return (
     <DashboardLayout>
       {/* <EmptyForm /> */}
 
-      <FormsContainer title="All forms" count={10}>
+      <FormsContainer
+        title={selectedFolder ? selectedFolder.name : "All forms"}
+        count={selectedFolder ? selectedFolder.forms.length : 1}
+      >
         <Box sx={styles.formItem}>
           <FormItem />
         </Box>

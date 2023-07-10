@@ -10,9 +10,10 @@ import { FormsState, ModalType } from "src/gx/signals";
 
 export default function Sidenav() {
   // Global state
-  const { forms } = useSignal<FormsState>("forms");
+  const { forms, selectedFolder } = useSignal<FormsState>("forms");
 
   const { open } = useActions("modal");
+  const { selectFolder } = useActions("forms");
 
   // Handlers
   const handleOpenCreateFolder = () => {
@@ -39,12 +40,23 @@ export default function Sidenav() {
         <Typography sx={styles.title}>My forms</Typography>
 
         <Box sx={styles.folders}>
-          <SidenavItem text="All forms">
+          <SidenavItem
+            text="All forms"
+            onClick={() => selectFolder(null)}
+            active={!selectedFolder}
+            className={`${!selectedFolder && "active"}`}
+          >
             <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="warning" />
           </SidenavItem>
 
           {forms.map((folder) => (
-            <SidenavItem key={folder.id} text={folder.name}>
+            <SidenavItem
+              key={folder.id}
+              text={folder.name}
+              onClick={() => selectFolder(folder)}
+              active={selectedFolder?.id === folder.id}
+              className={`${selectedFolder?.id === folder.id && "active"}`}
+            >
               <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
             </SidenavItem>
           ))}

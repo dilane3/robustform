@@ -4,22 +4,28 @@ type FolderProps = {
   children?: React.ReactNode;
   text: string;
   className?: string;
+  active?: boolean;
+  onClick: () => void;
 };
 
 export default function SidenavItem({
   children,
   text,
   className,
+  onClick,
+  active,
 }: FolderProps) {
   return (
-    <Box component="div" sx={styles.folder}>
+    <Box
+      component="div"
+      sx={styles.folder}
+      onClick={onClick}
+      className={`${active ? "active" : ""}`}
+    >
       {children}
 
       <Typography
-        sx={{
-          fontSize: "1.1rem",
-          fontFamily: "OutfitRegular",
-        }}
+        sx={styles.folderText}
         className={className}
       >
         {text}
@@ -27,6 +33,10 @@ export default function SidenavItem({
     </Box>
   );
 }
+
+SidenavItem.defaultProps = {
+  onClick: () => {},
+};
 
 const styles: Record<string, SxProps<Theme>> = {
   folder: {
@@ -37,7 +47,7 @@ const styles: Record<string, SxProps<Theme>> = {
     justifyContent: "flex-start",
     flexWrap: "nowrap",
     padding: "0.5rem",
-    transition: "all 0.2s ease-in-out",
+    transition: "all 0.3s ease-in-out",
     borderRadius: 3,
     mb: 0.5,
 
@@ -45,5 +55,19 @@ const styles: Record<string, SxProps<Theme>> = {
       cursor: "pointer",
       backgroundColor: "#eee",
     },
+
+    "&.active": {
+      backgroundColor: "#ddd",
+    }
   },
+
+  folderText: {
+    fontSize: "1.1rem",
+    fontFamily: "OutfitRegular",
+    transition: "all 0.3s ease-in-out",
+
+    "&.active": {
+      fontFamily: "OutfitBold",
+    }
+  }
 };
