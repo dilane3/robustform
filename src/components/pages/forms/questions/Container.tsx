@@ -11,11 +11,13 @@ import ChoiceListCard from "./components/ChoiceListCard";
 import DateCard from "./components/DateCard";
 import { useRouter } from "next/router";
 import { redirect } from "next/navigation";
-import { useSignal } from "@dilane3/gx";
+import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Form from "src/entities/form/Form";
 import { NavigateToResource } from "@refinedev/nextjs-router";
 import Link from "next/link";
+import { CardType, QuestionType } from "src/entities/card/type";
+import Card from "src/entities/card/Card";
 
 export default function QuestionContainer() {
   // URL handler
@@ -26,7 +28,9 @@ export default function QuestionContainer() {
   const [active, setActive] = React.useState(false);
 
   // Global state
-  const { forms } = useSignal<FormsState>("forms");
+  const { forms, selectedFolder } = useSignal<FormsState>("forms");
+
+  const { setCardActive, setAllCardsInactive } = useActions("forms");
 
   // Memoized values
   const form = React.useMemo(() => {
@@ -46,8 +50,72 @@ export default function QuestionContainer() {
   }, [JSON.stringify(forms)]) as Form | null;
 
   // Handlers
-  const handleActive = (value: boolean) => {
-    setActive(value);
+  const handleGlobalActive = (card: Card) => {
+    setCardActive({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
+  const handleActive = (active: boolean) => {
+    setActive(active);
+  };
+
+  const handleDesactivateAll = () => {
+    setActive(false);
+    setAllCardsInactive({ folderId: selectedFolder?.id, formId: form?.id });
+  };
+
+  // Methods
+  const renderQuestions = () => {
+    if (form) {
+      const cardItems: React.ReactNode[] = [];
+
+      for (const card of form.cards) {
+        if (card.type === CardType.HEADING) {
+          continue;
+        } else {
+          switch (card.questionType) {
+            case QuestionType.SHORT_TEXT: {
+              cardItems.push(
+                <ShortTextCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+
+            case QuestionType.LONG_TEXT: {
+              cardItems.push(<LongTextCard />);
+              break;
+            }
+
+            case QuestionType.MULTIPLE_CHOICE: {
+              cardItems.push(<MultiChoiceCard />);
+              break;
+            }
+
+            case QuestionType.UNIQUE_CHOICE: {
+              cardItems.push(<UniqueChoiceCard />);
+              break;
+            }
+
+            case QuestionType.CHOICE_LIST: {
+              cardItems.push(<ChoiceListCard />);
+              break;
+            }
+
+            case QuestionType.DATE: {
+              cardItems.push(<DateCard />);
+              break;
+            }
+          }
+        }
+      }
+
+      return cardItems;
+    }
+
+    return null;
   };
 
   // Render
@@ -66,7 +134,7 @@ export default function QuestionContainer() {
 
   return (
     <Box sx={styles.container}>
-      <Elements />
+      <Elements formId={form.id} />
 
       <Box sx={styles.formContainer}>
         <Box sx={styles.form}>
@@ -75,22 +143,13 @@ export default function QuestionContainer() {
             onActive={() => handleActive(true)}
             form={form}
           />
-          <ShortTextCard active={active} onActive={() => handleActive(true)} />
-          <LongTextCard onActive={() => handleActive(true)} />
-          <MultiChoiceCard
-            active={active}
-            onActive={() => handleActive(true)}
-          />
-          <UniqueChoiceCard
-            active={active}
-            onActive={() => handleActive(true)}
-          />
-          <ChoiceListCard active={active} onActive={() => handleActive(true)} />
-          <DateCard onActive={() => handleActive(true)} />
+
+          {renderQuestions()}
+
           <SubmitCard />
         </Box>
 
-        <Box sx={styles.bg} onClick={() => handleActive(false)} />
+        <Box sx={styles.bg} onClick={handleDesactivateAll} />
       </Box>
     </Box>
   );

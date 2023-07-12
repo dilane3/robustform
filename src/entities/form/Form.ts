@@ -1,3 +1,5 @@
+import Card from "../card/Card";
+
 type FormData = {
   id: number;
   title: string;
@@ -6,6 +8,7 @@ type FormData = {
   createdAt: Date;
   updatedAt: Date;
   ownerId: string;
+  cards?: Card[];
 };
 
 export default class Form {
@@ -16,6 +19,7 @@ export default class Form {
   private _createdAt: Date;
   private _updatedAt: Date;
   private _ownerId: string;
+  private _cards: Card[];
 
   constructor(data: FormData) {
     this._id = data.id;
@@ -25,6 +29,7 @@ export default class Form {
     this._createdAt = data.createdAt;
     this._updatedAt = data.updatedAt;
     this._ownerId = data.ownerId;
+    this._cards = data.cards || [];
   }
 
   get id() {
@@ -55,6 +60,10 @@ export default class Form {
     return this._ownerId;
   }
 
+  get cards() {
+    return this._cards;
+  }
+
   // Setters
 
   set title(title: string) {
@@ -63,5 +72,11 @@ export default class Form {
 
   set description(description: string) {
     this._description = description;
+  }
+
+  // Methods
+
+  addCard(card: Card) {
+    this._cards.push(card);
   }
 }

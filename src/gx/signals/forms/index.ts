@@ -2,6 +2,7 @@ import { createSignal } from "@dilane3/gx";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
 import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "./constants";
+import Card from "src/entities/card/Card";
 
 const folderBin = new Folder({
   id: 1,
@@ -103,5 +104,70 @@ export const formsSignal = createSignal<FormsState>({
 
       return state;
     },
+
+    setCardActive: (
+      state,
+      payload: { folderId: number; formId: number; cardId: number }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          // Set all cards inactive
+          form.cards.forEach((card) => {
+            card.active = false;
+          });
+
+          // Set the card active
+          const card = form.cards.find((card) => card.id === payload.cardId);
+
+          if (card) {
+            card.active = true;
+          }
+        }
+      }
+
+      return state;
+    },
+
+    setAllCardsInactive: (state, payload: { folderId: number; formId: number }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.cards.forEach((card) => {
+            card.active = false;
+          });
+        }
+      }
+
+      return state;
+    },
+
+    addCard: (state, payload: { folderId: number; formId: number; card: Card }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      console.log(payload);
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.addCard(payload.card);
+        }
+      }
+
+      return state;
+    }
   },
 });

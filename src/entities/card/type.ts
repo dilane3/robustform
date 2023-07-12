@@ -1,0 +1,14 @@
+export enum CardType {
+  QUESTION = "QUESTION",
+  HEADING = "HEADING",
+}
+
+export enum QuestionType {
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  SHORT_TEXT = "SHORT_TEXT",
+  LONG_TEXT = "LONG_TEXT",
+  CHOICE_LIST = "CHOICE_LIST",
+  UNIQUE_CHOICE = "UNIQUE_CHOICE",
+  DATE = "DATE",
+  HEADING = "HEADING",
+}

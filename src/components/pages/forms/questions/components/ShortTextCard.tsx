@@ -3,23 +3,21 @@ import { Box, SxProps, Theme, Typography } from "@mui/material";
 import React from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
+import Card from "src/entities/card/Card";
 
 type ShortTextCardProps = {
-  active: boolean;
-  onActive: () => void;
+  card: Card;
+  onActive: (card: Card) => void;
 };
 
-export default function ShortTextCard({
-  active,
-  onActive,
-}: ShortTextCardProps) {
+export default function ShortTextCard({ card, onActive }: ShortTextCardProps) {
   return (
     <Box
       sx={cardStyles.container}
-      onClick={onActive}
-      className={`${active ? "active" : ""}`}
+      onClick={() => onActive(card)}
+      className={`${card.active ? "active" : ""}`}
     >
-      {active ? (
+      {card.active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
             Edit card
