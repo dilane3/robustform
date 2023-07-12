@@ -5,9 +5,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 type ChoiceItemProps = {
   value: string;
   edit?: boolean;
+  onDelete: (value: string) => void;
 };
 
-export default function ChoiceItem({ value, edit }: ChoiceItemProps) {
+export default function ChoiceItem({ value, edit, onDelete }: ChoiceItemProps) {
   return (
     <Box sx={styles.box}>
       <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitRegular" }}>
@@ -15,7 +16,7 @@ export default function ChoiceItem({ value, edit }: ChoiceItemProps) {
       </Typography>
 
       {edit && (
-        <Icon>
+        <Icon onClick={() => onDelete(value)}>
           <CancelIcon color="action" />
         </Icon>
       )}
@@ -25,6 +26,7 @@ export default function ChoiceItem({ value, edit }: ChoiceItemProps) {
 
 ChoiceItem.defaultProps = {
   edit: false,
+  onDelete: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {

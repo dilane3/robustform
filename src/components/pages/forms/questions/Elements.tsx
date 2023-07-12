@@ -83,6 +83,7 @@ export default function Elements({ formId }: ElementsProps) {
         <SidenavItem
           text={isExpanded ? "Heading" : ""}
           className="not-expanded"
+          title="Heading"
         >
           <TextFieldsOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
@@ -91,17 +92,19 @@ export default function Elements({ formId }: ElementsProps) {
         </SidenavItem>
 
         <SidenavItem
-          text={isExpanded ? "Short Input" : ""}
+          text={isExpanded ? "Short Text" : ""}
           className="not-expanded"
           onClick={() => handleSelectCard(QuestionType.SHORT_TEXT)}
+          title="Short Text"
         >
           <InputRoundedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
         </SidenavItem>
 
         <SidenavItem
-          text={isExpanded ? "Long Input" : ""}
+          text={isExpanded ? "Long Text" : ""}
           className="not-expanded"
           onClick={() => handleSelectCard(QuestionType.LONG_TEXT)}
+          title="Long Text"
         >
           <WrapTextRoundedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
@@ -113,6 +116,7 @@ export default function Elements({ formId }: ElementsProps) {
           text={isExpanded ? "Multi Choice" : ""}
           className="not-expanded"
           onClick={() => handleSelectCard(QuestionType.MULTIPLE_CHOICE)}
+          title="Multi Choice"
         >
           <ChecklistRoundedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
@@ -124,6 +128,7 @@ export default function Elements({ formId }: ElementsProps) {
           text={isExpanded ? "Unique Choice" : ""}
           className="not-expanded"
           onClick={() => handleSelectCard(QuestionType.UNIQUE_CHOICE)}
+          title="Unique Choice"
         >
           <RadioButtonCheckedOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
@@ -135,6 +140,7 @@ export default function Elements({ formId }: ElementsProps) {
           text={isExpanded ? "Choice List" : ""}
           className="not-expanded"
           onClick={() => handleSelectCard(QuestionType.CHOICE_LIST)}
+          title="Choice List"
         >
           <FactCheckOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
@@ -146,6 +152,7 @@ export default function Elements({ formId }: ElementsProps) {
           text={isExpanded ? "Date" : ""}
           className="not-expanded"
           onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
         >
           <CalendarMonthOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}

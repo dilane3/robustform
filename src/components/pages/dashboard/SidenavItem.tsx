@@ -6,6 +6,7 @@ type FolderProps = {
   text: string;
   className?: string;
   active?: boolean;
+  title?: string;
   onClick: () => void;
 };
 
@@ -15,6 +16,7 @@ export default function SidenavItem({
   className,
   onClick,
   active,
+  title
 }: FolderProps) {
   return (
     <Box
@@ -22,6 +24,7 @@ export default function SidenavItem({
       sx={styles.folder}
       onClick={onClick}
       className={`${active ? "active" : ""}`}
+      title={title}
     >
       {children}
 
