@@ -17,6 +17,8 @@ import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
+import Icon from "@components/icons/Icon";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type ChoiceListCardProps = {
   card: Card;
@@ -37,7 +39,7 @@ export default function ChoiceListCard({
   const { selectedFolder } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard } = useActions("forms");
+  const { updateCard, deleteCard } = useActions("forms");
 
   // Effects
 
@@ -108,6 +110,14 @@ export default function ChoiceListCard({
     }
   };
 
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -116,9 +126,17 @@ export default function ChoiceListCard({
     >
       {card.active ? (
         <Box sx={cardStyles.box}>
+          
+
+          <Box sx={styles.boxRowBetween}>
           <Typography component="h4" sx={cardStyles.editTitle}>
             Edit choice list card
           </Typography>
+
+            <Icon onClick={handleDelete}>
+              <DeleteIcon sx={{ color: Colors.red }} />
+            </Icon>
+          </Box>
 
           <Input
             size="small"
@@ -199,19 +217,10 @@ ChoiceListCard.defaultProps = {
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
-  textarea: {
-    width: "100%",
-    minWidth: "100%",
-    maxWidth: "100%",
-    minHeight: 100,
-    maxHeight: 150,
-    border: "1px solid #ccc",
-    borderRadius: 4,
-    padding: "10px 15px",
-    fontSize: "1rem",
-    fontFamily: "OutfitRegular",
-    color: Colors.black,
-    outlineColor: Colors.primary,
-    marginBottom: 10,
-  },
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2
+  }
 };
