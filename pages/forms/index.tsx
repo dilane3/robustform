@@ -28,24 +28,26 @@ export default function Forms() {
 
   return (
     <DashboardLayout>
-      {/* <EmptyForm /> */}
-
-      <FormsContainer
-        title={selectedFolder ? selectedFolder.name : "All forms"}
-        count={selectedFolder ? selectedFolder.forms.length : allForms.length}
-      >
-        {selectedFolder
-          ? selectedFolder.forms.map((form) => (
-              <Box sx={styles.formItem} key={form.id}>
-                <FormItem form={form} />
-              </Box>
-            ))
-          : allForms.map((form) => (
-              <Box sx={styles.formItem} key={form.id}>
-                <FormItem form={form} />
-              </Box>
-            ))}
-      </FormsContainer>
+      {allForms.length === 0 ? (
+        <EmptyForm />
+      ) : (
+        <FormsContainer
+          title={selectedFolder ? selectedFolder.name : "All forms"}
+          count={selectedFolder ? selectedFolder.forms.length : allForms.length}
+        >
+          {selectedFolder
+            ? selectedFolder.forms.map((form) => (
+                <Box sx={styles.formItem} key={form.id}>
+                  <FormItem form={form} />
+                </Box>
+              ))
+            : allForms.map((form) => (
+                <Box sx={styles.formItem} key={form.id}>
+                  <FormItem form={form} />
+                </Box>
+              ))}
+        </FormsContainer>
+      )}
     </DashboardLayout>
   );
 }

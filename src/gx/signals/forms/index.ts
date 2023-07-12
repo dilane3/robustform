@@ -5,12 +5,12 @@ import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "./constants";
 
 const folderBin = new Folder({
   id: 1,
-  name: FOLDER_BIN
+  name: FOLDER_BIN,
 });
 
 const otherFormsFolder = new Folder({
   id: 2,
-  name: OTHERS_FORMS_FOLDER
+  name: OTHERS_FORMS_FOLDER,
 });
 
 export type FormsState = {
@@ -48,18 +48,6 @@ export const formsSignal = createSignal<FormsState>({
       return state;
     },
 
-    addForm: (state, payload: { folderId: number; form: Form }) => {
-      const folder = state.forms.find(
-        (folder) => folder.id === payload.folderId
-      );
-
-      if (folder) {
-        folder.addForm(payload.form);
-      }
-
-      return state;
-    },
-
     deleteForm: (state, payload: { folderId: number; formId: number }) => {
       const folder = state.forms.find(
         (folder) => folder.id === payload.folderId
@@ -76,6 +64,44 @@ export const formsSignal = createSignal<FormsState>({
       state.forms.push(folder);
 
       return state;
-    }
+    },
+
+    addForm: (state, payload: { folderId: number; form: Form }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        folder.addForm(payload.form);
+      }
+
+      return state;
+    },
+
+    updateTitleAndDescription: (
+      state,
+      payload: {
+        folderId: number;
+        formId: number;
+        title: string;
+        description: string;
+      }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        // Find the form
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.title = payload.title;
+          form.description = payload.description;
+        }
+      }
+
+      return state;
+    },
   },
 });

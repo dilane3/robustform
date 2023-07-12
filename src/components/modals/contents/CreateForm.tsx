@@ -66,8 +66,6 @@ export default function CreateForm() {
       ownerId: "1",
     });
 
-    console.log({ form })
-
     addForm({ folderId, form });
 
     // Close modal

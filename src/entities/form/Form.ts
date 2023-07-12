@@ -54,4 +54,14 @@ export default class Form {
   get ownerId() {
     return this._ownerId;
   }
+
+  // Setters
+
+  set title(title: string) {
+    this._title = title;
+  }
+
+  set description(description: string) {
+    this._description = description;
+  }
 }
