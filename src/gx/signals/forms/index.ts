@@ -134,7 +134,10 @@ export const formsSignal = createSignal<FormsState>({
       return state;
     },
 
-    setAllCardsInactive: (state, payload: { folderId: number; formId: number }) => {
+    setAllCardsInactive: (
+      state,
+      payload: { folderId: number; formId: number }
+    ) => {
       const folder = state.forms.find(
         (folder) => folder.id === payload.folderId
       );
@@ -152,12 +155,13 @@ export const formsSignal = createSignal<FormsState>({
       return state;
     },
 
-    addCard: (state, payload: { folderId: number; formId: number; card: Card }) => {
+    addCard: (
+      state,
+      payload: { folderId: number; formId: number; card: Card }
+    ) => {
       const folder = state.forms.find(
         (folder) => folder.id === payload.folderId
       );
-
-      console.log(payload);
 
       if (folder) {
         const form = folder.forms.find((form) => form.id === payload.formId);
@@ -168,6 +172,38 @@ export const formsSignal = createSignal<FormsState>({
       }
 
       return state;
-    }
+    },
+
+    deleteCard: (
+      state,
+      payload: { folderId: number; formId: number; cardId: number }
+    ) => {
+      return state;
+    },
+
+    updateCard: (
+      state,
+      payload: { folderId: number; formId: number; card: Card }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          const cardIndex = form.cards.findIndex(
+            (card) => card.id === payload.card.id
+          );
+
+          if (cardIndex !== -1) {
+            form.cards[cardIndex] = payload.card;
+          }
+        }
+      }
+
+      return state;
+    },
   },
 });

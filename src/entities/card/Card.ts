@@ -109,4 +109,21 @@ export default class Card {
   set active(active: boolean) {
     this._active = active;
   }
+
+  // Methods
+  toOject() {
+    return {
+      id: this._id,
+      title: this._title,
+      description: this._description,
+      subtitle: this._subtitle,
+      type: this._type,
+      questionType: this._questionType,
+      question: this._question.toObject(),
+      createdAt: this._createdAt,
+      position: this._position,
+      active: this._active,
+      formId: this._formId,
+    };
+  }
 }

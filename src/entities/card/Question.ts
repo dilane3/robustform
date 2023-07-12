@@ -31,4 +31,13 @@ export default class Question {
   set options(options: string[]) {
     this._options = options;
   }
+
+  // Methods
+
+  toObject() {
+    return {
+      label: this._label,
+      options: this._options,
+    };
+  }
 }
