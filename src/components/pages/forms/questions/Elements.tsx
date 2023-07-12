@@ -12,10 +12,50 @@ import RadioButtonCheckedOutlinedIcon from "@mui/icons-material/RadioButtonCheck
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
 import Icon from "@components/icons/Icon";
+import { CardType, QuestionType } from "src/entities/card/type";
+import Card from "src/entities/card/Card";
+import { useActions, useSignal } from "@dilane3/gx";
+import { FormsState } from "src/gx/signals";
 
-export default function Elements() {
+type ElementsProps = {
+  formId: number;
+};
+
+export default function Elements({ formId }: ElementsProps) {
   // Local state
   const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
+
+  const { selectedFolder } = useSignal<FormsState>("forms");
+
+  // Global actions
+  const { addCard } = useActions("forms");
+
+  // Handlers
+  const handleSelectCard = (elementType: QuestionType) => {
+    const CardId = Math.floor(Math.random() * 1000000000) + 2;
+
+    const cardPayload = {
+      id: CardId,
+      formId,
+      type: CardType.QUESTION,
+      questionType: elementType,
+      createdAt: new Date(Date.now()),
+      position: 1,
+      active: true,
+    };
+
+    const card = new Card(cardPayload);
+    
+    console.log(card);
+    
+
+    // Add card to global state
+    addCard({
+      folderId: selectedFolder?.id,
+      formId,
+      card,
+    });
+  };
 
   return (
     <Box
@@ -32,7 +72,7 @@ export default function Elements() {
         </Typography>
 
         <Icon
-          className={`${!isExpanded ? "not-expanded" : ""}`}
+          className={`can-rotate ${!isExpanded ? "not-expanded" : ""}`}
           onClick={() => setIsExpanded((prev) => !prev)}
         >
           <KeyboardDoubleArrowLeftOutlinedIcon color="action" />
@@ -43,55 +83,77 @@ export default function Elements() {
         <SidenavItem
           text={isExpanded ? "Heading" : ""}
           className="not-expanded"
+          title="Heading"
         >
           <TextFieldsOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
             color="action"
           />
         </SidenavItem>
+
         <SidenavItem
-          text={isExpanded ? "Short Input" : ""}
+          text={isExpanded ? "Short Text" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.SHORT_TEXT)}
+          title="Short Text"
         >
           <InputRoundedIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
         </SidenavItem>
+
         <SidenavItem
-          text={isExpanded ? "Long Input" : ""}
+          text={isExpanded ? "Long Text" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.LONG_TEXT)}
+          title="Long Text"
         >
           <WrapTextRoundedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
             color="action"
           />
         </SidenavItem>
+
         <SidenavItem
           text={isExpanded ? "Multi Choice" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.MULTIPLE_CHOICE)}
+          title="Multi Choice"
         >
           <ChecklistRoundedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
             color="action"
           />
         </SidenavItem>
+
         <SidenavItem
           text={isExpanded ? "Unique Choice" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.UNIQUE_CHOICE)}
+          title="Unique Choice"
         >
           <RadioButtonCheckedOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
             color="action"
           />
         </SidenavItem>
+
         <SidenavItem
           text={isExpanded ? "Choice List" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.CHOICE_LIST)}
+          title="Choice List"
         >
           <FactCheckOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
             color="action"
           />
         </SidenavItem>
-        <SidenavItem text={isExpanded ? "Date" : ""} className="not-expanded">
+        
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
           <CalendarMonthOutlinedIcon
             sx={{ fontSize: "1.5rem", mr: 2 }}
             color="action"

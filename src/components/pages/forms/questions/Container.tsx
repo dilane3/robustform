@@ -1,7 +1,7 @@
-import { Box, SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme, Typography } from "@mui/material";
 import Elements from "./Elements";
 import TitleCard from "./components/TitleCard";
-import React from "react";
+import React, { useEffect } from "react";
 import ShortTextCard from "./components/ShortTextCard";
 import LongTextCard from "./components/LongTextCard";
 import SubmitCard from "./components/SubmitCard";
@@ -9,34 +9,157 @@ import MultiChoiceCard from "./components/MultiChoice";
 import UniqueChoiceCard from "./components/UniqueChoice";
 import ChoiceListCard from "./components/ChoiceListCard";
 import DateCard from "./components/DateCard";
+import { useRouter } from "next/router";
+import { redirect } from "next/navigation";
+import { useActions, useSignal } from "@dilane3/gx";
+import { FormsState } from "src/gx/signals";
+import Form from "src/entities/form/Form";
+import { NavigateToResource } from "@refinedev/nextjs-router";
+import Link from "next/link";
+import { CardType, QuestionType } from "src/entities/card/type";
+import Card from "src/entities/card/Card";
 
 export default function QuestionContainer() {
+  // URL handler
+  const { query, isReady } = useRouter();
+  const { id } = query as { id: string };
+
+  // Local state
   const [active, setActive] = React.useState(false);
 
-  // Handlers
-  const handleActive = (value: boolean) => {
-    setActive(value);
+  // Global state
+  const { forms, selectedFolder } = useSignal<FormsState>("forms");
 
-    console.log(value);
+  const { setCardActive, setAllCardsInactive } = useActions("forms");
+
+  // Memoized values
+  const form = React.useMemo(() => {
+    if (!id) return null;
+
+    let form: Form | null = null;
+
+    for (let folder of forms) {
+      for (let f of folder.forms) {
+        if (f.id === +id) {
+          form = f;
+        }
+      }
+    }
+
+    return form;
+  }, [JSON.stringify(forms)]) as Form | null;
+
+  // Handlers
+  const handleGlobalActive = (card: Card) => {
+    setCardActive({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
   };
 
+  const handleActive = (active: boolean) => {
+    setActive(active);
+  };
+
+  const handleDesactivateAll = () => {
+    setActive(false);
+    setAllCardsInactive({ folderId: selectedFolder?.id, formId: form?.id });
+  };
+
+  // Methods
+  const renderQuestions = () => {
+    if (form) {
+      const cardItems: React.ReactNode[] = [];
+
+      for (const card of form.cards) {
+        if (card.type === CardType.HEADING) {
+          continue;
+        } else {
+          switch (card.questionType) {
+            case QuestionType.SHORT_TEXT: {
+              cardItems.push(
+                <ShortTextCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+
+            case QuestionType.LONG_TEXT: {
+              cardItems.push(
+                <LongTextCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+
+            case QuestionType.MULTIPLE_CHOICE: {
+              cardItems.push(
+                <MultiChoiceCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+
+            case QuestionType.UNIQUE_CHOICE: {
+              cardItems.push(
+                <UniqueChoiceCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+
+            case QuestionType.CHOICE_LIST: {
+              cardItems.push(
+                <ChoiceListCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+
+            case QuestionType.DATE: {
+              cardItems.push(
+                <DateCard card={card} onActive={handleGlobalActive} />
+              );
+              break;
+            }
+          }
+        }
+      }
+
+      return cardItems;
+    }
+
+    return null;
+  };
+
+  // Render
+
+  if (isReady && !form) {
+    return (
+      <Link href="/forms">
+        <Typography sx={{ fontFamily: "OutfitRegular", fontSize: "1rem" }}>
+          Go back
+        </Typography>
+      </Link>
+    );
+  }
+
+  if (!isReady || !form) return null;
+
   return (
-    <Box sx={styles.container} >
-      <Elements />
+    <Box sx={styles.container}>
+      <Elements formId={form.id} />
 
       <Box sx={styles.formContainer}>
         <Box sx={styles.form}>
-          <TitleCard active={active} onActive={() => handleActive(true)} />
-          <ShortTextCard active={active} onActive={() => handleActive(true)} />
-          <LongTextCard  onActive={() => handleActive(true)} />
-          <MultiChoiceCard active={active} onActive={() => handleActive(true)} />
-          <UniqueChoiceCard active={active} onActive={() => handleActive(true)} />
-          <ChoiceListCard active={active} onActive={() => handleActive(true)} />
-          <DateCard onActive={() => handleActive(true)} />
+          <TitleCard
+            active={active}
+            onActive={() => handleActive(true)}
+            form={form}
+          />
+
+          {renderQuestions()}
+
           <SubmitCard />
         </Box>
 
-        <Box sx={styles.bg} onClick={() => handleActive(false)} />
+        <Box sx={styles.bg} onClick={handleDesactivateAll} />
       </Box>
     </Box>
   );

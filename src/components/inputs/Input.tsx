@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 
 type InputProps = {
+  ref?: React.Ref<HTMLInputElement>;
   label: string;
   variant?: "outlined" | "filled" | "standard";
   type: string;
@@ -18,9 +19,11 @@ type InputProps = {
   size: "small" | "medium";
   icon?: React.ReactNode;
   width: string | number;
+  autoFocus?: boolean;
 };
 
 export default function Input({
+  ref,
   label,
   variant,
   type,
@@ -31,10 +34,12 @@ export default function Input({
   error,
   size,
   icon,
-  width
+  width,
+  autoFocus
 }: InputProps) {
   return (
     <TextInput
+      ref={ref}
       label={label}
       type={type}
       variant={variant}
@@ -54,6 +59,7 @@ export default function Input({
           width
         },
       }}
+      autoFocus={autoFocus}
     />
   );
 }

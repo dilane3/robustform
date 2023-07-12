@@ -2,19 +2,52 @@ import DashboardLayout from "@components/layout/dashboard/DashboardLayout";
 import FormItem from "@components/layout/dashboard/FormItem";
 import EmptyForm from "@components/pages/dashboard/Empty";
 import FormsContainer from "@components/pages/dashboard/FormsContainer";
+import { useSignal } from "@dilane3/gx";
 import { Box, SxProps, Theme } from "@mui/material";
 import Link from "next/link";
+import { useMemo } from "react";
+import Form from "src/entities/form/Form";
+import { FormsState } from "src/gx/signals";
 
 export default function Forms() {
+  // Global state
+  const { forms, selectedFolder } = useSignal<FormsState>("forms");
+
+  // Memoized values
+  const allForms = useMemo(() => {
+    const myForms: Form[] = [];
+
+    forms.forEach((folder) => {
+      folder.forms.forEach((form) => {
+        myForms.push(form);
+      });
+    });
+
+    return myForms;
+  }, [JSON.stringify(forms)]);
+
   return (
     <DashboardLayout>
-      {/* <EmptyForm /> */}
-
-      <FormsContainer title="All forms" count={10}>
-        <Box sx={styles.formItem}>
-          <FormItem />
-        </Box>
-      </FormsContainer>
+      {allForms.length === 0 ? (
+        <EmptyForm />
+      ) : (
+        <FormsContainer
+          title={selectedFolder ? selectedFolder.name : "All forms"}
+          count={selectedFolder ? selectedFolder.forms.length : allForms.length}
+        >
+          {selectedFolder
+            ? selectedFolder.forms.map((form) => (
+                <Box sx={styles.formItem} key={form.id}>
+                  <FormItem form={form} />
+                </Box>
+              ))
+            : allForms.map((form) => (
+                <Box sx={styles.formItem} key={form.id}>
+                  <FormItem form={form} />
+                </Box>
+              ))}
+        </FormsContainer>
+      )}
     </DashboardLayout>
   );
 }

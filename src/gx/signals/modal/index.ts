@@ -11,7 +11,7 @@ export type ModalState = {
   type: ModalType;
 }
 
-export const modalState = createSignal({
+export const modalSignal = createSignal({
   name: "modal",
   state: {
     isOpened: false,

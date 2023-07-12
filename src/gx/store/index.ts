@@ -1,4 +1,4 @@
 import { createStore } from "@dilane3/gx";
-import { modalState } from "../signals";
+import { formsSignal, modalSignal } from "../signals";
 
-export const store = createStore([modalState])
+export const store = createStore([modalSignal, formsSignal]);

@@ -16,8 +16,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import Link from "next/link";
+import Form from "src/entities/form/Form";
+import { truncate } from "src/utility/stringOperations";
 
-export default function FormItem() {
+type FormItemProps = {
+  form: Form;
+};
+
+export default function FormItem({ form }: FormItemProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,8 +38,10 @@ export default function FormItem() {
       <Box sx={styles.formHeader} />
 
       <Box sx={styles.formBody}>
-        <Link href="/forms/2" style={{ width: "auto" }}>
-          <Typography sx={styles.title}>Untitled form</Typography>
+        <Link href={`forms/${form.id}`} style={{ width: "auto" }}>
+          <Typography sx={styles.title} title={form.title}>
+            {truncate(form.title, 25)}
+          </Typography>
         </Link>
 
         <Box sx={styles.formBottom}>
@@ -42,7 +50,7 @@ export default function FormItem() {
             <Typography
               sx={{ fontSize: "0.8rem", fontFamily: "OutfitRegular", ml: 1 }}
             >
-              12 Feb 2023
+              {form.createdAt.toLocaleDateString()}
             </Typography>
           </Box>
 

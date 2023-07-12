@@ -6,38 +6,141 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
 import Radio from "@components/checkboxes/Radio";
+import Card from "src/entities/card/Card";
+import { FormsState } from "src/gx/signals";
+import { useActions, useSignal } from "@dilane3/gx";
+import Question from "src/entities/card/Question";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Icon from "@components/icons/Icon";
 
 type UniqueChoiceCardProps = {
-  active: boolean;
-  onActive: () => void;
+  card: Card;
+  onActive: (card: Card) => void;
 };
 
 export default function UniqueChoiceCard({
-  active,
+  card,
   onActive,
 }: UniqueChoiceCardProps) {
+  // Local state
+  const [label, setLabel] = React.useState(card.question.label || "");
+  const [value, setValue] = React.useState("");
+  const [options, setOptions] = React.useState(card.question.options || []);
+  const [modified, setModified] = React.useState(false);
+
+  // Global state
+  const { selectedFolder } = useSignal<FormsState>("forms");
+
+  // Global action
+  const { updateCard, deleteCard } = useActions("forms");
+
+  // Effects
+
+  useEffect(() => {
+    if (card.active) {
+      if (
+        JSON.stringify(options) !== JSON.stringify(card.question.options) ||
+        label !== card.question.label
+      ) {
+        setModified(true);
+      } else {
+        setModified(false);
+      }
+    }
+  }, [label, JSON.stringify(options)]);
+
+  useEffect(() => {
+    if (!card.active && modified) {
+      // TODO: Update on supabase
+
+      let cardData = card.toOject();
+      let questionData = cardData.question;
+
+      questionData.label = label;
+      questionData.options = options;
+
+      const question = new Question(questionData);
+      const myCard = new Card({ ...cardData, question });
+
+      updateCard({
+        folderId: selectedFolder?.id,
+        formId: card.formId,
+        card: myCard,
+      });
+    } else {
+      console.log("dont save");
+    }
+  }, [card.active]);
+
+  // Handlers
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    target: string
+  ) => {
+    if (target === "label") {
+      setLabel(e.target.value);
+    } else if (target === "value") {
+      setValue(e.target.value);
+    }
+  };
+
+  const handleAddOrRemoveOption = (value: string, action: string) => {
+    if (action === "add") {
+      if (options.includes(value)) {
+        setValue("");
+
+        return;
+      }
+
+      setOptions([...options, value]);
+      setValue("");
+    } else if (action === "remove") {
+      const newOptions = options.filter((option) => option !== value);
+
+      setOptions(newOptions);
+
+      return;
+    }
+  };
+
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
   return (
     <Box
       sx={cardStyles.container}
-      onClick={onActive}
-      className={`${active ? "active" : ""}`}
+      onClick={() => onActive(card)}
+      className={`${card.active ? "active" : ""}`}
     >
-      {active ? (
+      {card.active ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit card
-          </Typography>
+          <Box sx={styles.boxRowBetween}>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit unique choice card
+            </Typography>
+
+            <Icon onClick={handleDelete}>
+              <DeleteIcon sx={{ color: Colors.red }} />
+            </Icon>
+          </Box>
 
           <Input
             size="small"
             label="Label"
             variant="standard"
             styles={{ marginBottom: 2 }}
+            value={label}
+            onChange={(e) => handleChange(e, "label")}
           />
 
           <Box sx={styles.form}>
@@ -47,9 +150,14 @@ export default function UniqueChoiceCard({
                 label="Add item"
                 size="small"
                 variant="outlined"
+                value={value}
+                onChange={(e) => handleChange(e, "value")}
               />
 
-              <Button styles={{ width: 100, height: 40 }}>
+              <Button
+                styles={{ width: 100, height: 40 }}
+                onClick={() => handleAddOrRemoveOption(value, "add")}
+              >
                 <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitBold" }}>
                   Add
                 </Typography>
@@ -57,24 +165,29 @@ export default function UniqueChoiceCard({
             </Box>
 
             <Box sx={cardStyles.box}>
-              <Radio value="10-15" edit />
-              <Radio value="16-20" edit />
-              <Radio value="21-30" edit />
-              <Radio value="30-plus" edit />
+              {options.map((option, index) => (
+                <Radio
+                  key={index}
+                  value={option}
+                  edit
+                  onDelete={(value: string) =>
+                    handleAddOrRemoveOption(value, "remove")
+                  }
+                />
+              ))}
             </Box>
           </Box>
         </Box>
       ) : (
         <Box sx={cardStyles.box}>
           <Typography component="h1" sx={cardStyles.label}>
-            Quelle est votre tranche d'âge ?
+            {card.question.label}
           </Typography>
 
           <Box sx={cardStyles.box}>
-            <Radio value="10-15" />
-            <Radio value="16-20" />
-            <Radio value="21-30" />
-            <Radio value="30-plus" />
+            {card.question.options.map((option, index) => (
+              <Radio key={index} value={option} />
+            ))}
           </Box>
         </Box>
       )}
@@ -88,19 +201,10 @@ UniqueChoiceCard.defaultProps = {
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
-  textarea: {
-    width: "100%",
-    minWidth: "100%",
-    maxWidth: "100%",
-    minHeight: 100,
-    maxHeight: 150,
-    border: "1px solid #ccc",
-    borderRadius: 4,
-    padding: "10px 15px",
-    fontSize: "1rem",
-    fontFamily: "OutfitRegular",
-    color: Colors.black,
-    outlineColor: Colors.primary,
-    marginBottom: 10,
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2,
   },
 };

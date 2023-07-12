@@ -11,18 +11,16 @@ import CancelIcon from "@mui/icons-material/Cancel";
 type RadioProps = {
   value: string;
   edit?: boolean;
+  onDelete: (value: string) => void;
 };
 
-export default function Radio({ value, edit }: RadioProps) {
+export default function Radio({ value, edit, onDelete }: RadioProps) {
   return (
     <Box sx={styles.box}>
-      <FormControlLabel
-        control={<BaseRadio />}
-        label={value}
-      />
+      <FormControlLabel control={<BaseRadio />} label={value} />
 
       {edit && (
-        <Icon>
+        <Icon onClick={() => onDelete(value)}>
           <CancelIcon color="action" />
         </Icon>
       )}
@@ -32,6 +30,7 @@ export default function Radio({ value, edit }: RadioProps) {
 
 Radio.defaultProps = {
   edit: false,
+  onDelete: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {
