@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState, ModalType } from "src/gx/signals";
-import { FOLDER_BIN } from "src/gx/signals/forms/constants";
+import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "src/gx/signals/forms/constants";
 import { useMemo } from "react";
 
 export default function Sidenav() {
@@ -22,6 +22,10 @@ export default function Sidenav() {
     return forms.find((folder) => folder.name === FOLDER_BIN);
   }, [forms]);
 
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
+
   // Handlers
   const handleOpenCreateFolder = () => {
     open(ModalType.CREATE_FOLDER);
@@ -34,7 +38,7 @@ export default function Sidenav() {
   // Methods
   const renderFolders = () => {
     return forms.map((folder) => {
-      if (folder.name === FOLDER_BIN) {
+      if (folder.name === FOLDER_BIN || folder.name === OTHERS_FORMS_FOLDER) {
         return null;
       }
 

@@ -54,7 +54,7 @@ export default function CreateFolder() {
     // TODO: Create folder on Supabase
 
     // Create folder on global
-    const folderId = forms.length === 0 ? 1 : forms[forms.length - 1].id + 1;
+    const folderId = Math.floor(Math.random() * 1000000000) + 2;
 
     const folder = new Folder({ id: folderId, name });
 

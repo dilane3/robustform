@@ -1,11 +1,16 @@
 import { createSignal } from "@dilane3/gx";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
-import { FOLDER_BIN } from "./constants";
+import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "./constants";
 
 const folderBin = new Folder({
   id: 1,
   name: FOLDER_BIN
+});
+
+const otherFormsFolder = new Folder({
+  id: 2,
+  name: OTHERS_FORMS_FOLDER
 });
 
 export type FormsState = {
@@ -18,7 +23,7 @@ export type FormsState = {
 export const formsSignal = createSignal<FormsState>({
   name: "forms",
   state: {
-    forms: [folderBin],
+    forms: [otherFormsFolder, folderBin],
     loading: true,
     selectedFolder: null,
     selectedForm: null,
