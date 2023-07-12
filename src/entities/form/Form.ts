@@ -79,4 +79,9 @@ export default class Form {
   addCard(card: Card) {
     this._cards.push(card);
   }
+
+  deleteCard(cardId: number) {
+    console.log("cardId", cardId);
+    this._cards = this._cards.filter((card) => card.id !== cardId);
+  }
 }

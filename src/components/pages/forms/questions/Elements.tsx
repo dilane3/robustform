@@ -72,7 +72,7 @@ export default function Elements({ formId }: ElementsProps) {
         </Typography>
 
         <Icon
-          className={`${!isExpanded ? "not-expanded" : ""}`}
+          className={`can-rotate ${!isExpanded ? "not-expanded" : ""}`}
           onClick={() => setIsExpanded((prev) => !prev)}
         >
           <KeyboardDoubleArrowLeftOutlinedIcon color="action" />

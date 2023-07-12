@@ -31,7 +31,6 @@ export const styles: Record<string, SxProps<Theme>> = {
   editTitle: {
     fontSize: "0.9rem",
     fontFamily: "OutfitMedium",
-    marginBottom: 2
   },
 
   label: {

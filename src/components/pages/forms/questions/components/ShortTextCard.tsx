@@ -7,6 +7,8 @@ import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Icon from "@components/icons/Icon";
 
 type ShortTextCardProps = {
   card: Card;
@@ -23,7 +25,7 @@ export default function ShortTextCard({ card, onActive }: ShortTextCardProps) {
   const { selectedFolder } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard } = useActions("forms");
+  const { updateCard, deleteCard } = useActions("forms");
 
   // Effects
 
@@ -72,6 +74,20 @@ export default function ShortTextCard({ card, onActive }: ShortTextCardProps) {
     }
   };
 
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+
+    console.log({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    })
+  }
+
   return (
     <Box
       sx={cardStyles.container}
@@ -80,9 +96,15 @@ export default function ShortTextCard({ card, onActive }: ShortTextCardProps) {
     >
       {card.active ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit short text card
-          </Typography>
+          <Box sx={styles.boxRowBetween}>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit short text card
+            </Typography>
+
+            <Icon onClick={handleDelete}>
+              <DeleteIcon sx={{ color: Colors.red }} />
+            </Icon>
+          </Box>
 
           <Input
             size="small"
@@ -128,4 +150,11 @@ ShortTextCard.defaultProps = {
   onActive: () => {},
 };
 
-const styles: Record<string, SxProps<Theme>> = {};
+const styles: Record<string, SxProps<Theme>> = {
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2
+  }
+};

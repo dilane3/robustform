@@ -167,6 +167,12 @@ export const formsSignal = createSignal<FormsState>({
         const form = folder.forms.find((form) => form.id === payload.formId);
 
         if (form) {
+          // Set all cards inactive
+          form.cards.forEach((card) => {
+            card.active = false;
+          });
+
+          // Add new card
           form.addCard(payload.card);
         }
       }
@@ -178,6 +184,18 @@ export const formsSignal = createSignal<FormsState>({
       state,
       payload: { folderId: number; formId: number; cardId: number }
     ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.deleteCard(payload.cardId);
+        }
+      }
+
       return state;
     },
 
