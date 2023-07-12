@@ -13,6 +13,8 @@ import Card from "src/entities/card/Card";
 import { FormsState } from "src/gx/signals";
 import { useActions, useSignal } from "@dilane3/gx";
 import Question from "src/entities/card/Question";
+import Icon from "@components/icons/Icon";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type LongTextCardProps = {
   card: Card;
@@ -29,7 +31,7 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
   const { selectedFolder } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard } = useActions("forms");
+  const { updateCard, deleteCard } = useActions("forms");
 
   // Effects
 
@@ -78,6 +80,14 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
     }
   };
 
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -86,9 +96,15 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
     >
       {card.active ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit long text card
-          </Typography>
+          <Box sx={styles.boxRowBetween}>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit long text card
+            </Typography>
+
+            <Icon onClick={handleDelete}>
+              <DeleteIcon sx={{ color: Colors.red }} />
+            </Icon>
+          </Box>
 
           <Input
             size="small"
@@ -151,4 +167,11 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     outlineColor: Colors.primary,
     marginBottom: 10,
   },
+
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2
+  }
 };

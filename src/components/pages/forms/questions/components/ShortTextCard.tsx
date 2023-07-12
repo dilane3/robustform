@@ -80,12 +80,6 @@ export default function ShortTextCard({ card, onActive }: ShortTextCardProps) {
       formId: card.formId,
       cardId: card.id,
     });
-
-    console.log({
-      folderId: selectedFolder?.id,
-      formId: card.formId,
-      cardId: card.id,
-    })
   }
 
   return (
