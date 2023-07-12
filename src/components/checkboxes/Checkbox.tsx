@@ -11,15 +11,16 @@ import CancelIcon from "@mui/icons-material/Cancel";
 type CheckboxProps = {
   value: string;
   edit?: boolean;
+  onDelete: (value: string) => void;
 };
 
-export default function Checkbox({ value, edit }: CheckboxProps) {
+export default function Checkbox({ value, edit, onDelete }: CheckboxProps) {
   return (
     <Box sx={styles.box}>
       <FormControlLabel control={<BaseCheckbox />} label={value} />
 
       {edit && (
-        <Icon>
+        <Icon onClick={() => onDelete(value)}>
           <CancelIcon color="action" />
         </Icon>
       )}
@@ -29,6 +30,7 @@ export default function Checkbox({ value, edit }: CheckboxProps) {
 
 Checkbox.defaultProps = {
   edit: false,
+  onDelete: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {
