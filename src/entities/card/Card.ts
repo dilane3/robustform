@@ -48,7 +48,7 @@ export default class Card {
     return this._id;
   }
 
-  get ti {
+  get title() {
     return this._title;
   }
 
