@@ -8,16 +8,16 @@ import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
+import Icon from "@components/icons/Icon";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Colors } from "src/constants";
 
 type DateCardProps = {
   card: Card;
   onActive: (card: Card) => void;
 };
 
-export default function DateCard({
-  card,
-  onActive,
-}: DateCardProps) {
+export default function DateCard({ card, onActive }: DateCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
   const [subtitle, setSubtitle] = React.useState(card.subtitle || "");
@@ -27,7 +27,7 @@ export default function DateCard({
   const { selectedFolder } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard } = useActions("forms");
+  const { updateCard, deleteCard } = useActions("forms");
 
   // Effects
 
@@ -76,6 +76,14 @@ export default function DateCard({
     }
   };
 
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -84,9 +92,15 @@ export default function DateCard({
     >
       {card.active ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit date card
-          </Typography>
+          <Box sx={styles.boxRowBetween}>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit date card
+            </Typography>
+
+            <Icon onClick={handleDelete}>
+              <DeleteIcon sx={{ color: Colors.red }} />
+            </Icon>
+          </Box>
 
           <Input
             size="small"
@@ -109,19 +123,19 @@ export default function DateCard({
       ) : (
         <Box sx={cardStyles.box}>
           <Typography component="h1" sx={cardStyles.label}>
-            {card.question.label} 
+            {card.question.label}
           </Typography>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker 
+            <DateTimePicker
               label="Votre réponse"
-              views={['year', 'month', 'day']}
+              views={["year", "month", "day"]}
               sx={{
                 "& .MuiInputBase-root": {
                   height: 40,
                   mb: 1,
                 },
-                padding: "0.4rem 0"
+                padding: "0.4rem 0",
               }}
             />
           </LocalizationProvider>
@@ -140,4 +154,11 @@ DateCard.defaultProps = {
   onActive: () => {},
 };
 
-const styles: Record<string, SxProps<Theme>> = {};
+const styles: Record<string, SxProps<Theme>> = {
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2,
+  },
+};

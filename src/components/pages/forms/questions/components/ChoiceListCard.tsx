@@ -18,7 +18,7 @@ import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type ChoiceListCardProps = {
   card: Card;
@@ -126,12 +126,10 @@ export default function ChoiceListCard({
     >
       {card.active ? (
         <Box sx={cardStyles.box}>
-          
-
           <Box sx={styles.boxRowBetween}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit choice list card
-          </Typography>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit choice list card
+            </Typography>
 
             <Icon onClick={handleDelete}>
               <DeleteIcon sx={{ color: Colors.red }} />
@@ -198,11 +196,11 @@ export default function ChoiceListCard({
                 <em>None</em>
               </MenuItem>
 
-              {
-                card.question.options.map((option, index) => (
-                  <MenuItem key={index} value={option}>{option}</MenuItem>
-                ))
-              }
+              {card.question.options.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
             </Select>
           </Box>
         </Box>
@@ -221,6 +219,6 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    mb: 2
-  }
+    mb: 2,
+  },
 };

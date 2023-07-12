@@ -185,19 +185,10 @@ UniqueChoiceCard.defaultProps = {
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
-  textarea: {
-    width: "100%",
-    minWidth: "100%",
-    maxWidth: "100%",
-    minHeight: 100,
-    maxHeight: 150,
-    border: "1px solid #ccc",
-    borderRadius: 4,
-    padding: "10px 15px",
-    fontSize: "1rem",
-    fontFamily: "OutfitRegular",
-    color: Colors.black,
-    outlineColor: Colors.primary,
-    marginBottom: 10,
-  },
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2
+  }
 };
