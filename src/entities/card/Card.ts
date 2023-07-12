@@ -48,15 +48,15 @@ export default class Card {
     return this._id;
   }
 
-  get title(): string | undefined {
+  get ti {
     return this._title;
   }
 
-  get description(): string | undefined {
+  get description() {
     return this._description;
   }
 
-  get subtitle(): string | undefined {
+  get subtitle() {
     return this._subtitle;
   }
 
