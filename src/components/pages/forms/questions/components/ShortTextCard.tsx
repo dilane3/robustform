@@ -20,7 +20,7 @@ export default function ShortTextCard({ card, onActive }: ShortTextCardProps) {
       {card.active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit card
+            Edit short text card
           </Typography>
 
           <Input

@@ -68,7 +68,7 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
       {active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit card
+            Edit title card
           </Typography>
 
           <Input

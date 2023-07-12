@@ -11,26 +11,27 @@ import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
 import Checkbox from "@components/checkboxes/Checkbox";
+import Card from "src/entities/card/Card";
 
 type MultiChoiceCardProps = {
-  active: boolean;
-  onActive: () => void;
+  card: Card;
+  onActive: (card: Card) => void;
 };
 
 export default function MultiChoiceCard({
-  active,
+  card,
   onActive,
 }: MultiChoiceCardProps) {
   return (
     <Box
       sx={cardStyles.container}
-      onClick={onActive}
-      className={`${active ? "active" : ""}`}
+      onClick={() => onActive(card)}
+      className={`${card.active ? "active" : ""}`}
     >
-      {active ? (
+      {card.active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit card
+            Edit multiple choice card
           </Typography>
 
           <Input

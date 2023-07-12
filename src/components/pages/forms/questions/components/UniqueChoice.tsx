@@ -11,26 +11,27 @@ import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
 import Radio from "@components/checkboxes/Radio";
+import Card from "src/entities/card/Card";
 
 type UniqueChoiceCardProps = {
-  active: boolean;
-  onActive: () => void;
+  card: Card;
+  onActive: (card: Card) => void;
 };
 
 export default function UniqueChoiceCard({
-  active,
+  card,
   onActive,
 }: UniqueChoiceCardProps) {
   return (
     <Box
       sx={cardStyles.container}
-      onClick={onActive}
-      className={`${active ? "active" : ""}`}
+      onClick={() => onActive(card)}
+      className={`${card.active ? "active" : ""}`}
     >
-      {active ? (
+      {card.active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit card
+            Edit unique choice card
           </Typography>
 
           <Input

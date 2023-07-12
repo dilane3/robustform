@@ -85,27 +85,37 @@ export default function QuestionContainer() {
             }
 
             case QuestionType.LONG_TEXT: {
-              cardItems.push(<LongTextCard />);
+              cardItems.push(
+                <LongTextCard card={card} onActive={handleGlobalActive} />
+              );
               break;
             }
 
             case QuestionType.MULTIPLE_CHOICE: {
-              cardItems.push(<MultiChoiceCard />);
+              cardItems.push(
+                <MultiChoiceCard card={card} onActive={handleGlobalActive} />
+              );
               break;
             }
 
             case QuestionType.UNIQUE_CHOICE: {
-              cardItems.push(<UniqueChoiceCard />);
+              cardItems.push(
+                <UniqueChoiceCard card={card} onActive={handleGlobalActive} />
+              );
               break;
             }
 
             case QuestionType.CHOICE_LIST: {
-              cardItems.push(<ChoiceListCard />);
+              cardItems.push(
+                <ChoiceListCard card={card} onActive={handleGlobalActive} />
+              );
               break;
             }
 
             case QuestionType.DATE: {
-              cardItems.push(<DateCard />);
+              cardItems.push(
+                <DateCard card={card} onActive={handleGlobalActive} />
+              );
               break;
             }
           }

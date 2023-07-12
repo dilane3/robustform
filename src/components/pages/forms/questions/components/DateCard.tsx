@@ -4,26 +4,27 @@ import React from "react";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Card from "src/entities/card/Card";
 
 type DateCardProps = {
-  active: boolean;
-  onActive: () => void;
+  card: Card;
+  onActive: (card: Card) => void;
 };
 
 export default function DateCard({
-  active,
+  card,
   onActive,
 }: DateCardProps) {
   return (
     <Box
       sx={cardStyles.container}
-      onClick={onActive}
-      className={`${active ? "active" : ""}`}
+      onClick={() => onActive(card)}
+      className={`${card.active ? "active" : ""}`}
     >
-      {active ? (
+      {card.active ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit card
+            Edit date card
           </Typography>
 
           <Input
