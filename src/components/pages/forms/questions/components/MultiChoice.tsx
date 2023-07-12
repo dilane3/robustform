@@ -15,6 +15,8 @@ import Card from "src/entities/card/Card";
 import { FormsState } from "src/gx/signals";
 import { useActions, useSignal } from "@dilane3/gx";
 import Question from "src/entities/card/Question";
+import Icon from "@components/icons/Icon";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type MultiChoiceCardProps = {
   card: Card;
@@ -35,7 +37,7 @@ export default function MultiChoiceCard({
   const { selectedFolder } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard } = useActions("forms");
+  const { updateCard, deleteCard } = useActions("forms");
 
   // Effects
 
@@ -106,6 +108,14 @@ export default function MultiChoiceCard({
     }
   };
 
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -114,9 +124,15 @@ export default function MultiChoiceCard({
     >
       {card.active ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit multiple choice card
-          </Typography>
+          <Box sx={styles.boxRowBetween}>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit multiple choice card
+            </Typography>
+
+            <Icon onClick={handleDelete}>
+              <DeleteIcon sx={{ color: Colors.red }} />
+            </Icon>
+          </Box>
 
           <Input
             size="small"
@@ -153,7 +169,9 @@ export default function MultiChoiceCard({
                 <Checkbox
                   key={index}
                   value={option}
-                  onDelete={(value: string) => handleAddOrRemoveOption(value, "remove")}
+                  onDelete={(value: string) =>
+                    handleAddOrRemoveOption(value, "remove")
+                  }
                   edit
                 />
               ))}
@@ -187,6 +205,6 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    mb: 2
-  }
+    mb: 2,
+  },
 };
