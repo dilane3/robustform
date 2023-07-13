@@ -1,11 +1,12 @@
 import Input from "@components/inputs/Input";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Form from "src/entities/form/Form";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type TitleCardProps = {
   active: boolean;
@@ -20,10 +21,16 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global actions
   const { updateTitleAndDescription } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Effects
 
@@ -41,10 +48,10 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
     if (!active && modified) {
       updateTitleAndDescription({
         formId: form.id,
-        folderId: selectedFolder?.id,
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
         title,
         description,
-      })
+      });
     } else {
       console.log("dont save");
     }

@@ -1,6 +1,6 @@
 import Input from "@components/inputs/Input";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,6 +11,7 @@ import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Colors } from "src/constants";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type DateCardProps = {
   card: Card;
@@ -24,10 +25,16 @@ export default function DateCard({ card, onActive }: DateCardProps) {
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global action
   const { updateCard, deleteCard } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Effects
 
@@ -55,7 +62,7 @@ export default function DateCard({ card, onActive }: DateCardProps) {
       const myCard = new Card({ ...cardData, question });
 
       updateCard({
-        folderId: selectedFolder?.id,
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
         formId: card.formId,
         card: myCard,
       });
@@ -78,7 +85,7 @@ export default function DateCard({ card, onActive }: DateCardProps) {
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId: card.formId,
       cardId: card.id,
     });

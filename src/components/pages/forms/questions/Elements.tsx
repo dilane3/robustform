@@ -1,7 +1,7 @@
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { Colors } from "src/constants";
 import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftOutlined";
-import React from "react";
+import React, { useMemo } from "react";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
 import FolderIcon from "@mui/icons-material/Folder";
 import InputRoundedIcon from "@mui/icons-material/InputRounded";
@@ -16,6 +16,7 @@ import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type ElementsProps = {
   formId: number;
@@ -25,10 +26,16 @@ export default function Elements({ formId }: ElementsProps) {
   // Local state
   const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
 
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global actions
   const { addCard } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Handlers
   const handleSelectCard = (elementType: QuestionType) => {
@@ -51,7 +58,7 @@ export default function Elements({ formId }: ElementsProps) {
 
     // Add card to global state
     addCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId,
       card,
     });
