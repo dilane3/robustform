@@ -6,7 +6,7 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
+import React, { ChangeEvent, useEffect, useMemo } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Card from "src/entities/card/Card";
@@ -19,10 +19,12 @@ import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type LongTextCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
-export default function LongTextCard({ card, onActive }: LongTextCardProps) {
+export default function LongTextCard({ card, values, onActive, onAddResponse }: LongTextCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
   const [subtitle, setSubtitle] = React.useState(card.subtitle || "");
@@ -95,6 +97,10 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
     });
   };
 
+  const handleAddResponse = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onAddResponse([e.target.value]);
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -142,6 +148,8 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
             minRows={3}
             placeholder="Your answer"
             style={styles.textarea as React.CSSProperties}
+            value={values.length > 0 ? values[0] : ""}
+            onChange={handleAddResponse}
           />
 
           <Typography component="h5" sx={cardStyles.subtitle}>
@@ -155,7 +163,9 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
 
 LongTextCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

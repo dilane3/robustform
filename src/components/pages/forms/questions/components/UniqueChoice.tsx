@@ -21,12 +21,16 @@ import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type UniqueChoiceCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
 export default function UniqueChoiceCard({
   card,
+  values,
   onActive,
+  onAddResponse,
 }: UniqueChoiceCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
@@ -123,6 +127,10 @@ export default function UniqueChoiceCard({
     });
   };
 
+  const handleAddResponse = (value: string) => {
+    onAddResponse([value]);
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -193,7 +201,12 @@ export default function UniqueChoiceCard({
 
           <Box sx={cardStyles.box}>
             {card.question.options.map((option, index) => (
-              <Radio key={index} value={option} />
+              <Radio
+                key={index}
+                value={option}
+                checked={values.includes(option)}
+                onChange={handleAddResponse}
+              />
             ))}
           </Box>
         </Box>
@@ -204,7 +217,9 @@ export default function UniqueChoiceCard({
 
 UniqueChoiceCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

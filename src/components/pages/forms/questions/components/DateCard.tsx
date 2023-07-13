@@ -9,16 +9,23 @@ import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Colors } from "src/constants";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type DateCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
-export default function DateCard({ card, onActive }: DateCardProps) {
+export default function DateCard({
+  card,
+  values,
+  onActive,
+  onAddResponse,
+}: DateCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
   const [subtitle, setSubtitle] = React.useState(card.subtitle || "");
@@ -91,6 +98,10 @@ export default function DateCard({ card, onActive }: DateCardProps) {
     });
   };
 
+  const handleAddResponse = (value: string) => {
+    onAddResponse([value]);
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -144,6 +155,14 @@ export default function DateCard({ card, onActive }: DateCardProps) {
                 },
                 padding: "0.4rem 0",
               }}
+              value={
+                values.length === 0 || values[0] === ""
+                  ? null
+                  : new Date(values[0])
+              }
+              onChange={(value) =>
+                handleAddResponse(value ? new Date(value).toDateString() : "")
+              }
             />
           </LocalizationProvider>
 
@@ -158,7 +177,9 @@ export default function DateCard({ card, onActive }: DateCardProps) {
 
 DateCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {

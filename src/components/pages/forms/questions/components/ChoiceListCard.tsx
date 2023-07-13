@@ -25,12 +25,16 @@ import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type ChoiceListCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
 export default function ChoiceListCard({
   card,
+  values,
   onActive,
+  onAddResponse,
 }: ChoiceListCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
@@ -127,6 +131,10 @@ export default function ChoiceListCard({
     });
   };
 
+  const handleAddResponse = (value: string) => {
+    onAddResponse([value]);
+  };
+
   return (
     <Box
       sx={cardStyles.container}
@@ -202,10 +210,11 @@ export default function ChoiceListCard({
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-                value={""}
+                value={values[0] || ""}
                 label="Your response"
                 size="small"
                 sx={{ mt: 1 }}
+                onChange={(e) => handleAddResponse(e.target.value as string)}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -227,7 +236,9 @@ export default function ChoiceListCard({
 
 ChoiceListCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

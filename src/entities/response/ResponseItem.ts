@@ -28,4 +28,24 @@ export default class ResponseItem {
   get questionId(): number {
     return this._questionId;
   }
+
+  // Setters
+
+  set values(values: string[]) {
+    this._values = values;
+  }
+
+  // Methods
+
+  toObject() {
+    return {
+      id: this._id,
+      values: this._values,
+      questionId: this._questionId,
+    };
+  }
+
+  static fromObject(data: ResponseItemData) {
+    return new ResponseItem(data);
+  }
 }

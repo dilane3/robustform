@@ -18,12 +18,17 @@ import React from "react";
 import { Colors } from "src/constants";
 import { CardType, QuestionType } from "src/entities/card/type";
 import Form from "src/entities/form/Form";
+import Response from "src/entities/response/Response";
+import ResponseItem from "src/entities/response/ResponseItem";
 import { FormsState } from "src/gx/signals";
 
 export default function FormView() {
   // URL handler
   const { query, isReady } = useRouter();
   const { id } = query as { id: string };
+
+  // Local state
+  const [response, setResponse] = React.useState<Response | null>(null);
 
   // Global state
   const { forms } = useSignal<FormsState>("forms");
@@ -45,44 +50,150 @@ export default function FormView() {
     return form;
   }, [JSON.stringify(forms)]) as Form | null;
 
+  // Effects
+
+  React.useEffect(() => {
+    if (form) {
+      // Generate responseItems
+      const responseItems: ResponseItem[] = [];
+
+      for (const card of form.cards) {
+        if (card.type !== CardType.HEADING) {
+          const responseItem = new ResponseItem({
+            id: Math.floor(Math.random() * 1000000000),
+            questionId: card.id,
+            values: [],
+          });
+
+          responseItems.push(responseItem);
+        }
+      }
+
+      // generate random id as number
+      const id = Math.floor(Math.random() * 1000000000);
+
+      const response = new Response({
+        id,
+        formId: form.id,
+        responseItems,
+      });
+
+      setResponse(response);
+    }
+  }, [form]);
+
+  // Handlers
+
+  const handleAddResponse = (questionId: number, values: string[]) => {
+    if (response) {
+      const responseClone = Response.fromObject(response.toObject());
+
+      // Verify if the answer to the question already exists
+      const responseItemIndex = responseClone.responseItems.findIndex(
+        (item) => item.questionId === questionId
+      );
+
+      if (responseItemIndex !== -1) {
+        responseClone.responseItems[responseItemIndex].values = values;
+
+        setResponse(responseClone);
+      }
+    }
+  };
+
   // Methods
   const renderQuestions = () => {
-    if (form) {
+    if (form && response) {
       const cardItems: React.ReactNode[] = [];
 
       for (const card of form.cards) {
         if (card.type === CardType.HEADING) {
           cardItems.push(<TitleCard card={card} />);
         } else {
-          switch (card.questionType) {
-            case QuestionType.SHORT_TEXT: {
-              cardItems.push(<ShortTextCard card={card} />);
-              break;
-            }
+          // Get responseItem
+          const responseItem = response.responseItems.find(
+            (item) => item.questionId === card.id
+          );
 
-            case QuestionType.LONG_TEXT: {
-              cardItems.push(<LongTextCard card={card} />);
-              break;
-            }
+          if (responseItem) {
+            switch (card.questionType) {
+              case QuestionType.SHORT_TEXT: {
+                cardItems.push(
+                  <ShortTextCard
+                    card={card}
+                    values={responseItem.values}
+                    onAddResponse={(values: string[]) =>
+                      handleAddResponse(card.id, values)
+                    }
+                  />
+                );
+                break;
+              }
 
-            case QuestionType.MULTIPLE_CHOICE: {
-              cardItems.push(<MultiChoiceCard card={card} />);
-              break;
-            }
+              case QuestionType.LONG_TEXT: {
+                cardItems.push(
+                  <LongTextCard
+                    card={card}
+                    values={responseItem.values}
+                    onAddResponse={(values: string[]) =>
+                      handleAddResponse(card.id, values)
+                    }
+                  />
+                );
+                break;
+              }
 
-            case QuestionType.UNIQUE_CHOICE: {
-              cardItems.push(<UniqueChoiceCard card={card} />);
-              break;
-            }
+              case QuestionType.MULTIPLE_CHOICE: {
+                cardItems.push(
+                  <MultiChoiceCard
+                    card={card}
+                    values={responseItem.values}
+                    onAddResponse={(values: string[]) =>
+                      handleAddResponse(card.id, values)
+                    }
+                  />
+                );
+                break;
+              }
 
-            case QuestionType.CHOICE_LIST: {
-              cardItems.push(<ChoiceListCard card={card} />);
-              break;
-            }
+              case QuestionType.UNIQUE_CHOICE: {
+                cardItems.push(
+                  <UniqueChoiceCard
+                    card={card}
+                    values={responseItem.values}
+                    onAddResponse={(values: string[]) =>
+                      handleAddResponse(card.id, values)
+                    }
+                  />
+                );
+                break;
+              }
 
-            case QuestionType.DATE: {
-              cardItems.push(<DateCard card={card} />);
-              break;
+              case QuestionType.CHOICE_LIST: {
+                cardItems.push(
+                  <ChoiceListCard
+                    card={card}
+                    values={responseItem.values}
+                    onAddResponse={(values: string[]) =>
+                      handleAddResponse(card.id, values)
+                    }
+                  />
+                );
+                break;
+              }
+
+              case QuestionType.DATE: {
+                cardItems.push(
+                  <DateCard
+                    card={card}
+                    values={responseItem.values}
+                    onAddResponse={(values: string[]) =>
+                      handleAddResponse(card.id, values)
+                    }
+                  />
+                );
+                break;
+              }
             }
           }
         }
