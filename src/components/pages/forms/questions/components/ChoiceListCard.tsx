@@ -1,6 +1,8 @@
 import Input from "@components/inputs/Input";
 import {
   Box,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SxProps,
@@ -8,7 +10,7 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
@@ -19,15 +21,20 @@ import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type ChoiceListCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
 export default function ChoiceListCard({
   card,
+  values,
   onActive,
+  onAddResponse,
 }: ChoiceListCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
@@ -36,10 +43,16 @@ export default function ChoiceListCard({
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global action
   const { updateCard, deleteCard } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Effects
 
@@ -70,7 +83,7 @@ export default function ChoiceListCard({
       const myCard = new Card({ ...cardData, question });
 
       updateCard({
-        folderId: selectedFolder?.id,
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
         formId: card.formId,
         card: myCard,
       });
@@ -112,10 +125,14 @@ export default function ChoiceListCard({
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId: card.formId,
       cardId: card.id,
     });
+  };
+
+  const handleAddResponse = (value: string) => {
+    onAddResponse([value]);
   };
 
   return (
@@ -166,7 +183,7 @@ export default function ChoiceListCard({
               </Button>
             </Box>
 
-            <Box sx={cardStyles.box}>
+            <Box sx={cardStyles.box} style={{ marginTop: 20 }}>
               {options.map((option, index) => (
                 <ChoiceItem
                   key={index}
@@ -184,24 +201,32 @@ export default function ChoiceListCard({
             {card.question.label}
           </Typography>
 
-          <Box sx={cardStyles.box}>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={""}
-              label="Age"
-              size="small"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
+          <Box sx={cardStyles.box} style={{ marginTop: "-10px", paddingBottom: "10" }}>
+            <FormControl>
+              <InputLabel id="demo-select-small-label">
+                Your response
+              </InputLabel>
 
-              {card.question.options.map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={values[0] || ""}
+                label="Your response"
+                size="small"
+                sx={{ mt: 1 }}
+                onChange={(e) => handleAddResponse(e.target.value as string)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
                 </MenuItem>
-              ))}
-            </Select>
+
+                {card.question.options.map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         </Box>
       )}
@@ -211,7 +236,9 @@ export default function ChoiceListCard({
 
 ChoiceListCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

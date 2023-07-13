@@ -6,7 +6,7 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
@@ -16,28 +16,40 @@ import { FormsState } from "src/gx/signals";
 import { useActions, useSignal } from "@dilane3/gx";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type MultiChoiceCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
 export default function MultiChoiceCard({
   card,
+  values,
   onActive,
+  onAddResponse,
 }: MultiChoiceCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
   const [value, setValue] = React.useState("");
   const [options, setOptions] = React.useState(card.question.options || []);
   const [modified, setModified] = React.useState(false);
+  const [localValues, setLocalValues] = React.useState<string[]>([]);
 
   // Global state
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global action
   const { updateCard, deleteCard } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Effects
 
@@ -68,7 +80,7 @@ export default function MultiChoiceCard({
       const myCard = new Card({ ...cardData, question });
 
       updateCard({
-        folderId: selectedFolder?.id,
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
         formId: card.formId,
         card: myCard,
       });
@@ -76,6 +88,10 @@ export default function MultiChoiceCard({
       console.log("dont save");
     }
   }, [card.active]);
+
+  useEffect(() => {
+    handleAddResponse(localValues);
+  }, [localValues.length]);
 
   // Handlers
   const handleChange = (
@@ -110,10 +126,26 @@ export default function MultiChoiceCard({
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId: card.formId,
       cardId: card.id,
     });
+  };
+
+  const handleAddResponse = (values: string[]) => {
+    onAddResponse(values);
+  };
+
+  const handleChangeResponse = (value: string) => {
+    if (localValues.includes(value)) {
+      const newValues = localValues.filter((v) => v !== value);
+
+      setLocalValues(newValues);
+
+      return;
+    }
+
+    setLocalValues((values) => [...values, value]);
   };
 
   return (
@@ -164,7 +196,7 @@ export default function MultiChoiceCard({
               </Button>
             </Box>
 
-            <Box sx={cardStyles.box}>
+            <Box sx={cardStyles.box} style={{ marginTop: 20 }}>
               {options.map((option, index) => (
                 <Checkbox
                   key={index}
@@ -186,7 +218,12 @@ export default function MultiChoiceCard({
 
           <Box sx={cardStyles.box}>
             {card.question.options.map((option, index) => (
-              <Checkbox key={index} value={option} />
+              <Checkbox
+                key={index}
+                value={option}
+                checked={values.includes(option)}
+                onChange={handleChangeResponse}
+              />
             ))}
           </Box>
         </Box>
@@ -197,7 +234,9 @@ export default function MultiChoiceCard({
 
 MultiChoiceCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

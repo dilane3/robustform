@@ -5,11 +5,22 @@ import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
 
-export default function SubmitCard() {
+type SubmitCardProps = {
+  onSubmit: () => void;
+}
+
+export default function SubmitCard({ onSubmit }: SubmitCardProps) {
   return (
-    <Box sx={cardStyles.container} style={{ backgroundColor: "transparent", padding: "1rem 0" }}>
+    <Box
+      sx={cardStyles.container}
+      style={{
+        backgroundColor: "transparent",
+        padding: "1rem 0",
+        border: "none",
+      }}
+    >
       <Box sx={cardStyles.box}>
-        <Button styles={{ width: 120, height: 40 }}>
+        <Button styles={{ width: 120, height: 40 }} onClick={onSubmit}>
           <Typography sx={styles.text}>Submit</Typography>
         </Button>
       </Box>
@@ -18,13 +29,12 @@ export default function SubmitCard() {
 }
 
 SubmitCard.defaultProps = {
-  active: false,
-  onActive: () => {},
+  onSubmit: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {
   text: {
     fontFamily: "OutfitMedium",
     fontSize: "1rem",
-  }
+  },
 };

@@ -59,14 +59,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
               authProvider={authProvider}
               notificationProvider={notificationProvider}
               resources={[
-                {
-                  name: "forms",
-                  list: "/forms",
-                  show: "/forms/:id",
-                  meta: {
-                    canDelete: true,
-                  },
-                },
+                // {
+                //   name: "forms",
+                //   list: "/forms",
+                //   show: "/forms/:id",
+                //   meta: {
+                //     canDelete: true,
+                //   },
+                // },
               ]}
               options={{
                 syncWithLocation: true,

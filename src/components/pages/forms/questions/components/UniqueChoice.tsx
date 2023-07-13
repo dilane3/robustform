@@ -6,7 +6,7 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
@@ -17,15 +17,20 @@ import { useActions, useSignal } from "@dilane3/gx";
 import Question from "src/entities/card/Question";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Icon from "@components/icons/Icon";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type UniqueChoiceCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
 export default function UniqueChoiceCard({
   card,
+  values,
   onActive,
+  onAddResponse,
 }: UniqueChoiceCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
@@ -34,10 +39,16 @@ export default function UniqueChoiceCard({
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global action
   const { updateCard, deleteCard } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Effects
 
@@ -68,7 +79,7 @@ export default function UniqueChoiceCard({
       const myCard = new Card({ ...cardData, question });
 
       updateCard({
-        folderId: selectedFolder?.id,
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
         formId: card.formId,
         card: myCard,
       });
@@ -110,10 +121,14 @@ export default function UniqueChoiceCard({
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId: card.formId,
       cardId: card.id,
     });
+  };
+
+  const handleAddResponse = (value: string) => {
+    onAddResponse([value]);
   };
 
   return (
@@ -164,7 +179,7 @@ export default function UniqueChoiceCard({
               </Button>
             </Box>
 
-            <Box sx={cardStyles.box}>
+            <Box sx={cardStyles.box} style={{ marginTop: 20 }}>
               {options.map((option, index) => (
                 <Radio
                   key={index}
@@ -186,7 +201,12 @@ export default function UniqueChoiceCard({
 
           <Box sx={cardStyles.box}>
             {card.question.options.map((option, index) => (
-              <Radio key={index} value={option} />
+              <Radio
+                key={index}
+                value={option}
+                checked={values.includes(option)}
+                onChange={handleAddResponse}
+              />
             ))}
           </Box>
         </Box>
@@ -197,7 +217,9 @@ export default function UniqueChoiceCard({
 
 UniqueChoiceCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

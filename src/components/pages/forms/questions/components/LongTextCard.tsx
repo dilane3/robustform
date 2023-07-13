@@ -6,7 +6,7 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect, useMemo } from "react";
 import { Colors } from "src/constants";
 import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Card from "src/entities/card/Card";
@@ -15,23 +15,32 @@ import { useActions, useSignal } from "@dilane3/gx";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type LongTextCardProps = {
   card: Card;
+  values: string[];
   onActive: (card: Card) => void;
+  onAddResponse: (values: string[]) => void;
 };
 
-export default function LongTextCard({ card, onActive }: LongTextCardProps) {
+export default function LongTextCard({ card, values, onActive, onAddResponse }: LongTextCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
   const [subtitle, setSubtitle] = React.useState(card.subtitle || "");
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global action
   const { updateCard, deleteCard } = useActions("forms");
+
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
 
   // Effects
 
@@ -59,7 +68,7 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
       const myCard = new Card({ ...cardData, question });
 
       updateCard({
-        folderId: selectedFolder?.id,
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
         formId: card.formId,
         card: myCard,
       });
@@ -82,10 +91,14 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId: card.formId,
       cardId: card.id,
     });
+  };
+
+  const handleAddResponse = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onAddResponse([e.target.value]);
   };
 
   return (
@@ -135,6 +148,8 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
             minRows={3}
             placeholder="Your answer"
             style={styles.textarea as React.CSSProperties}
+            value={values.length > 0 ? values[0] : ""}
+            onChange={handleAddResponse}
           />
 
           <Typography component="h5" sx={cardStyles.subtitle}>
@@ -148,7 +163,9 @@ export default function LongTextCard({ card, onActive }: LongTextCardProps) {
 
 LongTextCard.defaultProps = {
   active: false,
+  values: [],
   onActive: () => {},
+  onAddResponse: () => {},
 };
 
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {

@@ -1,4 +1,6 @@
 import Card from "../card/Card";
+import Response from "../response/Response";
+import ResponseItem from "../response/ResponseItem";
 
 type FormData = {
   id: number;
@@ -9,6 +11,7 @@ type FormData = {
   updatedAt: Date;
   ownerId: string;
   cards?: Card[];
+  responses?: Response[];
 };
 
 export default class Form {
@@ -20,6 +23,7 @@ export default class Form {
   private _updatedAt: Date;
   private _ownerId: string;
   private _cards: Card[];
+  private _responses: Response[];
 
   constructor(data: FormData) {
     this._id = data.id;
@@ -30,6 +34,7 @@ export default class Form {
     this._updatedAt = data.updatedAt;
     this._ownerId = data.ownerId;
     this._cards = data.cards || [];
+    this._responses = data.responses || [];
   }
 
   get id() {
@@ -64,6 +69,10 @@ export default class Form {
     return this._cards;
   }
 
+  get responses() {
+    return this._responses;
+  }
+
   // Setters
 
   set title(title: string) {
@@ -83,5 +92,9 @@ export default class Form {
   deleteCard(cardId: number) {
     console.log("cardId", cardId);
     this._cards = this._cards.filter((card) => card.id !== cardId);
+  }
+
+  addResponse(response: Response) {
+    this._responses.push(response);
   }
 }

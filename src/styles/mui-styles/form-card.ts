@@ -7,14 +7,14 @@ export const styles: Record<string, SxProps<Theme>> = {
     minHeight: 80,
     height: "auto",
     backgroundColor: Colors.background,
-    padding: "1rem",
+    padding: "1rem 1.5rem",
     transition: "height 0.2s ease-in-out",
     borderBottom: 1,
     borderColor: "divider",
 
     "&.active": {
       border: 5,
-      borderColor: Colors.primary,
+      borderColor: `${Colors.primary} !important`,
     }
   },
 
@@ -36,7 +36,12 @@ export const styles: Record<string, SxProps<Theme>> = {
   label: {
     fontSize: "1rem",
     fontFamily: "OutfitRegular",
-    marginBottom: 2
+    marginBottom: 2,
+
+    "&:after": {
+      content: "'  *'",
+      color: Colors.red,
+    }
   },
 
   subtitle: {

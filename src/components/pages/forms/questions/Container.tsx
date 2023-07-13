@@ -18,6 +18,7 @@ import { NavigateToResource } from "@refinedev/nextjs-router";
 import Link from "next/link";
 import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 export default function QuestionContainer() {
   // URL handler
@@ -49,22 +50,38 @@ export default function QuestionContainer() {
     return form;
   }, [JSON.stringify(forms)]) as Form | null;
 
+  const otherFormsFolder = React.useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
+
   // Handlers
-  const handleGlobalActive = (card: Card) => {
-    setCardActive({
-      folderId: selectedFolder?.id,
-      formId: card.formId,
-      cardId: card.id,
-    });
+  const handleGlobalActive = (card?: Card) => {
+    if (active) setActive(false);
+
+    if (card) {
+      setCardActive({
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+        formId: card.formId,
+        cardId: card.id,
+      });
+    }
   };
 
   const handleActive = (active: boolean) => {
+    setAllCardsInactive({
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      formId: form?.id,
+    });
+
     setActive(active);
   };
 
   const handleDesactivateAll = () => {
     setActive(false);
-    setAllCardsInactive({ folderId: selectedFolder?.id, formId: form?.id });
+    setAllCardsInactive({
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      formId: form?.id,
+    });
   };
 
   // Methods
@@ -74,7 +91,13 @@ export default function QuestionContainer() {
 
       for (const card of form.cards) {
         if (card.type === CardType.HEADING) {
-          continue;
+          cardItems.push(
+            <TitleCard
+              active={active}
+              onActive={handleGlobalActive}
+              card={card}
+            />
+          );
         } else {
           switch (card.questionType) {
             case QuestionType.SHORT_TEXT: {
@@ -165,7 +188,7 @@ export default function QuestionContainer() {
   );
 }
 
-const styles: Record<string, SxProps<Theme>> = {
+export const styles: Record<string, SxProps<Theme>> = {
   container: {
     width: "100%",
     height: "100%",

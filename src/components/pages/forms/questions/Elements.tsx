@@ -1,7 +1,7 @@
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { Colors } from "src/constants";
 import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftOutlined";
-import React from "react";
+import React, { useMemo } from "react";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
 import FolderIcon from "@mui/icons-material/Folder";
 import InputRoundedIcon from "@mui/icons-material/InputRounded";
@@ -16,6 +16,7 @@ import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
+import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 
 type ElementsProps = {
   formId: number;
@@ -25,19 +26,29 @@ export default function Elements({ formId }: ElementsProps) {
   // Local state
   const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
 
-  const { selectedFolder } = useSignal<FormsState>("forms");
+  const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global actions
   const { addCard } = useActions("forms");
 
+  // Memoized values
+
+  const otherFormsFolder = useMemo(() => {
+    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  }, [forms]);
+
   // Handlers
   const handleSelectCard = (elementType: QuestionType) => {
-    const CardId = Math.floor(Math.random() * 1000000000) + 2;
+    const cardId = Math.floor(Math.random() * 1000000000) + 2;
+    const cardType =
+      elementType === QuestionType.HEADING
+        ? CardType.HEADING
+        : CardType.QUESTION;
 
     const cardPayload = {
-      id: CardId,
+      id: cardId,
       formId,
-      type: CardType.QUESTION,
+      type: cardType,
       questionType: elementType,
       createdAt: new Date(Date.now()),
       position: 1,
@@ -45,13 +56,10 @@ export default function Elements({ formId }: ElementsProps) {
     };
 
     const card = new Card(cardPayload);
-    
-    console.log(card);
-    
 
     // Add card to global state
     addCard({
-      folderId: selectedFolder?.id,
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId,
       card,
     });
@@ -83,6 +91,7 @@ export default function Elements({ formId }: ElementsProps) {
         <SidenavItem
           text={isExpanded ? "Heading" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.HEADING)}
           title="Heading"
         >
           <TextFieldsOutlinedIcon
@@ -147,7 +156,7 @@ export default function Elements({ formId }: ElementsProps) {
             color="action"
           />
         </SidenavItem>
-        
+
         <SidenavItem
           text={isExpanded ? "Date" : ""}
           className="not-expanded"
