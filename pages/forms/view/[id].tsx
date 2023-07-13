@@ -101,6 +101,16 @@ export default function FormView() {
     }
   };
 
+  const handleSubmit = () => {
+    if (response) {
+      const responseClone = Response.fromObject(response.toObject());
+
+      responseClone.createdAt = new Date();
+
+      console.log(responseClone);
+    }
+  }
+
   // Methods
   const renderQuestions = () => {
     if (form && response) {
@@ -111,9 +121,8 @@ export default function FormView() {
           cardItems.push(<TitleCard card={card} />);
         } else {
           // Get responseItem
-          const responseItem = response.responseItems.find(
-            (item) => item.questionId === card.id
-          );
+          const responseItem: ResponseItem | undefined =
+            response.responseItems.find((item) => item.questionId === card.id);
 
           if (responseItem) {
             switch (card.questionType) {
@@ -232,7 +241,7 @@ export default function FormView() {
 
               {renderQuestions()}
 
-              <SubmitCard />
+              <SubmitCard onSubmit={handleSubmit} />
               <FooterCard />
             </Box>
           </Box>
