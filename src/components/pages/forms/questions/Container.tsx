@@ -55,21 +55,23 @@ export default function QuestionContainer() {
   }, [forms]);
 
   // Handlers
-  const handleGlobalActive = (card: Card) => {
+  const handleGlobalActive = (card?: Card) => {
     if (active) setActive(false);
 
-    setCardActive({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
-      formId: card.formId,
-      cardId: card.id,
-    });
+    if (card) {
+      setCardActive({
+        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+        formId: card.formId,
+        cardId: card.id,
+      });
+    }
   };
 
   const handleActive = (active: boolean) => {
     setAllCardsInactive({
       folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
       formId: form?.id,
-    })
+    });
 
     setActive(active);
   };
@@ -89,7 +91,13 @@ export default function QuestionContainer() {
 
       for (const card of form.cards) {
         if (card.type === CardType.HEADING) {
-          continue;
+          cardItems.push(
+            <TitleCard
+              active={active}
+              onActive={handleGlobalActive}
+              card={card}
+            />
+          );
         } else {
           switch (card.questionType) {
             case QuestionType.SHORT_TEXT: {

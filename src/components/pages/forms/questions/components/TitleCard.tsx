@@ -7,24 +7,40 @@ import Form from "src/entities/form/Form";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import Card from "src/entities/card/Card";
+import Question from "src/entities/card/Question";
 
 type TitleCardProps = {
   active: boolean;
   form: Form;
-  onActive: () => void;
+  card: Card;
+  onActive: (card?: Card) => void;
 };
 
-export default function TitleCard({ active, onActive, form }: TitleCardProps) {
+export default function TitleCard({
+  active,
+  onActive,
+  form,
+  card,
+}: TitleCardProps) {
+  const cardActive = form ? active : card.active;
+  const cardTitle = form ? form.title : card ? card.title : "";
+  const cardDescription = form
+    ? form.description
+    : card
+    ? card.description
+    : "";
+
   // Local state
-  const [title, setTitle] = React.useState(form.title);
-  const [description, setDescription] = React.useState(form.description);
+  const [title, setTitle] = React.useState(cardTitle);
+  const [description, setDescription] = React.useState(cardDescription);
   const [modified, setModified] = React.useState(false);
 
   // Global state
   const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global actions
-  const { updateTitleAndDescription } = useActions("forms");
+  const { updateTitleAndDescription, updateCard } = useActions("forms");
 
   // Memoized values
 
@@ -35,8 +51,8 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
   // Effects
 
   useEffect(() => {
-    if (active) {
-      if (title !== form.title || description !== form.description) {
+    if (cardActive) {
+      if (title !== cardTitle || description !== cardDescription) {
         setModified(true);
       } else {
         setModified(false);
@@ -45,17 +61,38 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
   }, [title, description]);
 
   useEffect(() => {
-    if (!active && modified) {
-      updateTitleAndDescription({
-        formId: form.id,
+    if (!cardActive && modified) {
+      if (form) {
+        updateTitleAndDescription({
+          formId: form.id,
+          folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+          title,
+          description,
+        });
+
+        return;
+      }
+
+      // TODO: Update on supabase
+
+      let cardData = card.toOject();
+      let questionData = cardData.question;
+
+      cardData.title = title;
+      cardData.description = description;
+
+      const question = new Question(questionData);
+      const myCard = new Card({ ...cardData, question });
+
+      updateCard({
         folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
-        title,
-        description,
+        formId: card.formId,
+        card: myCard,
       });
     } else {
       console.log("dont save");
     }
-  }, [active]);
+  }, [cardActive]);
 
   // Handlers
   const handleChange = (
@@ -66,13 +103,21 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
     else if (target === "description") setDescription(e.target.value);
   };
 
+  const handleActive = () => {
+    if (form) {
+      return onActive();
+    }
+
+    return onActive(card);
+  };
+
   return (
     <Box
       sx={cardStyles.container}
-      onClick={onActive}
-      className={`${active ? "active" : ""}`}
+      onClick={handleActive}
+      className={`${cardActive ? "active" : ""}`}
     >
-      {active ? (
+      {cardActive ? (
         <Box sx={cardStyles.box}>
           <Typography component="h4" sx={cardStyles.editTitle}>
             Edit title card
@@ -96,11 +141,14 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
         </Box>
       ) : (
         <Box sx={cardStyles.box}>
-          <Typography component="h1" sx={styles.title}>
-            {form.title}
+          <Typography
+            component="h1"
+            sx={form ? styles.formTitle : styles.title}
+          >
+            {cardTitle}
           </Typography>
           <Typography component="span" sx={styles.description}>
-            {form.description}
+            {cardDescription}
           </Typography>
         </Box>
       )}
@@ -110,12 +158,20 @@ export default function TitleCard({ active, onActive, form }: TitleCardProps) {
 
 TitleCard.defaultProps = {
   active: false,
+  form: null,
+  card: null,
   onActive: () => {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {
   title: {
     fontSize: "1.5rem",
+    fontFamily: "OutfitBold",
+    color: Colors.black,
+  },
+
+  formTitle: {
+    fontSize: "2rem",
     fontFamily: "OutfitBold",
     color: Colors.black,
   },

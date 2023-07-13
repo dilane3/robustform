@@ -39,12 +39,16 @@ export default function Elements({ formId }: ElementsProps) {
 
   // Handlers
   const handleSelectCard = (elementType: QuestionType) => {
-    const CardId = Math.floor(Math.random() * 1000000000) + 2;
+    const cardId = Math.floor(Math.random() * 1000000000) + 2;
+    const cardType =
+      elementType === QuestionType.HEADING
+        ? CardType.HEADING
+        : CardType.QUESTION;
 
     const cardPayload = {
-      id: CardId,
+      id: cardId,
       formId,
-      type: CardType.QUESTION,
+      type: cardType,
       questionType: elementType,
       createdAt: new Date(Date.now()),
       position: 1,
@@ -52,9 +56,6 @@ export default function Elements({ formId }: ElementsProps) {
     };
 
     const card = new Card(cardPayload);
-    
-    console.log(card);
-    
 
     // Add card to global state
     addCard({
@@ -90,6 +91,7 @@ export default function Elements({ formId }: ElementsProps) {
         <SidenavItem
           text={isExpanded ? "Heading" : ""}
           className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.HEADING)}
           title="Heading"
         >
           <TextFieldsOutlinedIcon
@@ -154,7 +156,7 @@ export default function Elements({ formId }: ElementsProps) {
             color="action"
           />
         </SidenavItem>
-        
+
         <SidenavItem
           text={isExpanded ? "Date" : ""}
           className="not-expanded"
