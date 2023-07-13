@@ -9,6 +9,8 @@ import { FormsState } from "src/gx/signals";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 import Card from "src/entities/card/Card";
 import Question from "src/entities/card/Question";
+import Icon from "@components/icons/Icon";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type TitleCardProps = {
   active: boolean;
@@ -40,7 +42,8 @@ export default function TitleCard({
   const { selectedFolder, forms } = useSignal<FormsState>("forms");
 
   // Global actions
-  const { updateTitleAndDescription, updateCard } = useActions("forms");
+  const { updateTitleAndDescription, updateCard, deleteCard } =
+    useActions("forms");
 
   // Memoized values
 
@@ -111,17 +114,38 @@ export default function TitleCard({
     return onActive(card);
   };
 
+  const handleDelete = () => {
+    deleteCard({
+      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      formId: card.formId,
+      cardId: card.id,
+    });
+  };
+
   return (
     <Box
       sx={cardStyles.container}
       onClick={handleActive}
       className={`${cardActive ? "active" : ""}`}
+      style={{
+        borderTop: `${form ? "10" : "5"}px solid ${
+          form ? Colors.primary : "ihnerit"
+        }`,
+      }}
     >
       {cardActive ? (
         <Box sx={cardStyles.box}>
-          <Typography component="h4" sx={cardStyles.editTitle}>
-            Edit title card
-          </Typography>
+          <Box sx={styles.boxRowBetween}>
+            <Typography component="h4" sx={cardStyles.editTitle}>
+              Edit title card
+            </Typography>
+
+            {card && (
+              <Icon onClick={handleDelete}>
+                <DeleteIcon sx={{ color: Colors.red }} />
+              </Icon>
+            )}
+          </Box>
 
           <Input
             size="small"
@@ -140,17 +164,34 @@ export default function TitleCard({
           />
         </Box>
       ) : (
-        <Box sx={cardStyles.box}>
-          <Typography
-            component="h1"
-            sx={form ? styles.formTitle : styles.title}
-          >
-            {cardTitle}
-          </Typography>
-          <Typography component="span" sx={styles.description}>
-            {cardDescription}
-          </Typography>
-        </Box>
+        <>
+          <Box sx={cardStyles.box}>
+            <Typography
+              component="h1"
+              sx={form ? styles.formTitle : styles.title}
+            >
+              {cardTitle}
+            </Typography>
+            <Typography component="span" sx={styles.description}>
+              {cardDescription}
+            </Typography>
+          </Box>
+
+          {form && (
+            <Box
+              sx={cardStyles.box}
+              style={{
+                borderTop: "1px solid #eee",
+                marginTop: "20px",
+                paddingTop: 15,
+              }}
+            >
+              <Typography component="span" sx={styles.requirement}>
+                All questions with (*) are required.
+              </Typography>
+            </Box>
+          )}
+        </>
       )}
     </Box>
   );
@@ -166,20 +207,34 @@ TitleCard.defaultProps = {
 const styles: Record<string, SxProps<Theme>> = {
   title: {
     fontSize: "1.5rem",
-    fontFamily: "OutfitBold",
+    fontFamily: "OutfitMedium",
     color: Colors.black,
   },
 
   formTitle: {
     fontSize: "2rem",
-    fontFamily: "OutfitBold",
+    fontFamily: "OutfitMedium",
     color: Colors.black,
+    lineHeight: 1.4,
   },
 
   description: {
-    mt: 1,
+    mt: 3,
     fontSize: "1rem",
     fontFamily: "OutfitRegular",
     color: Colors.gray,
+  },
+
+  requirement: {
+    fontSize: "0.9rem",
+    fontFamily: "OutfitRegular",
+    color: Colors.red
+  },
+
+  boxRowBetween: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 2,
   },
 };

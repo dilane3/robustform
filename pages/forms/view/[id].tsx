@@ -2,6 +2,7 @@ import Main from "@components/layout/Main";
 import { styles as baseStyles } from "@components/pages/forms/questions/Container";
 import ChoiceListCard from "@components/pages/forms/questions/components/ChoiceListCard";
 import DateCard from "@components/pages/forms/questions/components/DateCard";
+import FooterCard from "@components/pages/forms/questions/components/Footer";
 import LongTextCard from "@components/pages/forms/questions/components/LongTextCard";
 import MultiChoiceCard from "@components/pages/forms/questions/components/MultiChoice";
 import ShortTextCard from "@components/pages/forms/questions/components/ShortTextCard";
@@ -121,6 +122,7 @@ export default function FormView() {
               {renderQuestions()}
 
               <SubmitCard />
+              <FooterCard />
             </Box>
           </Box>
         </Box>

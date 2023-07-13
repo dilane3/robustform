@@ -7,7 +7,14 @@ import Button from "@components/buttons/Button";
 
 export default function SubmitCard() {
   return (
-    <Box sx={cardStyles.container} style={{ backgroundColor: "transparent", padding: "1rem 0" }}>
+    <Box
+      sx={cardStyles.container}
+      style={{
+        backgroundColor: "transparent",
+        padding: "1rem 0",
+        border: "none",
+      }}
+    >
       <Box sx={cardStyles.box}>
         <Button styles={{ width: 120, height: 40 }}>
           <Typography sx={styles.text}>Submit</Typography>
@@ -26,5 +33,5 @@ const styles: Record<string, SxProps<Theme>> = {
   text: {
     fontFamily: "OutfitMedium",
     fontSize: "1rem",
-  }
+  },
 };

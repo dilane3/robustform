@@ -193,7 +193,7 @@ export default function ChoiceListCard({
             {card.question.label}
           </Typography>
 
-          <Box sx={cardStyles.box}>
+          <Box sx={cardStyles.box} style={{ marginTop: "-10px", paddingBottom: "10" }}>
             <FormControl>
               <InputLabel id="demo-select-small-label">
                 Your response
