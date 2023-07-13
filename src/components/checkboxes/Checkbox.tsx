@@ -39,6 +39,9 @@ const styles: Record<string, SxProps<Theme>> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 1,
+
+    "&:not(:first-child)": {
+      marginTop: 1,
+    },
   },
 };

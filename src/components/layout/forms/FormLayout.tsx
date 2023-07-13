@@ -13,13 +13,15 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ColorLensOutlinedIcon from "@mui/icons-material/ColorLensOutlined";
 import { Colors } from "src/constants";
 import Icon from "@components/icons/Icon";
+import Link from "next/link";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
   title: string;
+  formId?: number
 };
 
-export default function FormLayout({ children, title }: FormLayoutProps) {
+export default function FormLayout({ children, title, formId }: FormLayoutProps) {
   return (
     <>
       <Head>
@@ -43,9 +45,12 @@ export default function FormLayout({ children, title }: FormLayoutProps) {
               <Icon style={{ marginRight: 20 }}>
                 <ColorLensOutlinedIcon color="action" />
               </Icon>
-              <Icon>
-                <VisibilityOutlinedIcon color="action" />
-              </Icon>
+
+              <Link href={`/forms/view/${formId}`}>
+                <Icon>
+                  <VisibilityOutlinedIcon color="action" />
+                </Icon>
+              </Link>
             </Box>
 
             <Avatar sx={headerStyles.avatar}>J</Avatar>

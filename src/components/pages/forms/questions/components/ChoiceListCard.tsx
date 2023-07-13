@@ -1,6 +1,8 @@
 import Input from "@components/inputs/Input";
 import {
   Box,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SxProps,
@@ -173,7 +175,7 @@ export default function ChoiceListCard({
               </Button>
             </Box>
 
-            <Box sx={cardStyles.box}>
+            <Box sx={cardStyles.box} style={{ marginTop: 20 }}>
               {options.map((option, index) => (
                 <ChoiceItem
                   key={index}
@@ -192,23 +194,30 @@ export default function ChoiceListCard({
           </Typography>
 
           <Box sx={cardStyles.box}>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={""}
-              label="Age"
-              size="small"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
+            <FormControl>
+              <InputLabel id="demo-select-small-label">
+                Your response
+              </InputLabel>
 
-              {card.question.options.map((option, index) => (
-                <MenuItem key={index} value={option}>
-                  {option}
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={""}
+                label="Your response"
+                size="small"
+                sx={{ mt: 1 }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
                 </MenuItem>
-              ))}
-            </Select>
+
+                {card.question.options.map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         </Box>
       )}

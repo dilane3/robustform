@@ -188,7 +188,7 @@ export default function QuestionContainer() {
   );
 }
 
-const styles: Record<string, SxProps<Theme>> = {
+export const styles: Record<string, SxProps<Theme>> = {
   container: {
     width: "100%",
     height: "100%",

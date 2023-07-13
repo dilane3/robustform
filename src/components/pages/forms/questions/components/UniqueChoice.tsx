@@ -171,7 +171,7 @@ export default function UniqueChoiceCard({
               </Button>
             </Box>
 
-            <Box sx={cardStyles.box}>
+            <Box sx={cardStyles.box} style={{ marginTop: 20 }}>
               {options.map((option, index) => (
                 <Radio
                   key={index}

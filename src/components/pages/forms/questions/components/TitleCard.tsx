@@ -23,13 +23,13 @@ export default function TitleCard({
   form,
   card,
 }: TitleCardProps) {
-  const cardActive = form ? active : card.active;
-  const cardTitle = form ? form.title : card ? card.title : "";
+  const cardActive = form ? active : card ? card.active : false;
+  const cardTitle = form ? form.title : card ? card.title : "Title";
   const cardDescription = form
     ? form.description
     : card
     ? card.description
-    : "";
+    : "Description";
 
   // Local state
   const [title, setTitle] = React.useState(cardTitle);

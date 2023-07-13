@@ -34,11 +34,14 @@ Radio.defaultProps = {
 };
 
 const styles: Record<string, SxProps<Theme>> = {
-  box: {
+  box: (theme) => ({
     width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 1,
-  },
+    
+    "&:not(:first-child)": {
+      marginTop: 1,
+    }
+  }),
 };
