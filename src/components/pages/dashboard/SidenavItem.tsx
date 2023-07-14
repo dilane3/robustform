@@ -72,7 +72,7 @@ const styles: Record<string, SxProps<Theme>> = {
     transition: "all 0.3s ease-in-out",
 
     "&.active": {
-      fontFamily: "OutfitBold",
+      fontFamily: "OutfitMedium",
     }
   }
 };

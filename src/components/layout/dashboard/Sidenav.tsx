@@ -52,7 +52,7 @@ export default function Sidenav() {
             selectedFolder && selectedFolder.id === folder.id && "active"
           }`}
         >
-          <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+          <FolderIcon sx={{ fontSize: "1.5rem", mr: 2, color: "#aaa" }} />
         </SidenavItem>
       );
     });
@@ -124,7 +124,7 @@ export default function Sidenav() {
               selectedFolder && selectedFolder.id === folderBin?.id && "active"
             }`}
           >
-            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2, color: "#aaa" }} />
           </SidenavItem>
         </Box>
       </Box>

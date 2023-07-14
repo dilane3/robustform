@@ -1,3 +1,4 @@
+import React from "react";
 import { GetServerSideProps } from "next";
 import { authProvider } from "src/authProvider";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
@@ -9,8 +10,81 @@ import Image from "next/image";
 import loginImage from "src/assets/images/signup.png";
 import googleImage from "src/assets/images/google.png";
 import Link from "next/link";
+import { object, string } from "yup";
+
+const schema = object({
+  email: string().email().required(),
+  password: string().min(6).max(20).required(),
+});
 
 export default function Register() {
+  const { register } = authProvider;
+
+  // Local state
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [verified, setVerified] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  // Effects
+
+  React.useEffect(() => {
+    const validateForm = async () => {
+      await validate();
+    };
+
+    validateForm();
+  }, [email, password]);
+
+  // Handlers
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    target: string
+  ) => {
+    if (target === "email") {
+      setEmail(event.target.value);
+    } else if (target === "password") {
+      setPassword(event.target.value);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!verified || loading) return;
+
+    console.log("submit");
+
+    setLoading(true);
+
+    if (register) {
+      const response = await register({
+        email,
+        password,
+      });
+
+      console.log(response);
+    }
+
+    setLoading(false);
+  };
+
+  // Methods
+
+  const validate = async () => {
+    try {
+      await schema.validate({
+        email,
+        password,
+      });
+
+      setVerified(true);
+    } catch (error) {
+      console.log(error);
+
+      setVerified(false);
+    }
+  };
+
   return (
     <AuthLayout>
       <Box component="section" sx={styles.container}>
@@ -69,6 +143,8 @@ export default function Register() {
                 marginBottom: 3,
               }}
               size="small"
+              value={email}
+              onChange={(event) => handleChange(event, "email")}
             />
             <Input
               label="Password"
@@ -80,9 +156,11 @@ export default function Register() {
                 backgroundColor: Colors.background,
               }}
               size="small"
+              value={password}
+              onChange={(event) => handleChange(event, "password")}
             />
 
-            <Button>
+            <Button disabled={!verified || loading} onClick={handleSubmit}>
               <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
                 Sign up
               </Typography>

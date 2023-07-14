@@ -6,9 +6,13 @@ import Start from "@components/pages/home/Start";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import Head from "next/head";
 import { Colors } from "src/constants";
+import useAuth from "src/hooks/useAuth";
 import { styles } from "src/styles/mui-styles/header";
 
 export default function Home() {
+  // Get the data of the current user
+  useAuth();
+
   return (
     <>
       <Head>
