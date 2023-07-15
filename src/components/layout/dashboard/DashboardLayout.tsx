@@ -1,17 +1,58 @@
-import { Avatar, Box, SxProps, Theme, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Divider,
+  Menu,
+  MenuItem,
+  SxProps,
+  Theme,
+  Typography,
+} from "@mui/material";
 import Head from "next/head";
 import Main from "../Main";
 import { styles as headerStyles } from "src/styles/mui-styles/header";
 import { Colors } from "src/constants";
 import Input from "@components/inputs/Input";
 import Sidenav from "./Sidenav";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
+import React from "react";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { authProvider } from "src/authProvider";
 
 export type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  // Handlers
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Handlers
+
+  const handleLogout = async () => {
+    const response = await authProvider.logout(false);
+
+    // TO DO: delete user from the gloabl state
+
+    console.log(response);
+
+    handleClose();
+
+    window.location.href = "/";
+  };
+
   return (
     <>
       <Head>
@@ -24,17 +65,56 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Typography sx={headerStyles.logo}>robustform</Typography>
 
           <Box sx={styles.input}>
-            <Input 
+            <Input
               label="Search"
               size="small"
               value=""
-              icon={
-                <SearchIcon color="action" />
-              }
+              icon={<SearchIcon color="action" />}
             />
           </Box>
 
-          <Avatar sx={headerStyles.avatar}>J</Avatar>
+          <Box onClick={handleClick}>
+            <Avatar sx={headerStyles.avatar}>J</Avatar>
+          </Box>
+
+          <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            sx={{
+              "& .MuiMenu-paper": {
+                boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
+                mt: 1.5,
+              },
+            }}
+          >
+            <MenuItem onClick={handleClose}>
+              <PersonOutlineOutlinedIcon
+                sx={styles.menuItemIcon}
+                color="action"
+              />
+              <Typography sx={styles.menuItemText}>Profile</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <SettingsOutlinedIcon sx={styles.menuItemIcon} color="action" />
+              <Typography sx={styles.menuItemText}>Settings</Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout}>
+              <LogoutIcon sx={styles.menuItemIcon} color="action" />
+              <Typography sx={styles.menuItemText}>Log out</Typography>
+            </MenuItem>
+          </Menu>
         </Box>
 
         <Box component="section" sx={styles.bodyContainer}>
@@ -44,7 +124,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Box component="section" sx={styles.content}>
             {children}
           </Box>
-        </Box> 
+        </Box>
       </Main>
     </>
   );
@@ -52,12 +132,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
 const styles: Record<string, SxProps<Theme>> = {
   input: (theme) => ({
-    width: '100%',
+    width: "100%",
     maxWidth: 600,
     mx: 5,
 
     [theme.breakpoints.down("md")]: {
-      mx: 2
+      mx: 2,
     },
   }),
 
@@ -87,6 +167,16 @@ const styles: Record<string, SxProps<Theme>> = {
   content: (theme) => ({
     width: "calc(100% - 250px)",
     height: "100%",
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   }),
+
+  menuItemIcon: {
+    fontSize: "1.5rem",
+    mr: 2,
+  },
+
+  menuItemText: {
+    fontSize: "1rem",
+    fontFamily: "OutfitRegular",
+  },
 };

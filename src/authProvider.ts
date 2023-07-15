@@ -21,6 +21,8 @@ export const authProvider: AuthBindings = {
       nookies.set(null, "token", data.session.access_token, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
+        sameSite: "none",
+        secure: true,
       });
 
       return {
@@ -51,7 +53,7 @@ export const authProvider: AuthBindings = {
 
     return {
       success: true,
-      redirectTo: "/login",
+      redirectTo: "/",
     };
   },
   register: async ({ email, password }) => {
