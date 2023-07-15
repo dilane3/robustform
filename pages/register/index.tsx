@@ -57,6 +57,7 @@ export default function Register() {
     setLoading(true);
 
     if (register) {
+      console.log("dedans")
       const response = await register({
         email,
         password,
@@ -221,7 +222,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
     return {
       props: {},
       redirect: {
-        destination: `/`,
+        destination: `/forms`,
         permanent: false,
       },
     };

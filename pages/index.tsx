@@ -4,7 +4,9 @@ import Footer from "@components/pages/home/Footer";
 import Hero from "@components/pages/home/Hero";
 import Start from "@components/pages/home/Start";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { authProvider } from "src/authProvider";
 import { Colors } from "src/constants";
 import useAuth from "src/hooks/useAuth";
 import { styles } from "src/styles/mui-styles/header";
@@ -64,3 +66,21 @@ export default function Home() {
 }
 
 Home.noLayout = true;
+
+export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  const { authenticated } = await authProvider.check(context);
+
+  if (authenticated) {
+    return {
+      props: {},
+      redirect: {
+        destination: `/forms`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
