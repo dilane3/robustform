@@ -144,10 +144,14 @@ export default function CreateForm() {
 }
 
 const styles: Record<string, SxProps<Theme>> = {
-  container: {
+  container: (theme) => ({
     width: 400,
     height: "auto",
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      width: "auto !important",
+    }
+  }),
 
   title: {
     fontSize: "1.5rem",

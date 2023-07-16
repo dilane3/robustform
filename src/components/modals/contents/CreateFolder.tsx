@@ -3,6 +3,7 @@ import Input from "@components/inputs/Input";
 import { useActions, useSignal } from "@dilane3/gx";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import folderProvider from "src/api/folders";
 import { Colors } from "src/constants";
 import Folder from "src/entities/form/Folder";
 import { FormsState } from "src/gx/signals";
@@ -48,20 +49,26 @@ export default function CreateFolder() {
   /**
    * Handle submit
    */
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!verified || loading) return;
 
-    // TODO: Create folder on Supabase
+    setLoading(true);
 
-    // Create folder on global
-    const folderId = Math.floor(Math.random() * 1000000000) + 2;
+    const { success, data } = await folderProvider.create({ name });
 
-    const folder = new Folder({ id: folderId, name });
+    setLoading(false);
 
-    addFolder(folder);
+    if (success) {
+      // Create folder on global
+      const folder = new Folder({ id: data.id, name });
+  
+      console.log(folder)
 
-    // Close modal
-    close();
+      addFolder(folder);
+  
+      // Close modal
+      close();
+    } else {}
   };
 
   /**
@@ -144,10 +151,14 @@ export default function CreateFolder() {
 }
 
 const styles: Record<string, SxProps<Theme>> = {
-  container: {
+  container: (theme) => ({
     width: 400,
     height: "auto",
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      width: "auto !important",
+    }
+  }),
 
   title: {
     fontSize: "1.5rem",

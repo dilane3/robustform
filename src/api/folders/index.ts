@@ -1,16 +1,13 @@
 import { supabaseClient } from "../../utility";
 
-const userProvider = {
-  createUser: async (payload: any) => {
+const folderProvider = {
+  create: async (payload: any) => {
     try {
-      const { data, error } = await supabaseClient.from("users").insert({
-        email: payload.email,
-        uid: payload.uid,
-        created_at: payload.created_at,
-        color: payload.color,
-      });
-
-      console.log({ data, error })
+      const { data, error } = await supabaseClient.from("folders").insert({
+        name: payload.name
+      })
+      .select("*")
+      .single();
 
       if (error) {
         return {
@@ -31,12 +28,12 @@ const userProvider = {
     }
   },
 
-  getUser: async (payload: any) => {
+  delete: async (payload: any) => {
     try {
-      const { data, error } = await supabaseClient
-        .from("users")
-        .select("*")
-        .eq("uid", payload.uid);
+      const { error } = await supabaseClient
+        .from("folders")
+        .delete()
+        .eq("id", payload.id);
 
       if (error) {
         return {
@@ -47,7 +44,6 @@ const userProvider = {
 
       return {
         success: true,
-        data,
       };
     } catch (error: any) {
       return {
@@ -58,4 +54,4 @@ const userProvider = {
   }
 };
 
-export default userProvider;
+export default folderProvider;

@@ -96,7 +96,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Box onClick={handleClick}>
             <Avatar
               sx={headerStyles.avatar}
-              style={{ fontFamily: "OutfitMedium", fontSize: "1rem" }}
+              style={{
+                fontFamily: "OutfitMedium",
+                fontSize: "1rem",
+                backgroundColor: user.color,
+              }}
             >
               {firstLetterToUppercase(
                 justTwoLetter(user.username || user.email)

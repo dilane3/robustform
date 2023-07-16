@@ -4,6 +4,7 @@ import userProvider from "src/api/users";
 import { authProvider } from "src/authProvider";
 import User from "src/entities/user/User";
 import { AuthState } from "src/gx/signals/auth";
+import { getRandomColor } from "src/utility";
 
 export default function useAuth() {
   const { getIdentity } = authProvider;
@@ -60,6 +61,7 @@ export default function useAuth() {
           email: data.email,
           uid: data.id,
           created_at: data.created_at,
+          color: getRandomColor(),
         });
 
         if (error) {

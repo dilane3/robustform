@@ -43,7 +43,7 @@ export default function ModalProvider() {
 }
 
 const styles: Record<string, SxProps<Theme>> = {
-  container: {
+  container: (theme) => ({
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
@@ -56,5 +56,10 @@ const styles: Record<string, SxProps<Theme>> = {
     p: 4,
     outline: "none",
     borderRadius: 3,
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "calc(100% - 40px)",
+      width: "calc(100% - 20px)",
+    }
+  }),
 };
