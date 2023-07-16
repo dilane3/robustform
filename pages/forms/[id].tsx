@@ -1,8 +1,10 @@
 import FormLayout from "@components/layout/forms/FormLayout";
 import Tab from "@components/tabs/Tab";
 import { useActions, useSignal } from "@dilane3/gx";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React from "react";
+import { authProvider } from "src/authProvider";
 import Form from "src/entities/form/Form";
 import { FormsState } from "src/gx/signals";
 
@@ -39,3 +41,21 @@ export default function SpecificForm() {
 }
 
 SpecificForm.noLayout = true;
+
+export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  const { authenticated } = await authProvider.check(context);
+
+  if (!authenticated) {
+    return {
+      props: {},
+      redirect: {
+        destination: `/`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

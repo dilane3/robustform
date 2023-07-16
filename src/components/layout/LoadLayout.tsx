@@ -18,7 +18,7 @@ export default function LoadLayout({ children }: LoadLayoutProps) {
     // another method
     setTimeout(() => {
       setLoaded(true);
-    }, 5000);
+    }, 3000);
   }, []);
 
   return (
