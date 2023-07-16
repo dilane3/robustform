@@ -73,7 +73,7 @@ export const authProvider: AuthBindings = {
       if (data) {
         return {
           success: true,
-          redirectTo: "/forms",
+          redirectTo: "/verify_email",
         };
       }
     } catch (error: any) {

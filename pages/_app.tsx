@@ -20,6 +20,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import ModalProvider from "@components/modals/ModalProvider";
 import GXProvider from "@dilane3/gx";
 import { store } from "src/gx/store";
+import LoadLayout from "@components/layout/LoadLayout";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -64,10 +65,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
             }}
           >
             <GXProvider store={store}>
-              <>
+              <LoadLayout>
                 {renderComponent()}
                 <ModalProvider />
-              </>
+              </LoadLayout>
             </GXProvider>
 
             <UnsavedChangesNotifier />

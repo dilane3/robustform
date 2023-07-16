@@ -43,24 +43,6 @@ export default function VerifyEmail() {
 
 VerifyEmail.noLayout = true;
 
-export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  const { authenticated } = await authProvider.check(context);
-
-  if (!authenticated) {
-    return {
-      props: {},
-      redirect: {
-        destination: `/`,
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
-
 const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   container: (theme) => ({
     display: "flex",

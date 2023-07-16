@@ -52,18 +52,17 @@ export default function Register() {
   const handleSubmit = async () => {
     if (!verified || loading) return;
 
-    console.log("submit");
-
     setLoading(true);
 
     if (register) {
-      console.log("dedans")
       const response = await register({
         email,
         password,
       });
 
-      console.log(response);
+      if (response.success) {
+        window.location.href = response.redirectTo as string;
+      }
     }
 
     setLoading(false);
@@ -185,14 +184,11 @@ export default function Register() {
             <Typography sx={styles.logo}>Robustform</Typography>
           </Link>
 
-          <Box
-            sx={{ ...styles.box, ...styles.imageContainer } as SxProps<Theme>}
-          >
+          <Box sx={styles.imageContainer}>
             <Image
               src={loginImage}
               alt="Login"
               width={500}
-              style={styles.image as React.CSSProperties}
             />
           </Box>
 
@@ -254,10 +250,13 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   authSection: (theme) => ({
     margin: 0,
     padding: "2rem 5rem",
-    width: "50%",
+    width: "500px",
     minHeight: "100%",
     backgroundColor: Colors.secondary,
     overflowY: "auto",
+    [theme.breakpoints.down(1000)]: {
+      width: "50%",
+    },
     [theme.breakpoints.down("md")]: {
       padding: "2rem 2rem",
     },
@@ -271,9 +270,12 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   infoSection: (theme) => ({
     margin: 0,
     padding: "2rem 5rem",
-    width: "50%",
+    width: "calc(100% - 500px)",
     minHeight: "100%",
     overflowY: "auto",
+    [theme.breakpoints.down(1000)]: {
+      width: "50%",
+    },
     [theme.breakpoints.down("md")]: {
       padding: "2rem 2rem",
     },
@@ -351,8 +353,18 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   },
 
   imageContainer: (theme) => ({
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    marginTop: 5,
+    alignItems: "center",
+    justifyContent: "center",
+
+    [theme.breakpoints.down("md")]: {
+      "& img": {
+        width: "100%",
+        height: "auto",
+      },
     },
   }),
 };

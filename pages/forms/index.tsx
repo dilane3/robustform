@@ -8,10 +8,14 @@ import Link from "next/link";
 import { useMemo } from "react";
 import Form from "src/entities/form/Form";
 import { FormsState } from "src/gx/signals";
+import useAuth from "src/hooks/useAuth";
 
 export default function Forms() {
   // Global state
   const { forms, selectedFolder } = useSignal<FormsState>("forms");
+
+  // Get current user
+  useAuth();
 
   // Memoized values
   const allForms = useMemo(() => {
