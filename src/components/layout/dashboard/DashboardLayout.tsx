@@ -20,14 +20,24 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { authProvider } from "src/authProvider";
+import { useActions, useSignal } from "@dilane3/gx";
+import { AuthState } from "src/gx/signals/auth";
+import { firstLetterToUppercase, truncate } from "src/utility/stringOperations";
 
 export type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  // Local state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  // Global state
+  const { user } = useSignal<AuthState>("auth");
+
+  // Global actions
+  const { logout } = useActions("auth");
 
   // Handlers
 
@@ -44,14 +54,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const handleLogout = async () => {
     const response = await authProvider.logout(false);
 
-    // TO DO: delete user from the gloabl state
-
-    console.log(response);
+    logout();
 
     handleClose();
 
     window.location.href = "/";
   };
+
+  // Methods
+
+  const justTwoLetter = (str: string) => {
+    if (str) {
+      return str.substring(0, 2);
+    }
+
+    return "";
+  };
+
+  if (!user) return null;
 
   return (
     <>
@@ -74,7 +94,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </Box>
 
           <Box onClick={handleClick}>
-            <Avatar sx={headerStyles.avatar}>J</Avatar>
+            <Avatar
+              sx={headerStyles.avatar}
+              style={{ fontFamily: "OutfitMedium", fontSize: "1rem" }}
+            >
+              {firstLetterToUppercase(
+                justTwoLetter(user.username || user.email)
+              )}
+            </Avatar>
           </Box>
 
           <Menu
