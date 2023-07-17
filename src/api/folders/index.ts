@@ -44,14 +44,14 @@ const folderProvider = {
 
       return {
         success: true,
-      };
+      };  
     } catch (error: any) {
       return {
         success: false,
         error,
       };
     }
-  }
+  },
 };
 
 export default folderProvider;

@@ -3,16 +3,19 @@ import Input from "@components/inputs/Input";
 import { useActions, useSignal } from "@dilane3/gx";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
+import formProvider from "src/api/forms";
 import { Colors } from "src/constants";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
 import { FormsState } from "src/gx/signals";
+import { AuthState } from "src/gx/signals/auth";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 import { styles as baseStyles } from "src/styles/mui-styles/form-card";
 
 export default function CreateForm() {
   // Global state
   const { forms, selectedFolder } = useSignal<FormsState>("forms");
+  const { user } = useSignal<AuthState>("auth");
 
   const { close } = useActions("modal");
   const { addForm } = useActions("forms");
@@ -44,32 +47,41 @@ export default function CreateForm() {
   /**
    * Handle submit
    */
-  const handleSubmit = () => {
-    if (loading) return;
+  const handleSubmit = async () => {
+    if (loading || !user) return;
 
-    // TODO: Create folder on Supabase
+    setLoading(true);
 
-    // Create folder on global
- 
-    // Generate form id as number randomly
-    const folderId = selectedFolder ? selectedFolder.id : otherFormsFolder?.id;
-    const formId = Math.floor(Math.random() * 1000000000);
-    const formTitle = title === "" ? "Untitled form" : title;
-
-    const form = new Form({
-      id: formId,
-      title: formTitle,
+    // Create form on supabase
+    const { data, error } = await formProvider.create({
+      title,
       description,
-      folderId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ownerId: "1",
-    });
+      folder_id: selectedFolder ? selectedFolder.id : null,
+      user_id: user.id,
+    })
 
-    addForm({ folderId, form });
+    setLoading(false);
 
-    // Close modal
-    close();
+    if (data) {
+      const folderId = selectedFolder ? selectedFolder.id : otherFormsFolder?.id;
+      const formTitle = title === "" ? "Untitled form" : title;
+  
+      const form = new Form({
+        id: data.id,
+        title: formTitle,
+        description,
+        folderId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ownerId: user.id,
+      });
+  
+      // Add form to global state
+      addForm({ folderId, form });
+  
+      // Close modal
+      close();
+    } else {}
   };
 
   const handleClose = () => {
