@@ -72,6 +72,12 @@ export default function CreateForm() {
     close();
   };
 
+  const handleClose = () => {
+    if (loading) return;
+
+    close();
+  }
+
   return (
     <Box sx={styles.container}>
       <Typography variant="h3" sx={styles.title}>
@@ -106,7 +112,7 @@ export default function CreateForm() {
               backgroundColor: Colors.grayLight,
             },
           }}
-          onClick={close}
+          onClick={handleClose}
         >
           <Typography
             sx={{
@@ -135,7 +141,9 @@ export default function CreateForm() {
               fontFamily: "OutfitMedium",
             }}
           >
-            Create
+            {
+              loading ? "Loading..." : "Create"
+            }
           </Typography>
         </Button>
       </Box>

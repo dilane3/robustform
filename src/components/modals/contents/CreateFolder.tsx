@@ -61,8 +61,6 @@ export default function CreateFolder() {
     if (success) {
       // Create folder on global
       const folder = new Folder({ id: data.id, name });
-  
-      console.log(folder)
 
       addFolder(folder);
   
@@ -85,6 +83,12 @@ export default function CreateFolder() {
       setVerified(false);
     }
   };
+
+  const handleClose = () => {
+    if (loading) return;
+
+    close();
+  }
 
   return (
     <Box sx={styles.container}>
@@ -113,7 +117,7 @@ export default function CreateFolder() {
               backgroundColor: Colors.grayLight,
             },
           }}
-          onClick={close}
+          onClick={handleClose}
         >
           <Typography
             sx={{
@@ -142,7 +146,9 @@ export default function CreateFolder() {
               fontFamily: "OutfitMedium",
             }}
           >
-            Create
+            {
+              loading ? "Loading..." : "Create"
+            }
           </Typography>
         </Button>
       </Box>

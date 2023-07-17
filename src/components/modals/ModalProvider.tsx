@@ -33,7 +33,7 @@ export default function ModalProvider() {
   return (
     <Modal
       open={isOpened}
-      onClose={close}
+      onClose={() => {}}
       aria-labelledby="modal-modal"
       aria-describedby="modal-modal-description"
     >
