@@ -60,11 +60,12 @@ const formProvider = {
     }
   },
 
-  findAll: async () => {
+  findAll: async (userId: number) => {
     try {
       const { data, error } = await supabaseClient
         .from("forms")
-        .select("*, folders(id, name)");
+        .select("*, folders(id, name)")
+        .eq("user_id", userId);
 
 
       if (data) {

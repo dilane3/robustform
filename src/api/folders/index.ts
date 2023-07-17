@@ -4,7 +4,8 @@ const folderProvider = {
   create: async (payload: any) => {
     try {
       const { data, error } = await supabaseClient.from("folders").insert({
-        name: payload.name
+        name: payload.name,
+        user_id: payload.userId,
       })
       .select("*")
       .single();
@@ -53,11 +54,12 @@ const folderProvider = {
     }
   },
 
-  findAll: async () => {
+  findAll: async (userId: number) => {
     try {
       const { data, error } = await supabaseClient
         .from("folders")
-        .select("*");
+        .select("*")
+        .eq("user_id", userId);
 
 
       if (data) {

@@ -7,6 +7,7 @@ import folderProvider from "src/api/folders";
 import { Colors } from "src/constants";
 import Folder from "src/entities/form/Folder";
 import { FormsState } from "src/gx/signals";
+import { AuthState } from "src/gx/signals/auth";
 import { styles as baseStyles } from "src/styles/mui-styles/form-card";
 import { object, string } from "yup";
 
@@ -17,6 +18,7 @@ const schema = object({
 export default function CreateFolder() {
   // Global state
   const { forms } = useSignal<FormsState>("forms");
+  const { user } = useSignal<AuthState>("auth");
 
   const { close } = useActions("modal");
   const { addFolder } = useActions("forms");
@@ -50,11 +52,11 @@ export default function CreateFolder() {
    * Handle submit
    */
   const handleSubmit = async () => {
-    if (!verified || loading) return;
+    if (!verified || loading || !user) return;
 
     setLoading(true);
 
-    const { success, data } = await folderProvider.create({ name });
+    const { success, data } = await folderProvider.create({ name, userId: user.id });
 
     setLoading(false);
 

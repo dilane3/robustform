@@ -158,7 +158,11 @@ export default function QuestionContainer() {
 
             case QuestionType.DATE: {
               cardItems.push(
-                <DateCard card={card} folderId={form?.folderId} onActive={handleGlobalActive} />
+                <DateCard
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
@@ -199,6 +203,7 @@ export default function QuestionContainer() {
             active={active}
             onActive={() => handleActive(true)}
             form={form}
+            folderId={form?.folderId}
           />
 
           {renderQuestions()}

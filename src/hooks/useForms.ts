@@ -4,40 +4,55 @@ import folderProvider from "src/api/folders";
 import formProvider from "src/api/forms";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
-import { FormsState } from "src/gx/signals";
-import { FOLDER_BIN_ID, OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
+import { FormsState, folderBin, otherFormsFolder } from "src/gx/signals";
+import { AuthState } from "src/gx/signals/auth";
+import {
+  FOLDER_BIN_ID,
+  OTHERS_FORMS_FOLDER_ID,
+} from "src/gx/signals/forms/constants";
 
 export default function useForms() {
   // Global actions
   const { setForms } = useActions("forms");
 
   // Global state
-  const { loading } = useSignal<FormsState>("forms");
+  const { loading, forms } = useSignal<FormsState>("forms");
+  const { user } = useSignal<AuthState>("auth");
 
   // Effects
   React.useEffect(() => {
     const fetchAllForms = async () => {
-      const { data, error } = await formProvider.findAll();
+      if (user && forms.length === 0) {
+        const { data, error } = await formProvider.findAll(user.id);
 
-      if (error) {
-      } else {
-        // Get all folders
-        const { data: fetchedFolders, error } = await folderProvider.findAll();
+        if (error) {
+        } else {
+          // Get all folders
+          const { data: fetchedFolders } = await folderProvider.findAll(
+            user.id
+          );
 
-        const folders = organizeForms(data, fetchedFolders);
+          console.log({fetchedFolders})
 
-        setForms(folders);
+          if (fetchedFolders) {
+            const folders = organizeForms(data, fetchedFolders);
+  
+            console.log({folders})
+  
+            setForms(folders);
+          }
+        }
       }
     };
 
     if (loading === false) return;
 
     fetchAllForms();
-  }, [loading]);
+  }, [loading, user]);
 
   // Methods
   const organizeForms = (forms: any, fetchedFolders: any) => {
-    const folders: Folder[] = [];
+    const folders: Folder[] = [folderBin, otherFormsFolder];
 
     for (const form of forms) {
       // Create a form entity

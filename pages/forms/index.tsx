@@ -32,6 +32,8 @@ export default function Forms() {
     return myForms;
   }, [JSON.stringify(forms)]);
 
+  console.log({ selectedFolder })
+
   return (
     <DashboardLayout>
       {allForms.length === 0 ? (

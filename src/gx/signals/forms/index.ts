@@ -9,12 +9,12 @@ import {
 } from "./constants";
 import Card from "src/entities/card/Card";
 
-const folderBin = new Folder({
+export const folderBin = new Folder({
   id: FOLDER_BIN_ID,
   name: FOLDER_BIN,
 });
 
-const otherFormsFolder = new Folder({
+export const otherFormsFolder = new Folder({
   id: OTHERS_FORMS_FOLDER_ID,
   name: OTHERS_FORMS_FOLDER,
 });
@@ -29,17 +29,14 @@ export type FormsState = {
 export const formsSignal = createSignal<FormsState>({
   name: "forms",
   state: {
-    forms: [otherFormsFolder, folderBin],
+    forms: [],
     loading: true,
     selectedFolder: null,
     selectedForm: null,
   },
   actions: {
     setForms: (state, forms: Folder[]) => {
-      for (const form of forms) {
-        state.forms.push(form);
-      }
-
+      state.forms = forms;
       state.loading = false;
 
       return state;
