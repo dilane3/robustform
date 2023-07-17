@@ -14,6 +14,9 @@ import ColorLensOutlinedIcon from "@mui/icons-material/ColorLensOutlined";
 import { Colors } from "src/constants";
 import Icon from "@components/icons/Icon";
 import Link from "next/link";
+import { AuthState } from "src/gx/signals/auth";
+import { useSignal } from "@dilane3/gx";
+import HeaderAvatar from "../dashboard/HeaderAvatar";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
@@ -22,6 +25,9 @@ export type FormLayoutProps = {
 };
 
 export default function FormLayout({ children, title, formId }: FormLayoutProps) {
+  // Global state
+  const { user } = useSignal<AuthState>("auth");
+
   return (
     <>
       <Head>
@@ -53,7 +59,7 @@ export default function FormLayout({ children, title, formId }: FormLayoutProps)
               </Link>
             </Box>
 
-            <Avatar sx={headerStyles.avatar}>J</Avatar>
+            <HeaderAvatar />
           </Box>
         </Box>
 

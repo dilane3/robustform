@@ -1,9 +1,5 @@
 import {
-  Avatar,
   Box,
-  Divider,
-  Menu,
-  MenuItem,
   SxProps,
   Theme,
   Typography,
@@ -16,60 +12,21 @@ import Input from "@components/inputs/Input";
 import Sidenav from "./Sidenav";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
-import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import { authProvider } from "src/authProvider";
-import { useActions, useSignal } from "@dilane3/gx";
+import { useSignal } from "@dilane3/gx";
 import { AuthState } from "src/gx/signals/auth";
-import { firstLetterToUppercase, truncate } from "src/utility/stringOperations";
+import useForms from "src/hooks/useForms";
+import HeaderAvatar from "./HeaderAvatar";
 
 export type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  // Local state
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
   // Global state
   const { user } = useSignal<AuthState>("auth");
 
-  // Global actions
-  const { logout } = useActions("auth");
-
-  // Handlers
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  // Handlers
-
-  const handleLogout = async () => {
-    const response = await authProvider.logout(false);
-
-    logout();
-
-    handleClose();
-
-    window.location.href = "/";
-  };
-
-  // Methods
-
-  const justTwoLetter = (str: string) => {
-    if (str) {
-      return str.substring(0, 2);
-    }
-
-    return "";
-  };
+  // Fetch all forms
+  useForms();
 
   if (!user) return null;
 
@@ -93,59 +50,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             />
           </Box>
 
-          <Box onClick={handleClick}>
-            <Avatar
-              sx={headerStyles.avatar}
-              style={{
-                fontFamily: "OutfitMedium",
-                fontSize: "1rem",
-                backgroundColor: user.color,
-              }}
-            >
-              {firstLetterToUppercase(
-                justTwoLetter(user.username || user.email)
-              )}
-            </Avatar>
-          </Box>
-
-          <Menu
-            id="demo-positioned-menu"
-            aria-labelledby="demo-positioned-button"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            sx={{
-              "& .MuiMenu-paper": {
-                boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.3)",
-                mt: 1.5,
-              },
-            }}
-          >
-            <MenuItem onClick={handleClose}>
-              <PersonOutlineOutlinedIcon
-                sx={styles.menuItemIcon}
-                color="action"
-              />
-              <Typography sx={styles.menuItemText}>Profile</Typography>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <SettingsOutlinedIcon sx={styles.menuItemIcon} color="action" />
-              <Typography sx={styles.menuItemText}>Settings</Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout}>
-              <LogoutIcon sx={styles.menuItemIcon} color="action" />
-              <Typography sx={styles.menuItemText}>Log out</Typography>
-            </MenuItem>
-          </Menu>
+          <HeaderAvatar />
         </Box>
 
         <Box component="section" sx={styles.bodyContainer}>
@@ -168,7 +73,7 @@ const styles: Record<string, SxProps<Theme>> = {
     mx: 5,
 
     [theme.breakpoints.down("md")]: {
-      mx: 2,
+      mx: 4,
     },
   }),
 
@@ -200,14 +105,4 @@ const styles: Record<string, SxProps<Theme>> = {
     height: "100%",
     backgroundColor: Colors.background,
   }),
-
-  menuItemIcon: {
-    fontSize: "1.5rem",
-    mr: 2,
-  },
-
-  menuItemText: {
-    fontSize: "1rem",
-    fontFamily: "OutfitRegular",
-  },
 };

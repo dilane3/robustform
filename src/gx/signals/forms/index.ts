@@ -31,7 +31,10 @@ export const formsSignal = createSignal<FormsState>({
   },
   actions: {
     setForms: (state, forms: Folder[]) => {
-      state.forms = forms;
+      for (const form of forms) {
+        state.forms.push(form);
+      }
+
       state.loading = false;
 
       return state;

@@ -5,14 +5,16 @@ const formProvider = {
     try {
       // TODO: generate a randomly form key
 
-      const { data, error } = await supabaseClient.from("forms").insert({
-        title: payload.title,
-        description: payload.description,
-        folder_id: payload.folder_id,
-        user_id: payload.user_id
-      })
-      .select("*")
-      .single();
+      const { data, error } = await supabaseClient
+        .from("forms")
+        .insert({
+          title: payload.title,
+          description: payload.description,
+          folder_id: payload.folder_id,
+          user_id: payload.user_id,
+        })
+        .select("*")
+        .single();
 
       if (error) {
         return {
@@ -49,7 +51,7 @@ const formProvider = {
 
       return {
         success: true,
-      };  
+      };
     } catch (error: any) {
       return {
         success: false,
@@ -59,17 +61,30 @@ const formProvider = {
   },
 
   findAll: async () => {
-    try { 
+    try {
       const { data, error } = await supabaseClient
         .from("forms")
-        .select("*");
-    } catch (error) {
+        .select("*, folders(id, name)");
+
+
+      if (data) {
+        return {
+          success: true,
+          data
+        }
+      }
+
       return {
         success: false,
         error
       }
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      };
     }
-  }
+  },
 };
 
 export default formProvider;
