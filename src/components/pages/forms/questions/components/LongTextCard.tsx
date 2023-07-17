@@ -14,33 +14,34 @@ import { FormsState } from "src/gx/signals";
 import { useActions, useSignal } from "@dilane3/gx";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
-import DeleteIcon from '@mui/icons-material/Delete';
-import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
 
 type LongTextCardProps = {
   card: Card;
   values: string[];
+  folderId: number | null;
   onActive: (card: Card) => void;
   onAddResponse: (values: string[]) => void;
 };
 
-export default function LongTextCard({ card, values, onActive, onAddResponse }: LongTextCardProps) {
+export default function LongTextCard({
+  card,
+  values,
+  folderId,
+  onActive,
+  onAddResponse,
+}: LongTextCardProps) {
   // Local state
   const [label, setLabel] = React.useState(card.question.label || "");
   const [subtitle, setSubtitle] = React.useState(card.subtitle || "");
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder, forms } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   // Global action
   const { updateCard, deleteCard } = useActions("forms");
-
-  // Memoized values
-
-  const otherFormsFolder = useMemo(() => {
-    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
-  }, [forms]);
 
   // Effects
 
@@ -68,7 +69,7 @@ export default function LongTextCard({ card, values, onActive, onAddResponse }: 
       const myCard = new Card({ ...cardData, question });
 
       updateCard({
-        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+        folderId,
         formId: card.formId,
         card: myCard,
       });
@@ -91,7 +92,7 @@ export default function LongTextCard({ card, values, onActive, onAddResponse }: 
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId,
       formId: card.formId,
       cardId: card.id,
     });
@@ -164,6 +165,7 @@ export default function LongTextCard({ card, values, onActive, onAddResponse }: 
 LongTextCard.defaultProps = {
   active: false,
   values: [],
+  folderId: OTHERS_FORMS_FOLDER_ID,
   onActive: () => {},
   onAddResponse: () => {},
 };
@@ -189,6 +191,6 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    mb: 2
-  }
+    mb: 2,
+  },
 };

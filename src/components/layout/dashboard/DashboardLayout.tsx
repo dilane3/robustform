@@ -87,7 +87,7 @@ const styles: Record<string, SxProps<Theme>> = {
   }),
 
   sidenar: (theme) => ({
-    width: 250,
+    width: 280,
     height: "100%",
     backgroundColor: Colors.sidenav,
     transition: "all 0.3s ease-in-out",

@@ -11,13 +11,12 @@ import {
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { firstLetterToUppercase } from "src/utility";
+import { capitalize } from "src/utility";
 import { AuthState } from "src/gx/signals/auth";
 import { useActions, useSignal } from "@dilane3/gx";
 import React from "react";
 import { authProvider } from "src/authProvider";
 import { styles as headerStyles } from "src/styles/mui-styles/header";
-import { Colors } from "src/constants";
 
 export default function HeaderAvatar() {
   // Local state
@@ -43,7 +42,7 @@ export default function HeaderAvatar() {
   // Handlers
 
   const handleLogout = async () => {
-    const response = await authProvider.logout(false);
+    await authProvider.logout(false);
 
     logout();
 
@@ -75,7 +74,7 @@ export default function HeaderAvatar() {
             backgroundColor: user.color,
           }}
         >
-          {firstLetterToUppercase(justTwoLetter(user.username || user.email))}
+          {capitalize(justTwoLetter(user.username || user.email))}
         </Avatar>
       </Box>
 

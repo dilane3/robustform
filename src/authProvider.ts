@@ -20,7 +20,7 @@ export const authProvider: AuthBindings = {
 
     if (data?.session) {
       nookies.set(null, "token", data.session.access_token, {
-        maxAge: 30 * 24 * 60 * 60,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/",
         sameSite: "none",
         secure: true,

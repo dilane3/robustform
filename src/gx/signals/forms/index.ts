@@ -1,16 +1,21 @@
 import { createSignal } from "@dilane3/gx";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
-import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "./constants";
+import {
+  OTHERS_FORMS_FOLDER,
+  FOLDER_BIN,
+  OTHERS_FORMS_FOLDER_ID,
+  FOLDER_BIN_ID,
+} from "./constants";
 import Card from "src/entities/card/Card";
 
 const folderBin = new Folder({
-  id: 1,
+  id: FOLDER_BIN_ID,
   name: FOLDER_BIN,
 });
 
 const otherFormsFolder = new Folder({
-  id: 2,
+  id: OTHERS_FORMS_FOLDER_ID,
   name: OTHERS_FORMS_FOLDER,
 });
 
@@ -166,8 +171,12 @@ export const formsSignal = createSignal<FormsState>({
         (folder) => folder.id === payload.folderId
       );
 
+      console.log(folder);
+
       if (folder) {
         const form = folder.forms.find((form) => form.id === payload.formId);
+
+        console.log(form);
 
         if (form) {
           // Set all cards inactive

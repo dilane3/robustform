@@ -3,7 +3,6 @@ import { Colors } from "src/constants";
 import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftOutlined";
 import React, { useMemo } from "react";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
-import FolderIcon from "@mui/icons-material/Folder";
 import InputRoundedIcon from "@mui/icons-material/InputRounded";
 import WrapTextRoundedIcon from "@mui/icons-material/WrapTextRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
@@ -16,26 +15,21 @@ import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
-import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
 
 type ElementsProps = {
   formId: number;
+  folderId?: number
 };
 
-export default function Elements({ formId }: ElementsProps) {
+export default function Elements({ formId, folderId }: ElementsProps) {
   // Local state
   const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
 
-  const { selectedFolder, forms } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   // Global actions
   const { addCard } = useActions("forms");
-
-  // Memoized values
-
-  const otherFormsFolder = useMemo(() => {
-    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
-  }, [forms]);
 
   // Handlers
   const handleSelectCard = (elementType: QuestionType) => {
@@ -57,9 +51,15 @@ export default function Elements({ formId }: ElementsProps) {
 
     const card = new Card(cardPayload);
 
+    console.log({
+      folderId,
+      formId,
+      card,
+    })
+
     // Add card to global state
     addCard({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId,
       formId,
       card,
     });
@@ -171,6 +171,10 @@ export default function Elements({ formId }: ElementsProps) {
       </Box>
     </Box>
   );
+}
+
+Elements.defaultProps = {
+  formId: OTHERS_FORMS_FOLDER_ID,
 }
 
 const styles: Record<string, SxProps<Theme>> = {

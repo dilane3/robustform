@@ -52,6 +52,32 @@ const folderProvider = {
       };
     }
   },
+
+  findAll: async () => {
+    try {
+      const { data, error } = await supabaseClient
+        .from("folders")
+        .select("*");
+
+
+      if (data) {
+        return {
+          success: true,
+          data
+        }
+      }
+
+      return {
+        success: false,
+        error
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  },
 };
 
 export default folderProvider;

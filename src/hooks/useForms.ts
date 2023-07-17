@@ -1,9 +1,11 @@
 import { useActions, useSignal } from "@dilane3/gx";
 import React from "react";
+import folderProvider from "src/api/folders";
 import formProvider from "src/api/forms";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
 import { FormsState } from "src/gx/signals";
+import { FOLDER_BIN_ID, OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
 
 export default function useForms() {
   // Global actions
@@ -19,9 +21,10 @@ export default function useForms() {
 
       if (error) {
       } else {
-        const folders = organizeForms(data);
+        // Get all folders
+        const { data: fetchedFolders, error } = await folderProvider.findAll();
 
-        console.log({ folders })
+        const folders = organizeForms(data, fetchedFolders);
 
         setForms(folders);
       }
@@ -33,7 +36,7 @@ export default function useForms() {
   }, [loading]);
 
   // Methods
-  const organizeForms = (forms: any) => {
+  const organizeForms = (forms: any, fetchedFolders: any) => {
     const folders: Folder[] = [];
 
     for (const form of forms) {
@@ -41,8 +44,8 @@ export default function useForms() {
       const folderId = form.folder_id
         ? form.folder_id
         : form.deleted === true
-        ? 1 // Deleted folder
-        : 2; // Default folder
+        ? FOLDER_BIN_ID // Deleted folder
+        : OTHERS_FORMS_FOLDER_ID; // Default folder
 
       const newForm = new Form({
         id: form.id,
@@ -65,6 +68,21 @@ export default function useForms() {
           id: form.folders.id,
           name: form.folders.name,
           forms: [newForm],
+        });
+
+        folders.push(newFolder);
+      }
+    }
+
+    // Check if there are empty folders
+    for (const folder of fetchedFolders) {
+      const folderExists = folders.find((f) => f.id === folder.id);
+
+      if (!folderExists) {
+        const newFolder = new Folder({
+          id: folder.id,
+          name: folder.name,
+          forms: [],
         });
 
         folders.push(newFolder);
