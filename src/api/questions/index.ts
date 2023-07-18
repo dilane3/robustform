@@ -98,6 +98,8 @@ const questionProvider = {
         })
         .eq("id", payload.id);
 
+      console.log(payload)
+
       if (error) {
         return {
           success: false,
