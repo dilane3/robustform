@@ -89,6 +89,8 @@ export default function useForms() {
 
         const cardPayload = {
           id: q.id,
+          title: q.title,
+          description: q.description,
           formId: q.form_id,
           type: q.type,
           questionType: q.question_type,
