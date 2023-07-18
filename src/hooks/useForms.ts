@@ -2,6 +2,9 @@ import { useActions, useSignal } from "@dilane3/gx";
 import React from "react";
 import folderProvider from "src/api/folders";
 import formProvider from "src/api/forms";
+import questionProvider from "src/api/questions";
+import Card from "src/entities/card/Card";
+import Question from "src/entities/card/Question";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
 import { FormsState, folderBin, otherFormsFolder } from "src/gx/signals";
@@ -32,13 +35,24 @@ export default function useForms() {
             user.id
           );
 
-          console.log({fetchedFolders})
+          if (fetchedFolders && data) {
+            const formsClone = [...data];
 
-          if (fetchedFolders) {
-            const folders = organizeForms(data, fetchedFolders);
-  
-            console.log({folders})
-  
+            // Get all questions of each form
+            for (const form of data) {
+              const { data: questionsData } = await questionProvider.findAll(
+                form.id
+              );
+
+              const index = formsClone.findIndex((f) => f.id === form.id);
+
+              if (index !== -1) {
+                formsClone[index].questions = questionsData || [];
+              }
+            }
+
+            const folders = organizeForms(formsClone, fetchedFolders);
+
             setForms(folders);
           }
         }
@@ -54,6 +68,8 @@ export default function useForms() {
   const organizeForms = (forms: any, fetchedFolders: any) => {
     const folders: Folder[] = [folderBin, otherFormsFolder];
 
+    console.log({ forms });
+
     for (const form of forms) {
       // Create a form entity
       const folderId = form.folder_id
@@ -61,6 +77,31 @@ export default function useForms() {
         : form.deleted === true
         ? FOLDER_BIN_ID // Deleted folder
         : OTHERS_FORMS_FOLDER_ID; // Default folder
+
+      // Prepare questions
+      const cards: Card[] = [];
+
+      for (const q of form.questions) {
+        const question = new Question({
+          label: q.title,
+          options: q.options,
+        });
+
+        const cardPayload = {
+          id: q.id,
+          formId: q.form_id,
+          type: q.type,
+          questionType: q.question_type,
+          createdAt: new Date(q.created_at),
+          position: q.position,
+          question,
+          active: false,
+        };
+
+        const card = new Card(cardPayload);
+
+        cards.push(card);
+      }
 
       const newForm = new Form({
         id: form.id,
@@ -70,6 +111,7 @@ export default function useForms() {
         createdAt: new Date(form.created_at),
         updatedAt: new Date(form.updated_at || form.created_at),
         ownerId: form.user_id,
+        cards,
       });
 
       // Find the folder
