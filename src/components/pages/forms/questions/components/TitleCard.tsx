@@ -11,12 +11,13 @@ import Card from "src/entities/card/Card";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
+import formProvider from "src/api/forms";
 
 type TitleCardProps = {
   active: boolean;
   form: Form;
   card: Card;
-  folderId: number | null,
+  folderId: number | null;
   onActive: (card?: Card) => void;
 };
 
@@ -44,8 +45,12 @@ export default function TitleCard({
   const { forms } = useSignal<FormsState>("forms");
 
   // Global actions
-  const { updateTitleAndDescription, updateCard, deleteCard } =
-    useActions("forms");
+  const {
+    updateTitleAndDescription,
+    updateCard,
+    deleteCard,
+    setUpdateProcess,
+  } = useActions("forms");
 
   // Effects
 
@@ -60,34 +65,14 @@ export default function TitleCard({
   }, [title, description]);
 
   useEffect(() => {
+    const updateForm = async () => {
+      await handleUpdateForm();
+    };
+
     if (!cardActive && modified) {
-      if (form) {
-        updateTitleAndDescription({
-          formId: form.id,
-          folderId,
-          title,
-          description,
-        });
+      updateForm();
 
-        return;
-      }
-
-      // TODO: Update on supabase
-
-      let cardData = card.toOject();
-      let questionData = cardData.question;
-
-      cardData.title = title;
-      cardData.description = description;
-
-      const question = new Question(questionData);
-      const myCard = new Card({ ...cardData, question });
-
-      updateCard({
-        folderId,
-        formId: card.formId,
-        card: myCard,
-      });
+      setModified(false);
     } else {
       console.log("dont save");
     }
@@ -115,6 +100,48 @@ export default function TitleCard({
       folderId,
       formId: card.formId,
       cardId: card.id,
+    });
+  };
+
+  const handleUpdateForm = async () => {
+    if (form) {
+      // Update title and description on global state
+      updateTitleAndDescription({
+        formId: form.id,
+        folderId,
+        title,
+        description,
+      });
+
+      // Update title and description on supabase
+      setUpdateProcess({ loading: true });
+
+      const { success } = await formProvider.update({
+        title,
+        description,
+        id: form.id,
+      });
+
+      setUpdateProcess({ loading: false, status: success });
+
+      return;
+    }
+
+    // TODO: Update on supabase
+
+    let cardData = card.toOject();
+    let questionData = cardData.question;
+
+    cardData.title = title;
+    cardData.description = description;
+
+    const question = new Question(questionData);
+    const myCard = new Card({ ...cardData, question });
+
+    updateCard({
+      folderId,
+      formId: card.formId,
+      card: myCard,
     });
   };
 
@@ -225,7 +252,7 @@ const styles: Record<string, SxProps<Theme>> = {
   requirement: {
     fontSize: "0.9rem",
     fontFamily: "OutfitRegular",
-    color: Colors.red
+    color: Colors.red,
   },
 
   boxRowBetween: {

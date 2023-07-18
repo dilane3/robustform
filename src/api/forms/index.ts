@@ -67,18 +67,45 @@ const formProvider = {
         .select("*, folders(id, name)")
         .eq("user_id", userId);
 
-
       if (data) {
         return {
           success: true,
-          data
-        }
+          data,
+        };
       }
 
       return {
         success: false,
-        error
+        error,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  },
+
+  update: async (payload: any) => {
+    try {
+      const { error } = await supabaseClient
+        .from("forms")
+        .update({
+          title: payload.title,
+          description: payload.description,
+        })
+        .eq("id", payload.id);
+
+      if (error) {
+        return {
+          success: false,
+          error,
+        };
       }
+
+      return {
+        success: true,
+      };
     } catch (error) {
       return {
         success: false,
