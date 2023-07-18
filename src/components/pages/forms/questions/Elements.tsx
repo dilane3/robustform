@@ -37,6 +37,8 @@ export default function Elements({ formId, folderId }: ElementsProps) {
   const form = useMemo(() => {
     const folder: Folder | undefined = forms.find((f) => f.id === folderId);
 
+    console.log(folder, formId)
+
     if (!folder) return null;
 
     return folder.forms.find((f) => f.id === formId);
@@ -44,6 +46,7 @@ export default function Elements({ formId, folderId }: ElementsProps) {
 
   // Handlers
   const handleSelectCard = async (elementType: QuestionType) => {
+    console.log(form, folderId)
     if (!form) return;
 
     const cardId = Math.floor(Math.random() * 1000000000) + 2;
@@ -63,6 +66,8 @@ export default function Elements({ formId, folderId }: ElementsProps) {
     };
 
     const card = new Card(cardPayload);
+
+    console.log({ folderId, formId, card })
 
     // Add card to global state
     addCard({

@@ -15,10 +15,18 @@ export default function LoadLayout({ children }: LoadLayoutProps) {
   React.useEffect(() => {
     // wait when the page is loaded
 
+    window.onload = function () {
+      console.log("loaaaaaaaaded");
+    };
+
     // another method
     setTimeout(() => {
       setLoaded(true);
     }, 3000);
+
+    return () => {
+      window.onload = () => {};
+    };
   }, []);
 
   return (

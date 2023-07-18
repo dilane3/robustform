@@ -41,21 +41,23 @@ export default function useResponses(formId: number) {
             questionId: question_id,
           });
 
-          // Verify if response already been added into the list
-          const responseIndex = responses.findIndex(
-            (res) => res.id === responseData.id
-          );
-
-          if (responseIndex !== -1) {
-            responses[responseIndex].addResponseItem(responseItem);
-          } else {
-            const response = new Response({
-              id: responseData.id,
-              formId: responseData.form_id,
-              responseItems: [responseItem],
-            });
-
-            responses.push(response);
+          if (responseData) {
+            // Verify if response already been added into the list
+            const responseIndex = responses.findIndex(
+              (res) => res.id === responseData.id
+            );
+  
+            if (responseIndex !== -1) {
+              responses[responseIndex].addResponseItem(responseItem);
+            } else {
+              const response = new Response({
+                id: responseData.id,
+                formId: responseData.form_id,
+                responseItems: [responseItem],
+              });
+  
+              responses.push(response);
+            }
           }
         }
 

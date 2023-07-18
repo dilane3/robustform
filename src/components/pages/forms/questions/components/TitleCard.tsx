@@ -114,6 +114,8 @@ export default function TitleCard({
         description,
       });
 
+      console.log({ form, folderId, title, description })
+
       // Update title and description on supabase
       setUpdateProcess({ loading: true });
 
