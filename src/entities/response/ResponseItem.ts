@@ -31,6 +31,10 @@ export default class ResponseItem {
 
   // Setters
 
+  set id(id: number) {
+    this._id = id;
+  }
+
   set values(values: string[]) {
     this._values = values;
   }

@@ -83,6 +83,10 @@ export default class Form {
     this._description = description;
   }
 
+  set responses(responses: Response[]) {
+    this._responses = responses;
+  }
+
   // Methods
 
   addCard(card: Card) {

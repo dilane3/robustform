@@ -93,6 +93,7 @@ export default function QuestionContainer() {
         if (card.type === CardType.HEADING) {
           cardItems.push(
             <TitleCard
+              key={card.id}
               active={active}
               onActive={handleGlobalActive}
               card={card}
@@ -104,6 +105,7 @@ export default function QuestionContainer() {
             case QuestionType.SHORT_TEXT: {
               cardItems.push(
                 <ShortTextCard
+                  key={card.id}
                   card={card}
                   folderId={form?.folderId}
                   onActive={handleGlobalActive}
@@ -115,6 +117,7 @@ export default function QuestionContainer() {
             case QuestionType.LONG_TEXT: {
               cardItems.push(
                 <LongTextCard
+                  key={card.id}
                   card={card}
                   folderId={form?.folderId}
                   onActive={handleGlobalActive}
@@ -126,6 +129,7 @@ export default function QuestionContainer() {
             case QuestionType.MULTIPLE_CHOICE: {
               cardItems.push(
                 <MultiChoiceCard
+                  key={card.id}
                   card={card}
                   folderId={form?.folderId}
                   onActive={handleGlobalActive}
@@ -137,6 +141,7 @@ export default function QuestionContainer() {
             case QuestionType.UNIQUE_CHOICE: {
               cardItems.push(
                 <UniqueChoiceCard
+                  key={card.id}
                   card={card}
                   folderId={form?.folderId}
                   onActive={handleGlobalActive}
@@ -148,6 +153,7 @@ export default function QuestionContainer() {
             case QuestionType.CHOICE_LIST: {
               cardItems.push(
                 <ChoiceListCard
+                  key={card.id}
                   card={card}
                   folderId={form?.folderId}
                   onActive={handleGlobalActive}
@@ -159,6 +165,7 @@ export default function QuestionContainer() {
             case QuestionType.DATE: {
               cardItems.push(
                 <DateCard
+                  key={card.id}
                   card={card}
                   folderId={form?.folderId}
                   onActive={handleGlobalActive}

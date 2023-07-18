@@ -18,6 +18,7 @@ import { AuthState } from "src/gx/signals/auth";
 import { useSignal } from "@dilane3/gx";
 import HeaderAvatar from "../dashboard/HeaderAvatar";
 import { FormsState } from "src/gx/signals";
+import useResponses from "src/hooks/useResponses";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
@@ -33,6 +34,9 @@ export default function FormLayout({
   // Global state
   const { user } = useSignal<AuthState>("auth");
   const { updateLoading, updateStatus } = useSignal<FormsState>("forms");
+
+  // Fetch responses
+  useResponses(6);
 
   return (
     <>

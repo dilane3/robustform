@@ -15,12 +15,14 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import responseProvider from "src/api/responses";
 import { Colors } from "src/constants";
 import { CardType, QuestionType } from "src/entities/card/type";
 import Form from "src/entities/form/Form";
 import Response from "src/entities/response/Response";
 import ResponseItem from "src/entities/response/ResponseItem";
 import { FormsState } from "src/gx/signals";
+import { AuthState } from "src/gx/signals/auth";
 
 export default function FormView() {
   // URL handler
@@ -29,9 +31,12 @@ export default function FormView() {
 
   // Local state
   const [response, setResponse] = React.useState<Response | null>(null);
+  const [loading, setLoading] = React.useState(false);
+  const [submitted, setSubmitted] = React.useState(false);
 
   // Global state
   const { forms } = useSignal<FormsState>("forms");
+  const { user } = useSignal<AuthState>("auth");
 
   // Memoized values
   const form = React.useMemo(() => {
@@ -101,15 +106,68 @@ export default function FormView() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (response) {
-      const responseClone = Response.fromObject(response.toObject());
+      const isValid = validate();
 
-      responseClone.createdAt = new Date();
+      if (isValid) {
+        setLoading(true);
 
-      console.log(responseClone);
+        const responseClone = Response.fromObject(response.toObject());
+
+        // Prepare the creation of response into supabase;
+        const { data } = await responseProvider.createReponse({
+          formId: responseClone.formId,
+        });
+
+        if (data) {
+          for (let index in responseClone.responseItems) {
+            const responseItem = responseClone.responseItems[index];
+
+            const { data: responseItemData } =
+              await responseProvider.createReponseItem({
+                values: responseItem.values,
+                questionId: responseItem.questionId,
+                responseId: data.id,
+              });
+
+            if (responseItemData) {
+              responseClone.responseItems[index].id = responseItemData.id;
+
+              responseClone.id = data.id;
+              responseClone.createdAt = new Date(data.created_at);
+            }
+          }
+
+          setLoading(false);
+          setSubmitted(true);
+
+          if (user && form) {
+            if (user.id === form.ownerId) {
+              // TO DO: Add the new response into the global state
+              console.log(responseClone);
+            }
+          }
+        }
+      }
     }
-  }
+  };
+
+  const validate = () => {
+    let isVerified = true;
+
+    if (response) {
+      for (const responseItem of response.responseItems) {
+        if (responseItem.values.length === 0 || responseItem.values[0] === "") {
+          isVerified = false;
+
+          break;
+        }
+      }
+    }
+
+    return isVerified;
+  };
 
   // Methods
   const renderQuestions = () => {
@@ -241,7 +299,11 @@ export default function FormView() {
 
               {renderQuestions()}
 
-              <SubmitCard onSubmit={handleSubmit} />
+              <SubmitCard
+                onSubmit={handleSubmit}
+                disabled={!validate()}
+                loading={loading}
+              />
               <FooterCard />
             </Box>
           </Box>

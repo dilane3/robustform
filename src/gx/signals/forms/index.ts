@@ -8,6 +8,7 @@ import {
   FOLDER_BIN_ID,
 } from "./constants";
 import Card from "src/entities/card/Card";
+import Response from "src/entities/response/Response";
 
 export const folderBin = new Folder({
   id: FOLDER_BIN_ID,
@@ -243,6 +244,46 @@ export const formsSignal = createSignal<FormsState>({
     ) => {
       state.updateLoading = payload.loading;
       state.updateStatus = payload.status || state.updateStatus;
+
+      return state;
+    },
+
+    // Responses section
+
+    setResponses: (
+      state,
+      payload: { folderId: number; formId: number; responses: Response[] }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.responses = payload.responses;
+        }
+      }
+
+      return state;
+    },
+
+    addResponse: (
+      state,
+      payload: { folderId: number; formId: number; response: Response }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.addResponse(payload.response);
+        }
+      }
 
       return state;
     },
