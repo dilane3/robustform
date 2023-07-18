@@ -16,10 +16,12 @@ import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
+import questionProvider from "src/api/questions";
+import Folder from "src/entities/form/Folder";
 
 type ElementsProps = {
   formId: number;
-  folderId?: number
+  folderId?: number;
 };
 
 export default function Elements({ formId, folderId }: ElementsProps) {
@@ -29,10 +31,21 @@ export default function Elements({ formId, folderId }: ElementsProps) {
   const { forms } = useSignal<FormsState>("forms");
 
   // Global actions
-  const { addCard } = useActions("forms");
+  const { addCard, updateCard } = useActions("forms");
+
+  // Memoized values
+  const form = useMemo(() => {
+    const folder: Folder | undefined = forms.find((f) => f.id === folderId);
+
+    if (!folder) return null;
+
+    return folder.forms.find((f) => f.id === formId);
+  }, [JSON.stringify(forms)]);
 
   // Handlers
-  const handleSelectCard = (elementType: QuestionType) => {
+  const handleSelectCard = async (elementType: QuestionType) => {
+    if (!form) return;
+
     const cardId = Math.floor(Math.random() * 1000000000) + 2;
     const cardType =
       elementType === QuestionType.HEADING
@@ -45,17 +58,11 @@ export default function Elements({ formId, folderId }: ElementsProps) {
       type: cardType,
       questionType: elementType,
       createdAt: new Date(Date.now()),
-      position: 1,
+      position: form.cards.length + 1,
       active: true,
     };
 
     const card = new Card(cardPayload);
-
-    console.log({
-      folderId,
-      formId,
-      card,
-    })
 
     // Add card to global state
     addCard({
@@ -63,6 +70,28 @@ export default function Elements({ formId, folderId }: ElementsProps) {
       formId,
       card,
     });
+
+    // Add card (question) to supabase
+    const { success, data } = await questionProvider.create({
+      type: cardType,
+      questionType: elementType,
+      formId,
+      position: form.cards.length + 1,
+    });
+
+    if (success && data) {
+      // Update card id
+      card.id = data.id;
+
+      // Update card on global state
+      updateCard({
+        folderId,
+        formId,
+        card,
+      });
+    } else {
+      console.log("card not created");
+    }
   };
 
   return (
@@ -175,7 +204,7 @@ export default function Elements({ formId, folderId }: ElementsProps) {
 
 Elements.defaultProps = {
   formId: OTHERS_FORMS_FOLDER_ID,
-}
+};
 
 const styles: Record<string, SxProps<Theme>> = {
   container: (theme) => ({

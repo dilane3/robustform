@@ -90,6 +90,10 @@ export default class Card {
 
   // Setters
 
+  set id(id: number) {
+    this._id = id;
+  }
+
   set title(title: string) {
     this._title = title;
   }
