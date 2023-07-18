@@ -17,16 +17,22 @@ import Link from "next/link";
 import { AuthState } from "src/gx/signals/auth";
 import { useSignal } from "@dilane3/gx";
 import HeaderAvatar from "../dashboard/HeaderAvatar";
+import { FormsState } from "src/gx/signals";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
   title: string;
-  formId?: number
+  formId?: number;
 };
 
-export default function FormLayout({ children, title, formId }: FormLayoutProps) {
+export default function FormLayout({
+  children,
+  title,
+  formId,
+}: FormLayoutProps) {
   // Global state
   const { user } = useSignal<AuthState>("auth");
+  const { updateLoading, updateStatus } = useSignal<FormsState>("forms");
 
   return (
     <>
@@ -43,7 +49,14 @@ export default function FormLayout({ children, title, formId }: FormLayoutProps)
         >
           <Box sx={styles.headerTitle}>
             <Typography sx={headerStyles.logo}>robustform</Typography>
-            <Typography sx={styles.formSaved}>form saved</Typography>
+            <Typography
+              sx={styles.formSaved}
+              style={{
+                color: updateLoading ? Colors.gray : updateStatus ? "green" : "red",
+              }}
+            >
+              {updateLoading ? "Saving..." : "form saved"}
+            </Typography>
           </Box>
 
           <Box sx={styles.headerRight}>
