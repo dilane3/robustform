@@ -18,6 +18,7 @@ import Question from "src/entities/card/Question";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Icon from "@components/icons/Icon";
 import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
+import questionProvider from "src/api/questions";
 
 type UniqueChoiceCardProps = {
   card: Card;
@@ -44,7 +45,7 @@ export default function UniqueChoiceCard({
   const { forms } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard, deleteCard } = useActions("forms");
+  const { updateCard, deleteCard, setUpdateProcess } = useActions("forms");
 
   // Effects
 
@@ -62,23 +63,12 @@ export default function UniqueChoiceCard({
   }, [label, JSON.stringify(options)]);
 
   useEffect(() => {
+    const updateQuestion = async () => {
+      await handleUpdateQuestion();
+    }
+
     if (!card.active && modified) {
-      // TODO: Update on supabase
-
-      let cardData = card.toOject();
-      let questionData = cardData.question;
-
-      questionData.label = label;
-      questionData.options = options;
-
-      const question = new Question(questionData);
-      const myCard = new Card({ ...cardData, question });
-
-      updateCard({
-        folderId,
-        formId: card.formId,
-        card: myCard,
-      });
+      updateQuestion();
     } else {
       console.log("dont save");
     }
@@ -126,6 +116,34 @@ export default function UniqueChoiceCard({
   const handleAddResponse = (value: string) => {
     onAddResponse([value]);
   };
+
+  const handleUpdateQuestion = async () => {
+    let cardData = card.toOject();
+    let questionData = cardData.question;
+
+    questionData.label = label;
+    questionData.options = options;
+
+    const question = new Question(questionData);
+    const myCard = new Card({ ...cardData, question });
+
+    updateCard({
+      folderId,
+      formId: card.formId,
+      card: myCard,
+    });
+
+    // Update title and description on supabase
+    setUpdateProcess({ loading: true });
+
+    const { success } = await questionProvider.update({
+      title: label,
+      options,
+      id: card.id,
+    });
+
+    setUpdateProcess({ loading: false, status: success });
+  }
 
   return (
     <Box
