@@ -42,6 +42,7 @@ export default function SubmitCard({
 
 SubmitCard.defaultProps = {
   loading: false,
+  disabled: false,
   onSubmit: () => {},
 };
 
