@@ -12,6 +12,7 @@ import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
 import formProvider from "src/api/forms";
+import questionProvider from "src/api/questions";
 
 type TitleCardProps = {
   active: boolean;
@@ -143,6 +144,17 @@ export default function TitleCard({
       formId: card.formId,
       card: myCard,
     });
+
+    // Update title and description on supabase
+    setUpdateProcess({ loading: true });
+
+    const { success } = await questionProvider.update({
+      title,
+      description,
+      id: card.id,
+    });
+
+    setUpdateProcess({ loading: false, status: success });
   };
 
   return (
