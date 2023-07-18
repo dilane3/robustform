@@ -1,17 +1,35 @@
-import { Avatar, Box, SxProps, Theme, Typography } from "@mui/material";
+import {
+  Box,
+  SxProps,
+  Theme,
+  Typography,
+} from "@mui/material";
 import Head from "next/head";
 import Main from "../Main";
 import { styles as headerStyles } from "src/styles/mui-styles/header";
 import { Colors } from "src/constants";
 import Input from "@components/inputs/Input";
 import Sidenav from "./Sidenav";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
+import React from "react";
+import { useSignal } from "@dilane3/gx";
+import { AuthState } from "src/gx/signals/auth";
+import useForms from "src/hooks/useForms";
+import HeaderAvatar from "./HeaderAvatar";
 
 export type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  // Global state
+  const { user } = useSignal<AuthState>("auth");
+
+  // Fetch all forms
+  useForms();
+
+  if (!user) return null;
+
   return (
     <>
       <Head>
@@ -24,17 +42,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Typography sx={headerStyles.logo}>robustform</Typography>
 
           <Box sx={styles.input}>
-            <Input 
+            <Input
               label="Search"
               size="small"
               value=""
-              icon={
-                <SearchIcon color="action" />
-              }
+              icon={<SearchIcon color="action" />}
             />
           </Box>
 
-          <Avatar sx={headerStyles.avatar}>J</Avatar>
+          <HeaderAvatar />
         </Box>
 
         <Box component="section" sx={styles.bodyContainer}>
@@ -44,7 +60,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Box component="section" sx={styles.content}>
             {children}
           </Box>
-        </Box> 
+        </Box>
       </Main>
     </>
   );
@@ -52,12 +68,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
 const styles: Record<string, SxProps<Theme>> = {
   input: (theme) => ({
-    width: '100%',
+    width: "100%",
     maxWidth: 600,
     mx: 5,
 
     [theme.breakpoints.down("md")]: {
-      mx: 2
+      mx: 4,
     },
   }),
 
@@ -71,7 +87,7 @@ const styles: Record<string, SxProps<Theme>> = {
   }),
 
   sidenar: (theme) => ({
-    width: 250,
+    width: 280,
     height: "100%",
     backgroundColor: Colors.sidenav,
     transition: "all 0.3s ease-in-out",
@@ -87,6 +103,6 @@ const styles: Record<string, SxProps<Theme>> = {
   content: (theme) => ({
     width: "calc(100% - 250px)",
     height: "100%",
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   }),
 };

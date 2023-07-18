@@ -17,7 +17,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import Link from "next/link";
 import Form from "src/entities/form/Form";
-import { truncate } from "src/utility/stringOperations";
+import { truncate, formatDate } from "src/utility";
 
 type FormItemProps = {
   form: Form;
@@ -50,7 +50,7 @@ export default function FormItem({ form }: FormItemProps) {
             <Typography
               sx={{ fontSize: "0.8rem", fontFamily: "OutfitRegular", ml: 1 }}
             >
-              {form.createdAt.toLocaleDateString()}
+              {formatDate(form.createdAt)}
             </Typography>
           </Box>
 

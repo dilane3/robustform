@@ -7,7 +7,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState, ModalType } from "src/gx/signals";
-import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "src/gx/signals/forms/constants";
+import {
+  OTHERS_FORMS_FOLDER,
+  FOLDER_BIN,
+  FOLDER_BIN_ID,
+} from "src/gx/signals/forms/constants";
 import { useMemo } from "react";
 
 export default function Sidenav() {
@@ -18,12 +22,9 @@ export default function Sidenav() {
   const { selectFolder } = useActions("forms");
 
   // Memoized values
-  const folderBin = useMemo(() => {
-    return forms.find((folder) => folder.name === FOLDER_BIN);
-  }, [forms]);
 
-  const otherFormsFolder = useMemo(() => {
-    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
+  const folderBin = useMemo(() => {
+    return forms.find(f => f.id === FOLDER_BIN_ID);
   }, [forms]);
 
   // Handlers
@@ -52,7 +53,7 @@ export default function Sidenav() {
             selectedFolder && selectedFolder.id === folder.id && "active"
           }`}
         >
-          <FolderIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+          <FolderIcon sx={{ fontSize: "1.5rem", mr: 2, color: "#aaa" }} />
         </SidenavItem>
       );
     });
@@ -116,15 +117,15 @@ export default function Sidenav() {
         <Typography sx={styles.title}>Plus</Typography>
 
         <Box sx={styles.folders}>
-          <SidenavItem 
+          <SidenavItem
             text={FOLDER_BIN}
             onClick={() => selectFolder(folderBin)}
-            active={selectedFolder?.id === folderBin?.id}
+            active={selectedFolder?.id === FOLDER_BIN_ID}
             className={`${
-              selectedFolder && selectedFolder.id === folderBin?.id && "active"
+              selectedFolder && selectedFolder.id === FOLDER_BIN_ID && "active"
             }`}
           >
-            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2 }} color="action" />
+            <DeleteIcon sx={{ fontSize: "1.5rem", mr: 2, color: "#aaa" }} />
           </SidenavItem>
         </Box>
       </Box>

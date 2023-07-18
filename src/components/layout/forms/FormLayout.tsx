@@ -14,14 +14,30 @@ import ColorLensOutlinedIcon from "@mui/icons-material/ColorLensOutlined";
 import { Colors } from "src/constants";
 import Icon from "@components/icons/Icon";
 import Link from "next/link";
+import { AuthState } from "src/gx/signals/auth";
+import { useSignal } from "@dilane3/gx";
+import HeaderAvatar from "../dashboard/HeaderAvatar";
+import { FormsState } from "src/gx/signals";
+import useResponses from "src/hooks/useResponses";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
   title: string;
-  formId?: number
+  formId?: number;
 };
 
-export default function FormLayout({ children, title, formId }: FormLayoutProps) {
+export default function FormLayout({
+  children,
+  title,
+  formId,
+}: FormLayoutProps) {
+  // Global state
+  const { user } = useSignal<AuthState>("auth");
+  const { updateLoading, updateStatus } = useSignal<FormsState>("forms");
+
+  // Fetch responses
+  useResponses(6);
+
   return (
     <>
       <Head>
@@ -37,7 +53,14 @@ export default function FormLayout({ children, title, formId }: FormLayoutProps)
         >
           <Box sx={styles.headerTitle}>
             <Typography sx={headerStyles.logo}>robustform</Typography>
-            <Typography sx={styles.formSaved}>form saved</Typography>
+            <Typography
+              sx={styles.formSaved}
+              style={{
+                color: updateLoading ? Colors.gray : updateStatus ? "green" : "red",
+              }}
+            >
+              {updateLoading ? "Saving..." : "form saved"}
+            </Typography>
           </Box>
 
           <Box sx={styles.headerRight}>
@@ -53,7 +76,7 @@ export default function FormLayout({ children, title, formId }: FormLayoutProps)
               </Link>
             </Box>
 
-            <Avatar sx={headerStyles.avatar}>J</Avatar>
+            <HeaderAvatar />
           </Box>
         </Box>
 

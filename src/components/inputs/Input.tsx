@@ -56,7 +56,7 @@ export default function Input({
         ) : undefined,
         style: {
           fontFamily: "OutfitRegular",
-          width
+          width,
         },
       }}
       autoFocus={autoFocus}
@@ -67,7 +67,6 @@ export default function Input({
 const inputStyles = {
   width: "100%",
   borderRadius: "10px",
-  outline: "none !important",
   fontSize: "16px",
   fontFamily: "OutfitRegular",
 };

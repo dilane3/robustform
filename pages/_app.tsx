@@ -2,13 +2,9 @@ import "@styles/globals.css";
 import React from "react";
 import { AppProps } from "next/app";
 import type { NextPage } from "next";
-import { Refine, GitHubBanner } from "@refinedev/core";
+import { Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import {
-  notificationProvider,
-  RefineSnackbarProvider,
-  ThemedLayoutV2,
-} from "@refinedev/mui";
+import { notificationProvider, RefineSnackbarProvider } from "@refinedev/mui";
 import routerProvider, {
   UnsavedChangesNotifier,
   DocumentTitleHandler,
@@ -24,6 +20,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import ModalProvider from "@components/modals/ModalProvider";
 import GXProvider from "@dilane3/gx";
 import { store } from "src/gx/store";
+import LoadLayout from "@components/layout/LoadLayout";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -35,30 +32,23 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const renderComponent = () => {
-    if (Component.noLayout) {
-      return <Component {...pageProps} />;
-    }
-
-    return (
-      <ThemedLayoutV2 Header={() => <Header sticky />}>
-        <Component {...pageProps} />
-      </ThemedLayoutV2>
-    );
+    return <Component {...pageProps} />;
   };
 
   return (
     <StyledEngineProvider injectFirst>
       <RefineKbarProvider>
-        <ColorModeContextProvider>
-          <CssBaseline />
-          <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
-          <RefineSnackbarProvider>
-            <Refine
-              routerProvider={routerProvider}
-              dataProvider={dataProvider(supabaseClient)}
-              authProvider={authProvider}
-              notificationProvider={notificationProvider}
-              resources={[
+        {/* <ColorModeContextProvider> */}
+        <CssBaseline />
+        <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+        <RefineSnackbarProvider>
+          <Refine
+            routerProvider={routerProvider}
+            dataProvider={dataProvider(supabaseClient)}
+            authProvider={authProvider}
+            notificationProvider={notificationProvider}
+            resources={
+              [
                 // {
                 //   name: "forms",
                 //   list: "/forms",
@@ -67,25 +57,26 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
                 //     canDelete: true,
                 //   },
                 // },
-              ]}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-              }}
-            >
-              <GXProvider store={store}>
-                <>
-                  {renderComponent()}
-                  <ModalProvider />
-                </>
-              </GXProvider>
+              ]
+            }
+            options={{
+              syncWithLocation: true,
+              warnWhenUnsavedChanges: true,
+            }}
+          >
+            <GXProvider store={store}>
+              <LoadLayout>
+                {renderComponent()}
+                <ModalProvider />
+              </LoadLayout>
+            </GXProvider>
 
-              <UnsavedChangesNotifier />
-              <RefineKbar />
-              <DocumentTitleHandler />
-            </Refine>
-          </RefineSnackbarProvider>
-        </ColorModeContextProvider>
+            <UnsavedChangesNotifier />
+            <RefineKbar />
+            <DocumentTitleHandler />
+          </Refine>
+        </RefineSnackbarProvider>
+        {/* </ColorModeContextProvider> */}
       </RefineKbarProvider>
     </StyledEngineProvider>
   );

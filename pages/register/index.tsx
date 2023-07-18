@@ -1,3 +1,4 @@
+import React from "react";
 import { GetServerSideProps } from "next";
 import { authProvider } from "src/authProvider";
 import { Box, SxProps, Theme, Typography } from "@mui/material";
@@ -9,8 +10,81 @@ import Image from "next/image";
 import loginImage from "src/assets/images/signup.png";
 import googleImage from "src/assets/images/google.png";
 import Link from "next/link";
+import { object, string } from "yup";
+
+const schema = object({
+  email: string().email().required(),
+  password: string().min(6).max(20).required(),
+});
 
 export default function Register() {
+  const { register } = authProvider;
+
+  // Local state
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [verified, setVerified] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  // Effects
+
+  React.useEffect(() => {
+    const validateForm = async () => {
+      await validate();
+    };
+
+    validateForm();
+  }, [email, password]);
+
+  // Handlers
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    target: string
+  ) => {
+    if (target === "email") {
+      setEmail(event.target.value);
+    } else if (target === "password") {
+      setPassword(event.target.value);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!verified || loading) return;
+
+    setLoading(true);
+
+    if (register) {
+      const response = await register({
+        email,
+        password,
+      });
+
+      if (response.success) {
+        window.location.href = response.redirectTo as string;
+      }
+    }
+
+    setLoading(false);
+  };
+
+  // Methods
+
+  const validate = async () => {
+    try {
+      await schema.validate({
+        email,
+        password,
+      });
+
+      setVerified(true);
+    } catch (error) {
+      console.log(error);
+
+      setVerified(false);
+    }
+  };
+
   return (
     <AuthLayout>
       <Box component="section" sx={styles.container}>
@@ -69,6 +143,8 @@ export default function Register() {
                 marginBottom: 3,
               }}
               size="small"
+              value={email}
+              onChange={(event) => handleChange(event, "email")}
             />
             <Input
               label="Password"
@@ -80,9 +156,11 @@ export default function Register() {
                 backgroundColor: Colors.background,
               }}
               size="small"
+              value={password}
+              onChange={(event) => handleChange(event, "password")}
             />
 
-            <Button>
+            <Button disabled={!verified || loading} onClick={handleSubmit}>
               <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
                 Sign up
               </Typography>
@@ -106,14 +184,11 @@ export default function Register() {
             <Typography sx={styles.logo}>Robustform</Typography>
           </Link>
 
-          <Box
-            sx={{ ...styles.box, ...styles.imageContainer } as SxProps<Theme>}
-          >
+          <Box sx={styles.imageContainer}>
             <Image
               src={loginImage}
               alt="Login"
               width={500}
-              style={styles.image as React.CSSProperties}
             />
           </Box>
 
@@ -143,7 +218,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
     return {
       props: {},
       redirect: {
-        destination: `/`,
+        destination: `/forms`,
         permanent: false,
       },
     };
@@ -175,10 +250,13 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   authSection: (theme) => ({
     margin: 0,
     padding: "2rem 5rem",
-    width: "50%",
+    width: "500px",
     minHeight: "100%",
     backgroundColor: Colors.secondary,
     overflowY: "auto",
+    [theme.breakpoints.down(1000)]: {
+      width: "50%",
+    },
     [theme.breakpoints.down("md")]: {
       padding: "2rem 2rem",
     },
@@ -192,9 +270,12 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   infoSection: (theme) => ({
     margin: 0,
     padding: "2rem 5rem",
-    width: "50%",
+    width: "calc(100% - 500px)",
     minHeight: "100%",
     overflowY: "auto",
+    [theme.breakpoints.down(1000)]: {
+      width: "50%",
+    },
     [theme.breakpoints.down("md")]: {
       padding: "2rem 2rem",
     },
@@ -272,8 +353,18 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
   },
 
   imageContainer: (theme) => ({
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    marginTop: 5,
+    alignItems: "center",
+    justifyContent: "center",
+
+    [theme.breakpoints.down("md")]: {
+      "& img": {
+        width: "100%",
+        height: "auto",
+      },
     },
   }),
 };

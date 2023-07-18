@@ -3,7 +3,6 @@ import { Colors } from "src/constants";
 import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftOutlined";
 import React, { useMemo } from "react";
 import SidenavItem from "@components/pages/dashboard/SidenavItem";
-import FolderIcon from "@mui/icons-material/Folder";
 import InputRoundedIcon from "@mui/icons-material/InputRounded";
 import WrapTextRoundedIcon from "@mui/icons-material/WrapTextRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
@@ -16,29 +15,37 @@ import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
-import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
+import questionProvider from "src/api/questions";
+import Folder from "src/entities/form/Folder";
 
 type ElementsProps = {
   formId: number;
+  folderId?: number;
 };
 
-export default function Elements({ formId }: ElementsProps) {
+export default function Elements({ formId, folderId }: ElementsProps) {
   // Local state
   const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
 
-  const { selectedFolder, forms } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   // Global actions
-  const { addCard } = useActions("forms");
+  const { addCard, updateCard } = useActions("forms");
 
   // Memoized values
+  const form = useMemo(() => {
+    const folder: Folder | undefined = forms.find((f) => f.id === folderId);
 
-  const otherFormsFolder = useMemo(() => {
-    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
-  }, [forms]);
+    if (!folder) return null;
+
+    return folder.forms.find((f) => f.id === formId);
+  }, [JSON.stringify(forms)]);
 
   // Handlers
-  const handleSelectCard = (elementType: QuestionType) => {
+  const handleSelectCard = async (elementType: QuestionType) => {
+    if (!form) return;
+
     const cardId = Math.floor(Math.random() * 1000000000) + 2;
     const cardType =
       elementType === QuestionType.HEADING
@@ -51,7 +58,7 @@ export default function Elements({ formId }: ElementsProps) {
       type: cardType,
       questionType: elementType,
       createdAt: new Date(Date.now()),
-      position: 1,
+      position: form.cards.length + 1,
       active: true,
     };
 
@@ -59,10 +66,32 @@ export default function Elements({ formId }: ElementsProps) {
 
     // Add card to global state
     addCard({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId,
       formId,
       card,
     });
+
+    // Add card (question) to supabase
+    const { success, data } = await questionProvider.create({
+      type: cardType,
+      questionType: elementType,
+      formId,
+      position: form.cards.length + 1,
+    });
+
+    if (success && data) {
+      // Update card id
+      card.id = data.id;
+
+      // Update card on global state
+      updateCard({
+        folderId,
+        formId,
+        card,
+      });
+    } else {
+      console.log("card not created");
+    }
   };
 
   return (
@@ -172,6 +201,10 @@ export default function Elements({ formId }: ElementsProps) {
     </Box>
   );
 }
+
+Elements.defaultProps = {
+  formId: OTHERS_FORMS_FOLDER_ID,
+};
 
 const styles: Record<string, SxProps<Theme>> = {
   container: (theme) => ({

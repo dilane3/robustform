@@ -21,11 +21,13 @@ import { FormsState } from "src/gx/signals";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
+import questionProvider from "src/api/questions";
 
 type ChoiceListCardProps = {
   card: Card;
   values: string[];
+  folderId: number | null;
   onActive: (card: Card) => void;
   onAddResponse: (values: string[]) => void;
 };
@@ -33,6 +35,7 @@ type ChoiceListCardProps = {
 export default function ChoiceListCard({
   card,
   values,
+  folderId,
   onActive,
   onAddResponse,
 }: ChoiceListCardProps) {
@@ -43,16 +46,10 @@ export default function ChoiceListCard({
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder, forms } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   // Global action
-  const { updateCard, deleteCard } = useActions("forms");
-
-  // Memoized values
-
-  const otherFormsFolder = useMemo(() => {
-    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
-  }, [forms]);
+  const { updateCard, deleteCard, setUpdateProcess } = useActions("forms");
 
   // Effects
 
@@ -70,23 +67,12 @@ export default function ChoiceListCard({
   }, [label, JSON.stringify(options)]);
 
   useEffect(() => {
+    const updateQuestion = async () => {
+      await handleUpdateQuestion();
+    }
+
     if (!card.active && modified) {
-      // TODO: Update on supabase
-
-      let cardData = card.toOject();
-      let questionData = cardData.question;
-
-      questionData.label = label;
-      questionData.options = options;
-
-      const question = new Question(questionData);
-      const myCard = new Card({ ...cardData, question });
-
-      updateCard({
-        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
-        formId: card.formId,
-        card: myCard,
-      });
+      updateQuestion();
     } else {
       console.log("dont save");
     }
@@ -125,7 +111,7 @@ export default function ChoiceListCard({
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId,
       formId: card.formId,
       cardId: card.id,
     });
@@ -134,6 +120,34 @@ export default function ChoiceListCard({
   const handleAddResponse = (value: string) => {
     onAddResponse([value]);
   };
+
+  const handleUpdateQuestion = async () => {
+    let cardData = card.toOject();
+    let questionData = cardData.question;
+
+    questionData.label = label;
+    questionData.options = options;
+
+    const question = new Question(questionData);
+    const myCard = new Card({ ...cardData, question });
+
+    updateCard({
+      folderId,
+      formId: card.formId,
+      card: myCard,
+    });
+
+    // Update title and description on supabase
+    setUpdateProcess({ loading: true });
+
+    const { success } = await questionProvider.update({
+      title: label,
+      options,
+      id: card.id,
+    });
+
+    setUpdateProcess({ loading: false, status: success });
+  }
 
   return (
     <Box
@@ -237,6 +251,7 @@ export default function ChoiceListCard({
 ChoiceListCard.defaultProps = {
   active: false,
   values: [],
+  folderId: OTHERS_FORMS_FOLDER_ID,
   onActive: () => {},
   onAddResponse: () => {},
 };

@@ -40,6 +40,10 @@ export default class Response {
 
   // Setters
 
+  set id(id: number) {
+    this._id = id;
+  }
+
   set createdAt(createdAt: Date | null) {
     this._createdAt = createdAt;
   }

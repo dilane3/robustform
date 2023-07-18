@@ -1,14 +1,16 @@
 import { createClient } from "@refinedev/supabase";
 
-const SUPABASE_URL = "https://iwdfzvfqbtokqetmbmbp.supabase.co";
-const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMDU2NzAxMCwiZXhwIjoxOTQ2MTQzMDEwfQ._gr6kXGkQBi9BM9dx5vKaNKYj_DJN1xlkarprGpM_fU";
+// const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_KEY } = process.env;
 
-export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+export const supabaseClient = createClient(
+  "https://ispkmneeyrolkbhatdes.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcGttbmVleXJvbGtiaGF0ZGVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODc3OTgzNzAsImV4cCI6MjAwMzM3NDM3MH0.dA9nZ-4sRvtSLVu2ElptA6sW3yO0zR8CEscxwYSLjds",
+  {
     db: {
-        schema: "public",
+      schema: "public",
     },
     auth: {
-        persistSession: true,
+      persistSession: true,
     },
-});
+  }
+);

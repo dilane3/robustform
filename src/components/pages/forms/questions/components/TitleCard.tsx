@@ -6,22 +6,26 @@ import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Form from "src/entities/form/Form";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
-import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import { OTHERS_FORMS_FOLDER_ID } from "src/gx/signals/forms/constants";
 import Card from "src/entities/card/Card";
 import Question from "src/entities/card/Question";
 import Icon from "@components/icons/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
+import formProvider from "src/api/forms";
+import questionProvider from "src/api/questions";
 
 type TitleCardProps = {
   active: boolean;
   form: Form;
   card: Card;
+  folderId: number | null;
   onActive: (card?: Card) => void;
 };
 
 export default function TitleCard({
   active,
   onActive,
+  folderId,
   form,
   card,
 }: TitleCardProps) {
@@ -39,17 +43,15 @@ export default function TitleCard({
   const [modified, setModified] = React.useState(false);
 
   // Global state
-  const { selectedFolder, forms } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   // Global actions
-  const { updateTitleAndDescription, updateCard, deleteCard } =
-    useActions("forms");
-
-  // Memoized values
-
-  const otherFormsFolder = useMemo(() => {
-    return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
-  }, [forms]);
+  const {
+    updateTitleAndDescription,
+    updateCard,
+    deleteCard,
+    setUpdateProcess,
+  } = useActions("forms");
 
   // Effects
 
@@ -64,34 +66,14 @@ export default function TitleCard({
   }, [title, description]);
 
   useEffect(() => {
+    const updateForm = async () => {
+      await handleUpdateForm();
+    };
+
     if (!cardActive && modified) {
-      if (form) {
-        updateTitleAndDescription({
-          formId: form.id,
-          folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
-          title,
-          description,
-        });
+      updateForm();
 
-        return;
-      }
-
-      // TODO: Update on supabase
-
-      let cardData = card.toOject();
-      let questionData = cardData.question;
-
-      cardData.title = title;
-      cardData.description = description;
-
-      const question = new Question(questionData);
-      const myCard = new Card({ ...cardData, question });
-
-      updateCard({
-        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
-        formId: card.formId,
-        card: myCard,
-      });
+      setModified(false);
     } else {
       console.log("dont save");
     }
@@ -116,10 +98,63 @@ export default function TitleCard({
 
   const handleDelete = () => {
     deleteCard({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId,
       formId: card.formId,
       cardId: card.id,
     });
+  };
+
+  const handleUpdateForm = async () => {
+    if (form) {
+      // Update title and description on global state
+      updateTitleAndDescription({
+        formId: form.id,
+        folderId,
+        title,
+        description,
+      });
+
+      // Update title and description on supabase
+      setUpdateProcess({ loading: true });
+
+      const { success } = await formProvider.update({
+        title,
+        description,
+        id: form.id,
+      });
+
+      setUpdateProcess({ loading: false, status: success });
+
+      return;
+    }
+
+    // TODO: Update on supabase
+
+    let cardData = card.toOject();
+    let questionData = cardData.question;
+
+    cardData.title = title;
+    cardData.description = description;
+
+    const question = new Question(questionData);
+    const myCard = new Card({ ...cardData, question });
+
+    updateCard({
+      folderId,
+      formId: card.formId,
+      card: myCard,
+    });
+
+    // Update title and description on supabase
+    setUpdateProcess({ loading: true });
+
+    const { success } = await questionProvider.update({
+      title,
+      description,
+      id: card.id,
+    });
+
+    setUpdateProcess({ loading: false, status: success });
   };
 
   return (
@@ -201,6 +236,7 @@ TitleCard.defaultProps = {
   active: false,
   form: null,
   card: null,
+  folderId: OTHERS_FORMS_FOLDER_ID,
   onActive: () => {},
 };
 
@@ -228,7 +264,7 @@ const styles: Record<string, SxProps<Theme>> = {
   requirement: {
     fontSize: "0.9rem",
     fontFamily: "OutfitRegular",
-    color: Colors.red
+    color: Colors.red,
   },
 
   boxRowBetween: {

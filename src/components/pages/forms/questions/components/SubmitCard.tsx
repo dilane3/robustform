@@ -6,10 +6,16 @@ import { styles as cardStyles } from "@styles/mui-styles/form-card";
 import Button from "@components/buttons/Button";
 
 type SubmitCardProps = {
+  disabled: boolean;
+  loading?: boolean;
   onSubmit: () => void;
-}
+};
 
-export default function SubmitCard({ onSubmit }: SubmitCardProps) {
+export default function SubmitCard({
+  disabled,
+  loading,
+  onSubmit,
+}: SubmitCardProps) {
   return (
     <Box
       sx={cardStyles.container}
@@ -20,8 +26,14 @@ export default function SubmitCard({ onSubmit }: SubmitCardProps) {
       }}
     >
       <Box sx={cardStyles.box}>
-        <Button styles={{ width: 120, height: 40 }} onClick={onSubmit}>
-          <Typography sx={styles.text}>Submit</Typography>
+        <Button
+          styles={{ width: 120, height: 40 }}
+          onClick={onSubmit}
+          disabled={disabled || loading}
+        >
+          <Typography sx={styles.text}>
+            {loading ? "SENDING..." : "SUBMIT"}
+          </Typography>
         </Button>
       </Box>
     </Box>
@@ -29,6 +41,8 @@ export default function SubmitCard({ onSubmit }: SubmitCardProps) {
 }
 
 SubmitCard.defaultProps = {
+  loading: false,
+  disabled: false,
   onSubmit: () => {},
 };
 

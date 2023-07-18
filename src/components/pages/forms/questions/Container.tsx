@@ -29,7 +29,7 @@ export default function QuestionContainer() {
   const [active, setActive] = React.useState(false);
 
   // Global state
-  const { forms, selectedFolder } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   const { setCardActive, setAllCardsInactive } = useActions("forms");
 
@@ -60,7 +60,7 @@ export default function QuestionContainer() {
 
     if (card) {
       setCardActive({
-        folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+        folderId: form?.folderId ? form?.folderId : otherFormsFolder?.id,
         formId: card.formId,
         cardId: card.id,
       });
@@ -69,7 +69,7 @@ export default function QuestionContainer() {
 
   const handleActive = (active: boolean) => {
     setAllCardsInactive({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId: form?.folderId ? form?.folderId : otherFormsFolder?.id,
       formId: form?.id,
     });
 
@@ -79,7 +79,7 @@ export default function QuestionContainer() {
   const handleDesactivateAll = () => {
     setActive(false);
     setAllCardsInactive({
-      folderId: selectedFolder ? selectedFolder.id : otherFormsFolder?.id,
+      folderId: form?.folderId ? form?.folderId : otherFormsFolder?.id,
       formId: form?.id,
     });
   };
@@ -93,51 +93,83 @@ export default function QuestionContainer() {
         if (card.type === CardType.HEADING) {
           cardItems.push(
             <TitleCard
+              key={card.id}
               active={active}
               onActive={handleGlobalActive}
               card={card}
+              folderId={form?.folderId}
             />
           );
         } else {
           switch (card.questionType) {
             case QuestionType.SHORT_TEXT: {
               cardItems.push(
-                <ShortTextCard card={card} onActive={handleGlobalActive} />
+                <ShortTextCard
+                  key={card.id}
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
 
             case QuestionType.LONG_TEXT: {
               cardItems.push(
-                <LongTextCard card={card} onActive={handleGlobalActive} />
+                <LongTextCard
+                  key={card.id}
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
 
             case QuestionType.MULTIPLE_CHOICE: {
               cardItems.push(
-                <MultiChoiceCard card={card} onActive={handleGlobalActive} />
+                <MultiChoiceCard
+                  key={card.id}
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
 
             case QuestionType.UNIQUE_CHOICE: {
               cardItems.push(
-                <UniqueChoiceCard card={card} onActive={handleGlobalActive} />
+                <UniqueChoiceCard
+                  key={card.id}
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
 
             case QuestionType.CHOICE_LIST: {
               cardItems.push(
-                <ChoiceListCard card={card} onActive={handleGlobalActive} />
+                <ChoiceListCard
+                  key={card.id}
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
 
             case QuestionType.DATE: {
               cardItems.push(
-                <DateCard card={card} onActive={handleGlobalActive} />
+                <DateCard
+                  key={card.id}
+                  card={card}
+                  folderId={form?.folderId}
+                  onActive={handleGlobalActive}
+                />
               );
               break;
             }
@@ -167,7 +199,10 @@ export default function QuestionContainer() {
 
   return (
     <Box sx={styles.container}>
-      <Elements formId={form.id} />
+      <Elements
+        formId={form.id}
+        folderId={form.folderId || otherFormsFolder?.id}
+      />
 
       <Box sx={styles.formContainer}>
         <Box sx={styles.form}>
@@ -175,6 +210,7 @@ export default function QuestionContainer() {
             active={active}
             onActive={() => handleActive(true)}
             form={form}
+            folderId={form?.folderId}
           />
 
           {renderQuestions()}

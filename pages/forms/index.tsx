@@ -4,14 +4,20 @@ import EmptyForm from "@components/pages/dashboard/Empty";
 import FormsContainer from "@components/pages/dashboard/FormsContainer";
 import { useSignal } from "@dilane3/gx";
 import { Box, SxProps, Theme } from "@mui/material";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useMemo } from "react";
+import { authProvider } from "src/authProvider";
 import Form from "src/entities/form/Form";
 import { FormsState } from "src/gx/signals";
+import useAuth from "src/hooks/useAuth";
 
 export default function Forms() {
   // Global state
   const { forms, selectedFolder } = useSignal<FormsState>("forms");
+
+  // Get current user
+  useAuth();
 
   // Memoized values
   const allForms = useMemo(() => {
@@ -25,6 +31,8 @@ export default function Forms() {
 
     return myForms;
   }, [JSON.stringify(forms)]);
+
+  console.log({ selectedFolder })
 
   return (
     <DashboardLayout>
@@ -53,6 +61,24 @@ export default function Forms() {
 }
 
 Forms.noLayout = true;
+
+export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  const { authenticated } = await authProvider.check(context);
+
+  if (!authenticated) {
+    return {
+      props: {},
+      redirect: {
+        destination: `/`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 const styles: Record<string, SxProps<Theme>> = {
   formItem: (theme) => ({

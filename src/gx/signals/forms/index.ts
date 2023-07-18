@@ -1,16 +1,22 @@
 import { createSignal } from "@dilane3/gx";
 import Folder from "src/entities/form/Folder";
 import Form from "src/entities/form/Form";
-import { OTHERS_FORMS_FOLDER, FOLDER_BIN } from "./constants";
+import {
+  OTHERS_FORMS_FOLDER,
+  FOLDER_BIN,
+  OTHERS_FORMS_FOLDER_ID,
+  FOLDER_BIN_ID,
+} from "./constants";
 import Card from "src/entities/card/Card";
+import Response from "src/entities/response/Response";
 
-const folderBin = new Folder({
-  id: 1,
+export const folderBin = new Folder({
+  id: FOLDER_BIN_ID,
   name: FOLDER_BIN,
 });
 
-const otherFormsFolder = new Folder({
-  id: 2,
+export const otherFormsFolder = new Folder({
+  id: OTHERS_FORMS_FOLDER_ID,
   name: OTHERS_FORMS_FOLDER,
 });
 
@@ -19,15 +25,19 @@ export type FormsState = {
   loading: boolean;
   selectedForm: Form | null;
   selectedFolder: Folder | null;
+  updateLoading: boolean;
+  updateStatus: boolean;
 };
 
 export const formsSignal = createSignal<FormsState>({
   name: "forms",
   state: {
-    forms: [otherFormsFolder, folderBin],
+    forms: [],
     loading: true,
     selectedFolder: null,
     selectedForm: null,
+    updateLoading: false,
+    updateStatus: true,
   },
   actions: {
     setForms: (state, forms: Folder[]) => {
@@ -163,8 +173,12 @@ export const formsSignal = createSignal<FormsState>({
         (folder) => folder.id === payload.folderId
       );
 
+      console.log(folder);
+
       if (folder) {
         const form = folder.forms.find((form) => form.id === payload.formId);
+
+        console.log(form);
 
         if (form) {
           // Set all cards inactive
@@ -218,6 +232,56 @@ export const formsSignal = createSignal<FormsState>({
           if (cardIndex !== -1) {
             form.cards[cardIndex] = payload.card;
           }
+        }
+      }
+
+      return state;
+    },
+
+    setUpdateProcess: (
+      state,
+      payload: { loading: boolean; status: boolean }
+    ) => {
+      state.updateLoading = payload.loading;
+      state.updateStatus = payload.status || state.updateStatus;
+
+      return state;
+    },
+
+    // Responses section
+
+    setResponses: (
+      state,
+      payload: { folderId: number; formId: number; responses: Response[] }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.responses = payload.responses;
+        }
+      }
+
+      return state;
+    },
+
+    addResponse: (
+      state,
+      payload: { folderId: number; formId: number; response: Response }
+    ) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.addResponse(payload.response);
         }
       }
 

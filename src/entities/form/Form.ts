@@ -9,7 +9,7 @@ type FormData = {
   folderId?: number | null;
   createdAt: Date;
   updatedAt: Date;
-  ownerId: string;
+  ownerId: number;
   cards?: Card[];
   responses?: Response[];
 };
@@ -21,7 +21,7 @@ export default class Form {
   private _folderId: number | null;
   private _createdAt: Date;
   private _updatedAt: Date;
-  private _ownerId: string;
+  private _ownerId: number;
   private _cards: Card[];
   private _responses: Response[];
 
@@ -81,6 +81,10 @@ export default class Form {
 
   set description(description: string) {
     this._description = description;
+  }
+
+  set responses(responses: Response[]) {
+    this._responses = responses;
   }
 
   // Methods
