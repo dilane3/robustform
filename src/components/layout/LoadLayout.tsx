@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Colors } from "src/constants";
+import useAuth from "src/hooks/useAuth";
 
 type LoadLayoutProps = {
   children: React.ReactNode;
@@ -10,14 +11,17 @@ export default function LoadLayout({ children }: LoadLayoutProps) {
   // Local state
   const [loaded, setLoaded] = React.useState(false);
 
+   // Get the data of the current user
+   useAuth();
+
   // Effects
 
   React.useEffect(() => {
     // wait when the page is loaded
 
-    window.onload = function () {
-      console.log("loaaaaaaaaded");
-    };
+    window.addEventListener("load", () => {
+      console.log("loaded");
+    });
 
     // another method
     setTimeout(() => {
@@ -25,7 +29,9 @@ export default function LoadLayout({ children }: LoadLayoutProps) {
     }, 3000);
 
     return () => {
-      window.onload = () => {};
+      window.removeEventListener("load", () => {
+        console.log("loaded");
+      });
     };
   }, []);
 

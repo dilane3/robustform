@@ -3,18 +3,13 @@ import Block from "@components/pages/home/Block";
 import Footer from "@components/pages/home/Footer";
 import Hero from "@components/pages/home/Hero";
 import Start from "@components/pages/home/Start";
-import { Box, SxProps, Theme, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { authProvider } from "src/authProvider";
-import { Colors } from "src/constants";
-import useAuth from "src/hooks/useAuth";
 import { styles } from "src/styles/mui-styles/header";
 
 export default function Home() {
-  // Get the data of the current user
-  useAuth();
-
   return (
     <>
       <Head>

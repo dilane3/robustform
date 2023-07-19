@@ -19,6 +19,11 @@ import Link from "next/link";
 import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import Image from "next/image";
+import { Colors } from "src/constants";
+import notFoundImage from "src/assets/images/notfound.png";
+import Button from "@components/buttons/Button";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 
 export default function QuestionContainer() {
   // URL handler
@@ -185,43 +190,68 @@ export default function QuestionContainer() {
 
   // Render
 
-  if (isReady && !form) {
-    return (
-      <Link href="/forms">
-        <Typography sx={{ fontFamily: "OutfitRegular", fontSize: "1rem" }}>
-          Go back
-        </Typography>
-      </Link>
-    );
-  }
+  const renderContent = () => {
+    console.log({ isReady, form });
+    if (isReady && !form) {
+      return (
+        <Box sx={styles.centeredBox}>
+          <Image alt="form submitted" src={notFoundImage} width={250} />
 
-  if (!isReady || !form) return null;
+          <Typography
+            sx={{ fontFamily: "OutfitBold", fontSize: "1.5rem", mt: 2 }}
+          >
+            Form not found
+          </Typography>
 
-  return (
-    <Box sx={styles.container}>
-      <Elements
-        formId={form.id}
-        folderId={form.folderId || otherFormsFolder?.id}
-      />
+          <Typography
+            sx={{ fontFamily: "OutfitRegular", fontSize: "1rem", mt: 2 }}
+          >
+            The form you are looking for does not exist or haven't been loaded
+            yet.
+          </Typography>
 
-      <Box sx={styles.formContainer}>
-        <Box sx={styles.form}>
-          <TitleCard
-            active={active}
-            onActive={() => handleActive(true)}
-            form={form}
-            folderId={form?.folderId}
-          />
-
-          {renderQuestions()}
-
-          <SubmitCard />
+          <Link href="/forms">
+            <Button styles={{ borderRadius: 3, width: 280, height: 40, mt: 3 }}>
+              <SpaceDashboardIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
+              <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
+                Come back to dashboard
+              </Typography>
+            </Button>
+          </Link>
         </Box>
+      );
+    }
 
-        <Box sx={styles.bg} onClick={handleDesactivateAll} />
-      </Box>
-    </Box>
-  );
+    if (!isReady || !form) return null;
+
+    return (
+      <>
+        <Elements
+          formId={form?.id}
+          folderId={form?.folderId || otherFormsFolder?.id}
+        />
+
+        <Box sx={styles.formContainer}>
+          <Box sx={styles.form}>
+            <TitleCard
+              active={active}
+              onActive={() => handleActive(true)}
+              form={form}
+              folderId={form?.folderId}
+            />
+
+            {renderQuestions()}
+
+            <SubmitCard />
+          </Box>
+
+          <Box sx={styles.bg} onClick={handleDesactivateAll} />
+        </Box>
+      </>
+    );
+  };
+
+  return <Box sx={styles.container}>{renderContent()}</Box>;
 }
 
 export const styles: Record<string, SxProps<Theme>> = {
@@ -264,4 +294,14 @@ export const styles: Record<string, SxProps<Theme>> = {
     height: "100%",
     zIndex: 0,
   },
+
+  centeredBox: (theme) => ({
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.background,
+  }),
 };

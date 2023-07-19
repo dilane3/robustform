@@ -1,5 +1,4 @@
 import Main from "@components/layout/Main";
-import { styles as baseStyles } from "@components/pages/forms/questions/Container";
 import ChoiceListCard from "@components/pages/forms/questions/components/ChoiceListCard";
 import DateCard from "@components/pages/forms/questions/components/DateCard";
 import FooterCard from "@components/pages/forms/questions/components/Footer";
@@ -9,11 +8,10 @@ import ShortTextCard from "@components/pages/forms/questions/components/ShortTex
 import SubmitCard from "@components/pages/forms/questions/components/SubmitCard";
 import TitleCard from "@components/pages/forms/questions/components/TitleCard";
 import UniqueChoiceCard from "@components/pages/forms/questions/components/UniqueChoice";
-import { useActions, useSignal } from "@dilane3/gx";
+import { useSignal } from "@dilane3/gx";
 import { Theme, SxProps, Box, Typography } from "@mui/material";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React from "react";
@@ -27,18 +25,18 @@ import { CardType, QuestionType } from "src/entities/card/type";
 import Form from "src/entities/form/Form";
 import Response from "src/entities/response/Response";
 import ResponseItem from "src/entities/response/ResponseItem";
-import { FormsState } from "src/gx/signals";
 import { AuthState } from "src/gx/signals/auth";
 import {
   FOLDER_BIN_ID,
   OTHERS_FORMS_FOLDER_ID,
 } from "src/gx/signals/forms/constants";
-
-import formSubmittedImage from "src/assets/images/submit2.png";
-import notFoundImage from "src/assets/images/notfound.png";
 import Button from "@components/buttons/Button";
 import HomeIcon from "@mui/icons-material/Home";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import { toast } from "react-toastify";
+
+import formSubmittedImage from "src/assets/images/submit2.png";
+import notFoundImage from "src/assets/images/notfound.png";
 
 export default function FormView() {
   // URL handler
@@ -117,8 +115,9 @@ export default function FormView() {
         });
 
         setForm(form);
-        setCharging(false);
       }
+
+      setCharging(false);
     };
 
     if (formKey) {
@@ -210,6 +209,8 @@ export default function FormView() {
 
           setLoading(false);
           setSubmitted(true);
+
+          toast.success("Your response has been sent successfully.");
 
           if (user && form) {
             if (user.id === form.ownerId) {
@@ -342,7 +343,7 @@ export default function FormView() {
   };
 
   const renderContent = () => {
-    if (isReady && !form) {
+    if (isReady && !form && !charging) {
       return (
         <Box sx={styles.centeredBox}>
           <Image alt="form submitted" src={notFoundImage} width={250} />
@@ -354,15 +355,13 @@ export default function FormView() {
           </Typography>
 
           <Typography
-            sx={{ fontFamily: "OutfitRegular", fontSize: "1rem", mt: 2 }}
+            sx={{ fontFamily: "OutfitRegular", fontSize: "1rem", mt: 2, textAlign: "center" }}
           >
             The form you are looking for does not exist or the link has expired.
           </Typography>
         </Box>
       );
     }
-
-    if (!isReady || !form) return null;
 
     if (charging) {
       return (
@@ -386,7 +385,12 @@ export default function FormView() {
           </Typography>
 
           <Typography
-            sx={{ fontFamily: "OutfitRegular", fontSize: "1rem", mt: 2 }}
+            sx={{
+              fontFamily: "OutfitRegular",
+              fontSize: "1rem",
+              mt: 2,
+              textAlign: "center",
+            }}
           >
             Your response has been sent successfully.
           </Typography>
@@ -409,6 +413,8 @@ export default function FormView() {
         </Box>
       );
     }
+
+    if (!form) return null;
 
     return (
       <Box sx={styles.formContainer}>
@@ -483,6 +489,7 @@ const styles: Record<string, SxProps<Theme>> = {
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    padding: "2rem",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: Colors.background,

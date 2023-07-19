@@ -11,6 +11,7 @@ import { FormsState } from "src/gx/signals";
 import { AuthState } from "src/gx/signals/auth";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
 import { styles as baseStyles } from "src/styles/mui-styles/form-card";
+import { toast } from "react-toastify";
 
 export default function CreateForm() {
   // Global state
@@ -82,7 +83,13 @@ export default function CreateForm() {
   
       // Close modal
       close();
-    } else {}
+
+      toast.success("New form added successfully.");
+    } else {
+      console.log({ error });
+
+      toast.error("Something went wrong, please try again later.");
+    }
   };
 
   const handleClose = () => {
@@ -97,7 +104,7 @@ export default function CreateForm() {
         Create Form
       </Typography>
 
-      <Box sx={baseStyles.box}>
+      <Box component="form" sx={baseStyles.box}>
         <Input
           label="Title"
           size="small"

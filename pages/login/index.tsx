@@ -11,6 +11,8 @@ import loginImage from "src/assets/images/login.png";
 import googleImage from "src/assets/images/google.png";
 import Link from "next/link";
 import { object, string } from "yup";
+import { toast } from "react-toastify";
+import { HttpError } from "@refinedev/core";
 
 const schema = object({
   email: string().email().required(),
@@ -52,20 +54,26 @@ export default function Login() {
   const handleSubmit = async () => {
     if (!verified || loading) return;
 
-    console.log("submit");
-
     setLoading(true);
 
     if (login) {
-      const response = await login({
+      const { success, error, redirectTo } = await login({
         email,
         password,
       });
 
-      if (response.success) {
-        window.location.href = response.redirectTo as string;
+      if (success) {
+        toast.success(`Welcome back ${email}`);
+
+        window.location.href = redirectTo as string;
       } else {
-        console.log(response);
+        console.log({ error });
+
+        if ((error as HttpError)?.status === 400) {
+          toast.error("Email or password is incorrect.");
+        } else {
+          toast.error("Something went wrong, please try again later.");
+        }
       }
     }
 

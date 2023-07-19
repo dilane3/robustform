@@ -71,7 +71,7 @@ export default function FormLayout({
                 <ColorLensOutlinedIcon color="action" />
               </Icon>
 
-              <Link href={`/forms/view/${formId}?key=${formKey}`}>
+              <Link href={`/forms/view/${formId}?key=${formKey}`} target="_blanc">
                 <Icon>
                   <VisibilityOutlinedIcon color="action" />
                 </Icon>

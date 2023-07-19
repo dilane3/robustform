@@ -38,10 +38,12 @@ export default function SpecificForm() {
     return form;
   }, [JSON.stringify(forms)]) as Form | null;
 
-  if (!isReady || !form) return null;
-
   return (
-    <FormLayout title={form ? form.title : ""} formId={form.id} formKey={form.key}>
+    <FormLayout
+      title={form ? form.title : ""}
+      formId={+id}
+      formKey={form ? form.key : ""}
+    >
       <Tab />
     </FormLayout>
   );
