@@ -795,10 +795,10 @@
   resolved "https://registry.yarnpkg.com/@reach/observe-rect/-/observe-rect-1.2.0.tgz#d7a6013b8aafcc64c778a0ccb83355a11204d3b2"
   integrity sha512-Ba7HmkFgfQxZqqaeIWWkNK0rEhpxVQHIoVyW1YDSkGsGIXzcaW4deC8B0pZrNSSyLTdIk7y+5olKt5+g0GmFIQ==
 
-"@refinedev/cli@^2.5.1":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@refinedev/cli/-/cli-2.7.0.tgz#a58616c45f66ef6d9268206ffabaa077183f9607"
-  integrity sha512-BPIIzqTbNEtsYHv4PveFukKmQf4AGwO7laI6/SHRo9zd5FQy3E9Lfu6L3SO3J9cPD6JTz2+5qzLkW25CdiOT9w==
+"@refinedev/cli@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@refinedev/cli/-/cli-2.7.2.tgz#561f1dd695292a0a89ca35ef2a56a72c0aa3347b"
+  integrity sha512-1yTU8yM7DKXmxd914WcQNkcsDRJcN16KZm7EaUHhlM6Jjo5tB3noMEqrq7zkMDgc3zqE8XRLClpDCaxL7r3ZPQ==
   dependencies:
     boxen "^5.1.2"
     cardinal "^2.1.1"
@@ -831,10 +831,10 @@
     temp "^0.9.4"
     tslib "^2.3.1"
 
-"@refinedev/core@^4.24.0", "@refinedev/core@^4.5.4", "@refinedev/core@^4.5.8":
-  version "4.24.0"
-  resolved "https://registry.yarnpkg.com/@refinedev/core/-/core-4.24.0.tgz#8e9557d306be695121b402db92e7829f161ebde1"
-  integrity sha512-W2X8IhG2V8M6k0GQ94pRpC4Ql+8lghtLhSrRLgrJ3868osn0gxUkhlU/1+Mg1B7gNzygI8oyFO1an1j7C1tEbQ==
+"@refinedev/core@4.28.0", "@refinedev/core@^4.26.4", "@refinedev/core@^4.28.0":
+  version "4.28.0"
+  resolved "https://registry.yarnpkg.com/@refinedev/core/-/core-4.28.0.tgz#3d2883abef3a1751073740730f8a9b7ca3264a65"
+  integrity sha512-VzjlGFDd3zBbZPdRCRiDRPcu3Of96/QxpZvTpg3pengKmgt4YIDxA67t4Yfob39yWlPuJOGSx/fo8SYfKblmKQ==
   dependencies:
     "@tanstack/react-query" "^4.10.1"
     "@tanstack/react-query-devtools" "^4.10.1"
@@ -847,13 +847,13 @@
     tslib "^2.3.1"
     warn-once "^0.1.0"
 
-"@refinedev/inferencer@^4.0.0":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@refinedev/inferencer/-/inferencer-4.1.4.tgz#7f638f5ecb626997cc9eb8e9e2f79d1069693ef5"
-  integrity sha512-yVBO/EpUeJlcYDFdOnAw9+1xuTC1U//KvQYFoKUGY9JuE0Um9FzcLdWZCfxg4eIaxiFhsmJHCrqHD7YsDvNXNg==
+"@refinedev/inferencer@4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@refinedev/inferencer/-/inferencer-4.3.2.tgz#11762db635036d8c6143f6c2e2d4b1b17afd6fae"
+  integrity sha512-byBevs8HE2TW/uk2wt7+TgPfp/bUd9WO5ZMOs3QkAwWsn+Lta5mcpBlFcXILP9XtFRPpWZ3IMLdWP3GMjA34Kg==
   dependencies:
     "@aliemir/react-live" "^4.0.0"
-    "@refinedev/core" "^4.24.0"
+    "@refinedev/core" "^4.26.4"
     "@tabler/icons" "^1.1.0"
     dayjs "^1.10.7"
     lodash "^4.17.21"
@@ -865,17 +865,17 @@
     remark-gfm "^1.0.0"
     tslib "^2.3.1"
 
-"@refinedev/kbar@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@refinedev/kbar/-/kbar-1.1.0.tgz#6e55c636323e5f775538fdebbc64b2573ff63e3e"
-  integrity sha512-BnGhoyiRR1clHRKs9XnLEJkS6WoNJpZHg2r+Ez6iJpdtiaGnrz4+S9HN5XJukd57NCL/yt+CXD01SHlc3KrnPA==
+"@refinedev/kbar@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@refinedev/kbar/-/kbar-1.1.2.tgz#3bb2fd09f598f3046315edc043694b82ba66bd25"
+  integrity sha512-IPq8SQ+Oe4jOFq0aSVQ3Rg03Yoltez3evqZvjyw4X3PbCqyeatGD9Iarg8DQ8rEHO2YoXM1BipI3Bo0l1lXMiQ==
   dependencies:
-    kbar "^0.1.0-beta.36"
+    kbar "^0.1.0-beta.40"
 
-"@refinedev/mui@^5.0.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@refinedev/mui/-/mui-5.5.0.tgz#11e42b9b7bddef28cb18389ed1ead7813cd8a6f0"
-  integrity sha512-bghTjAITF+7BHrvTwzoAY4EzoB8GZ731+Rdc87bT4mRlrQh2RjMQufHfxOnIaWavtGD5VNoSrDt68LxIzxCULw==
+"@refinedev/mui@5.9.0":
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/@refinedev/mui/-/mui-5.9.0.tgz#51a656c946b35f072f2288b6159968803ffca1a8"
+  integrity sha512-qDet7NsUsdeRZtBEHzZYvtEqaeie4LhkuIDxrbhW+y8mpwxeJs45Q6pOdKQnS8/YCrpw0ZC2NXkhzan0+Q1LUw==
   dependencies:
     "@emotion/react" "^11.8.2"
     "@emotion/styled" "^11.8.1"
@@ -883,8 +883,8 @@
     "@mui/lab" "^5.0.0-alpha.85"
     "@mui/material" "^5.8.6"
     "@mui/x-data-grid" "^6.6.0"
-    "@refinedev/react-hook-form" "^4.4.2"
-    "@refinedev/ui-types" "^1.16.0"
+    "@refinedev/react-hook-form" "^4.6.0"
+    "@refinedev/ui-types" "^1.20.0"
     dayjs "^1.10.7"
     lodash "^4.17.21"
     lodash-es "^4.17.21"
@@ -903,10 +903,17 @@
     qs "^6.10.1"
     warn-once "^0.1.0"
 
-"@refinedev/react-hook-form@^4.1.2", "@refinedev/react-hook-form@^4.4.2":
+"@refinedev/react-hook-form@^4.1.2":
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/@refinedev/react-hook-form/-/react-hook-form-4.4.2.tgz#e021d894336d96384da62ce5561483f8e2cbe7f4"
   integrity sha512-pBkMfbNEcPWXBlhPSEJfztvwcZbnsPiZidbyB+uBDrzWUvoAaMIyNgRMGUloU4Nv2BuKp11azgmXzGwMV7bK4w==
+  dependencies:
+    react-hook-form "^7.30.0"
+
+"@refinedev/react-hook-form@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@refinedev/react-hook-form/-/react-hook-form-4.6.0.tgz#57e45e424e3b7cd69a4e710e768aaad088ff7208"
+  integrity sha512-5voyuO4LTeohuAQpRVKEWpTBAu2QN4CnnnVK7b8i8qYP4EzZ5ZQth9VkVoa0O2yqHJ3Tyf0dD5KkjRsK/esiuw==
   dependencies:
     react-hook-form "^7.30.0"
 
@@ -917,12 +924,12 @@
   dependencies:
     "@supabase/supabase-js" "^2.7.0"
 
-"@refinedev/ui-types@^1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@refinedev/ui-types/-/ui-types-1.16.0.tgz#ec0eb90bab2c5d0814bfc824decdc23ac1322d90"
-  integrity sha512-qX72/EwBhjz8uIhdU17pTMu337K8xdvyToBwsqYvmEKp3QzNFnQKaOilWToBrguuYZjPgA6VnONqmfhQNurshA==
+"@refinedev/ui-types@^1.20.0":
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/@refinedev/ui-types/-/ui-types-1.20.0.tgz#773194610eee12f27249dbdbcd4a00c0e7ff8283"
+  integrity sha512-TL2n4oHofD+V8/NS5fIe2tuZqIidXbWSbVhIhRSsuF01Yik36cTfCKxux/BlTlKFhl4MFOjLVS1+Wz/dUywHrw==
   dependencies:
-    "@refinedev/core" "^4.5.4"
+    "@refinedev/core" "^4.28.0"
     dayjs "^1.10.7"
     tslib "^2.3.1"
 
@@ -3000,10 +3007,10 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-kbar@^0.1.0-beta.36:
-  version "0.1.0-beta.40"
-  resolved "https://registry.yarnpkg.com/kbar/-/kbar-0.1.0-beta.40.tgz#89747e3c1538375fef779af986b6614bb441ae7c"
-  integrity sha512-vEV02WuEBvKaSivO2DnNtyd3gUAbruYrZCax5fXcLcVTFV6q0/w6Ew3z6Qy+AqXxbZdWguwQ3POIwgdHevp+6A==
+kbar@^0.1.0-beta.40:
+  version "0.1.0-beta.41"
+  resolved "https://registry.yarnpkg.com/kbar/-/kbar-0.1.0-beta.41.tgz#7a6ad1a5a51c401d7ee8b1e5de0f5c1766784bb6"
+  integrity sha512-rxVcKz6pN9YOIInby63t/1LW8J1CpPDf2X1/s+YSTeCbfM160a2/mlPi5ncx0vOY7DyThCHyrWxgjgwScWC3kA==
   dependencies:
     "@radix-ui/react-portal" "^1.0.1"
     command-score "^0.1.2"

@@ -66,6 +66,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   );
 }
 
+
 const styles: Record<string, SxProps<Theme>> = {
   input: (theme) => ({
     width: "100%",

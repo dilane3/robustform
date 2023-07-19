@@ -8,6 +8,9 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { authProvider } from "src/authProvider";
 import { styles } from "src/styles/mui-styles/header";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import Link from "next/link";
+import Button from "@components/buttons/Button";
 
 export default function Home() {
   return (
@@ -24,6 +27,27 @@ export default function Home() {
       <>
         <Box component="header" sx={styles.header}>
           <Typography sx={styles.logo}>robustform</Typography>
+
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Link
+              href={"https://github.com/dilane3/robustform"}
+              target="_blank"
+            >
+              <GitHubIcon color="action" />
+            </Link>
+
+            <Link href={"/login"}>
+              <Button
+                styles={{ borderRadius: 1, width: 80, height: 35, ml: 4 }}
+              >
+                <Typography
+                  sx={{ fontSize: "0.8rem", fontFamily: "OutfitMedium" }}
+                >
+                  Login
+                </Typography>
+              </Button>
+            </Link>
+          </Box>
         </Box>
 
         <Main>
