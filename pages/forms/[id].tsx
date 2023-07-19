@@ -25,7 +25,7 @@ export default function SpecificForm() {
 
     for (let folder of forms) {
       for (let f of folder.forms) {
-        if (f.id === +id) {
+        if (f.id === +id && !f.deleted) {
           form = f;
 
           break;

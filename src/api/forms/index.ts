@@ -63,6 +63,58 @@ const formProvider = {
     }
   },
 
+  restore: async (payload: any) => {
+    try {
+      const { error } = await supabaseClient
+        .from("forms")
+        .update({
+          deleted: false,
+        })
+        .eq("id", payload.id);
+
+      if (error) {
+        return {
+          success: false,
+          error,
+        };
+      }
+
+      return {
+        success: true,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  },
+
+  deleteDefinitely: async (payload: any) => {
+    try {
+      const { error } = await supabaseClient
+        .from("forms")
+        .delete()
+        .eq("id", payload.id);
+
+      if (error) {
+        return {
+          success: false,
+          error,
+        };
+      }
+
+      return {
+        success: true,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  },
+
   findAll: async (userId: number) => {
     try {
       const { data, error } = await supabaseClient
@@ -95,6 +147,7 @@ const formProvider = {
         .from("forms")
         .select("*, folders(id, name)")
         .eq("form_key", key)
+        .eq("deleted", false)
         .single();
 
       if (data) {

@@ -31,7 +31,7 @@ export default function FormItem({ form }: FormItemProps) {
   const open = Boolean(anchorEl);
 
   // Global actions
-  const { deleteForm } = useActions("forms");
+  const { deleteForm, restoreForm } = useActions("forms");
 
   // Handlers
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -49,16 +49,31 @@ export default function FormItem({ form }: FormItemProps) {
     });
 
     handleClose();
-    
+
     const { error } = await formProvider.delete({ id: form.id });
 
     if (error) {
       toast.error("Failed to delete form");
     } else {
-      // TODO: Move the form to the trash
       toast.success("Form deleted successfully");
     }
+  };
 
+  const handleRestore = async () => {
+    restoreForm({
+      folderId: form.folderId,
+      formId: form.id,
+    });
+
+    handleClose();
+
+    const { error } = await formProvider.restore({ id: form.id });
+
+    if (error) {
+      toast.error("Failed to restore the form")
+    } else {
+      toast.success("Form has been restored successfully");
+    }
   };
 
   return (
@@ -66,11 +81,17 @@ export default function FormItem({ form }: FormItemProps) {
       <Box sx={styles.formHeader} />
 
       <Box sx={styles.formBody}>
-        <Link href={`forms/${form.id}`} style={{ width: "auto" }}>
+        {form.deleted ? (
           <Typography sx={styles.title} title={form.title}>
             {truncate(form.title, 25)}
           </Typography>
-        </Link>
+        ) : (
+          <Link href={`forms/${form.id}`} style={{ width: "auto" }}>
+            <Typography sx={styles.title} title={form.title}>
+              {truncate(form.title, 25)}
+            </Typography>
+          </Link>
+        )}
 
         <Box sx={styles.formBottom}>
           <Box sx={styles.date}>
@@ -103,7 +124,7 @@ export default function FormItem({ form }: FormItemProps) {
           >
             {form.deleted ? (
               <>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleRestore}>
                   <AdjustIcon sx={styles.menuItemIcon} color="action" />
                   <Typography sx={styles.menuItemText}>Restore</Typography>
                 </MenuItem>

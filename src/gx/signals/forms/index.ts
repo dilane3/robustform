@@ -64,12 +64,10 @@ export const formsSignal = createSignal<FormsState>({
         (folder) => folder.id === payload.folderId
       );
 
-      console.log({ folder })
+      console.log({ folder });
 
       if (folder) {
         const form = folder.forms.find((form) => form.id === payload.formId);
-
-        console.log({ form })
 
         if (form) {
           folder.deleteForm(payload.formId);
@@ -79,12 +77,29 @@ export const formsSignal = createSignal<FormsState>({
             (folder) => folder.id === FOLDER_BIN_ID
           );
 
-          console.log({ folderBin })
+          console.log({ folderBin });
 
           if (folderBin) {
             form.deleted = true;
             folderBin.addForm(form);
           }
+        }
+      }
+
+      return state;
+    },
+
+    restoreForm: (state, payload: { folderId: number; formId: number }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          // restore the form
+          form.deleted = false;
         }
       }
 
