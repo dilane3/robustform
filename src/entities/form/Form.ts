@@ -12,6 +12,7 @@ type FormData = {
   ownerId: number;
   cards?: Card[];
   responses?: Response[];
+  key: string;
 };
 
 export default class Form {
@@ -24,6 +25,7 @@ export default class Form {
   private _ownerId: number;
   private _cards: Card[];
   private _responses: Response[];
+  private _key: string;
 
   constructor(data: FormData) {
     this._id = data.id;
@@ -35,6 +37,7 @@ export default class Form {
     this._ownerId = data.ownerId;
     this._cards = data.cards || [];
     this._responses = data.responses || [];
+    this._key = data.key;
   }
 
   get id() {
@@ -73,6 +76,10 @@ export default class Form {
     return this._responses;
   }
 
+  get key() {
+    return this._key;
+  }
+
   // Setters
 
   set title(title: string) {
@@ -85,6 +92,10 @@ export default class Form {
 
   set responses(responses: Response[]) {
     this._responses = responses;
+  }
+
+  set key(key: string) {
+    this._key = key;
   }
 
   // Methods

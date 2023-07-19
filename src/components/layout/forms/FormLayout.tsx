@@ -24,12 +24,14 @@ export type FormLayoutProps = {
   children: React.ReactNode;
   title: string;
   formId?: number;
+  formKey: string;
 };
 
 export default function FormLayout({
   children,
   title,
   formId,
+  formKey
 }: FormLayoutProps) {
   // Global state
   const { user } = useSignal<AuthState>("auth");
@@ -69,7 +71,7 @@ export default function FormLayout({
                 <ColorLensOutlinedIcon color="action" />
               </Icon>
 
-              <Link href={`/forms/view/${formId}`}>
+              <Link href={`/forms/view/${formId}?key=${formKey}`}>
                 <Icon>
                   <VisibilityOutlinedIcon color="action" />
                 </Icon>

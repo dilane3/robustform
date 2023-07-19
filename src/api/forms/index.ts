@@ -1,9 +1,9 @@
-import { supabaseClient } from "../../utility";
+import { generateUID, supabaseClient } from "../../utility";
 
 const formProvider = {
   create: async (payload: any) => {
     try {
-      // TODO: generate a randomly form key
+      const formKey = generateUID();
 
       const { data, error } = await supabaseClient
         .from("forms")
@@ -12,6 +12,7 @@ const formProvider = {
           description: payload.description,
           folder_id: payload.folder_id,
           user_id: payload.user_id,
+          form_key: formKey,
         })
         .select("*")
         .single();
@@ -66,6 +67,33 @@ const formProvider = {
         .from("forms")
         .select("*, folders(id, name)")
         .eq("user_id", userId);
+
+      if (data) {
+        return {
+          success: true,
+          data,
+        };
+      }
+
+      return {
+        success: false,
+        error,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  },
+
+  findOneByKey: async (key: string) => {
+    try {
+      const { data, error } = await supabaseClient
+        .from("forms")
+        .select("*, folders(id, name)")
+        .eq("form_key", key)
+        .single();
 
       if (data) {
         return {

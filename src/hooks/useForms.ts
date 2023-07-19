@@ -51,8 +51,6 @@ export default function useForms() {
               }
             }
 
-            console.log({ formsClone, fetchedFolders })
-
             const folders = organizeForms(formsClone, fetchedFolders);
 
             setForms(folders);
@@ -77,8 +75,6 @@ export default function useForms() {
         : form.deleted === true
         ? FOLDER_BIN_ID // Deleted folder
         : OTHERS_FORMS_FOLDER_ID; // Default folder
-
-        console.log(folderId)
 
       // Prepare questions
       const cards: Card[] = [];
@@ -116,10 +112,9 @@ export default function useForms() {
         updatedAt: new Date(form.updated_at || form.created_at),
         ownerId: form.user_id,
         cards,
+        key: form.form_key,
       });
-
-      console.log({ forms });
-
+      
       // Find the folder
       const folder = folders.find(
         (folder) => folder.id === folderId

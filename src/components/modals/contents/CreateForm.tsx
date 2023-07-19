@@ -74,6 +74,7 @@ export default function CreateForm() {
         createdAt: new Date(),
         updatedAt: new Date(),
         ownerId: user.id,
+        key: data.form_key,
       });
   
       // Add form to global state
