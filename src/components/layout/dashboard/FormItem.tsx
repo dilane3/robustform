@@ -31,7 +31,7 @@ export default function FormItem({ form }: FormItemProps) {
   const open = Boolean(anchorEl);
 
   // Global actions
-  const { deleteForm, restoreForm } = useActions("forms");
+  const { deleteForm, restoreForm, deleteFormDefinitely } = useActions("forms");
 
   // Handlers
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,9 +70,26 @@ export default function FormItem({ form }: FormItemProps) {
     const { error } = await formProvider.restore({ id: form.id });
 
     if (error) {
-      toast.error("Failed to restore the form")
+      toast.error("Failed to restore the form");
     } else {
       toast.success("Form has been restored successfully");
+    }
+  };
+
+  const handleDeleteDefinitely = async () => {
+    deleteFormDefinitely({
+      folderId: form.folderId,
+      formId: form.id,
+    });
+
+    handleClose();
+
+    const { error } = await formProvider.deleteDefinitely({ id: form.id });
+
+    if (error) {
+      toast.error("Failed to delete the form");
+    } else {
+      toast.success("Form has been deleted successfully");
     }
   };
 
@@ -129,7 +146,7 @@ export default function FormItem({ form }: FormItemProps) {
                   <Typography sx={styles.menuItemText}>Restore</Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleDeleteDefinitely}>
                   <DeleteIcon sx={styles.menuItemIcon} color="action" />
                   <Typography sx={styles.menuItemText}>Delete</Typography>
                 </MenuItem>

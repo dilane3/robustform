@@ -64,8 +64,6 @@ export const formsSignal = createSignal<FormsState>({
         (folder) => folder.id === payload.folderId
       );
 
-      console.log({ folder });
-
       if (folder) {
         const form = folder.forms.find((form) => form.id === payload.formId);
 
@@ -83,6 +81,23 @@ export const formsSignal = createSignal<FormsState>({
             form.deleted = true;
             folderBin.addForm(form);
           }
+        }
+      }
+
+      return state;
+    },
+
+    deleteFormDefinitely: (state, payload: { folderId: number; formId: number }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const formIndex = folder.forms.findIndex((form) => form.id === payload.formId);
+
+        if (formIndex !== -1) {
+          // restore the form
+          folder.forms.splice(formIndex, 1);
         }
       }
 

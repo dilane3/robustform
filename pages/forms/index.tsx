@@ -47,11 +47,15 @@ export default function Forms() {
           </Box>
         ));
       } else {
-        return selectedFolder.forms.map((form) => (
-          <Box sx={styles.formItem} key={form.id}>
-            <FormItem form={form} />
-          </Box>
-        ));
+        return selectedFolder.forms.map((form) => {
+          if (form.deleted) return null;
+
+          return (
+            <Box sx={styles.formItem} key={form.id}>
+              <FormItem form={form} />
+            </Box>
+          );
+        });
       }
     }
 
