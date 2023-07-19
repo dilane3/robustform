@@ -63,7 +63,7 @@ export default function SidenavItem({
         {truncate(text, 18)}
       </Typography>
 
-      <Menu
+      {/* <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
         anchorEl={anchorEl}
@@ -93,7 +93,7 @@ export default function SidenavItem({
           <DeleteIcon sx={styles.menuItemIcon} color="action" />
           <Typography sx={styles.menuItemText}>Delete</Typography>
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </Box>
   );
 }

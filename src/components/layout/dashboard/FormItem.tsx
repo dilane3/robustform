@@ -153,10 +153,12 @@ export default function FormItem({ form }: FormItemProps) {
               </>
             ) : (
               <>
-                <MenuItem onClick={handleClose}>
-                  <AdjustIcon sx={styles.menuItemIcon} color="action" />
-                  <Typography sx={styles.menuItemText}>Open</Typography>
-                </MenuItem>
+                <Link href={`forms/${form.id}`}>
+                  <MenuItem onClick={handleClose}>
+                    <AdjustIcon sx={styles.menuItemIcon} color="action" />
+                    <Typography sx={styles.menuItemText} style={{ color: Colors.black }}>Open</Typography>
+                  </MenuItem>
+                </Link>
                 <MenuItem onClick={handleClose}>
                   <ModeEditIcon sx={styles.menuItemIcon} color="action" />
                   <Typography sx={styles.menuItemText}>Update</Typography>
