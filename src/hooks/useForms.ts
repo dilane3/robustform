@@ -10,7 +10,9 @@ import Form from "src/entities/form/Form";
 import { FormsState, folderBin, otherFormsFolder } from "src/gx/signals";
 import { AuthState } from "src/gx/signals/auth";
 import {
+  FOLDER_BIN,
   FOLDER_BIN_ID,
+  OTHERS_FORMS_FOLDER,
   OTHERS_FORMS_FOLDER_ID,
 } from "src/gx/signals/forms/constants";
 
@@ -59,22 +61,18 @@ export default function useForms() {
       }
     };
 
-    if (loading === false) return;
-
-    fetchAllForms();
+    if (loading) {
+      fetchAllForms();
+    }
   }, [loading, user]);
 
   // Methods
   const organizeForms = (forms: any, fetchedFolders: any) => {
-    const folders: Folder[] = [folderBin, otherFormsFolder];
+    const folders: Folder[] = [folderBin];
 
     for (const form of forms) {
       // Create a form entity
-      const folderId = form.folder_id
-        ? form.folder_id
-        : form.deleted === true
-        ? FOLDER_BIN_ID // Deleted folder
-        : OTHERS_FORMS_FOLDER_ID; // Default folder
+      const folderId = form.folder_id ? form.folder_id : OTHERS_FORMS_FOLDER_ID;
 
       // Prepare questions
       const cards: Card[] = [];
@@ -113,20 +111,25 @@ export default function useForms() {
         ownerId: form.user_id,
         cards,
         key: form.form_key,
+        deleted: form.deleted,
       });
-      
+
       // Find the folder
-      const folder = folders.find(
-        (folder) => folder.id === folderId
-      );
+      const folder = folders.find((folder) => folder.id === folderId);
 
       if (folder) {
         folder.addForm(newForm);
       } else {
+        let foldername = form.folders?.name;
+
+        if (folderId === OTHERS_FORMS_FOLDER_ID) {
+          foldername = OTHERS_FORMS_FOLDER;
+        }
+
         // Create new folder
         const newFolder = new Folder({
-          id: form.folders.id,
-          name: form.folders.name,
+          id: folderId,
+          name: foldername,
           forms: [newForm],
         });
 
@@ -147,6 +150,19 @@ export default function useForms() {
 
         folders.push(newFolder);
       }
+    }
+
+    // Check if other form folder exists
+    const folderExist = folders.find((f) => f.id === OTHERS_FORMS_FOLDER_ID);
+
+    if (!folderExist) {
+      const newFolder = new Folder({
+        id: OTHERS_FORMS_FOLDER_ID,
+        name: OTHERS_FORMS_FOLDER,
+        forms: [],
+      });
+
+      folders.push(newFolder);
     }
 
     return folders;

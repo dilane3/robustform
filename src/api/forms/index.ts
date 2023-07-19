@@ -40,7 +40,9 @@ const formProvider = {
     try {
       const { error } = await supabaseClient
         .from("forms")
-        .delete()
+        .update({
+          deleted: true,
+        })
         .eq("id", payload.id);
 
       if (error) {

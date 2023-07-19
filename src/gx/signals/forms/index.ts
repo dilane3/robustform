@@ -64,8 +64,28 @@ export const formsSignal = createSignal<FormsState>({
         (folder) => folder.id === payload.folderId
       );
 
+      console.log({ folder })
+
       if (folder) {
-        folder.deleteForm(payload.formId);
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        console.log({ form })
+
+        if (form) {
+          folder.deleteForm(payload.formId);
+
+          // Add the form to the bin
+          const folderBin = state.forms.find(
+            (folder) => folder.id === FOLDER_BIN_ID
+          );
+
+          console.log({ folderBin })
+
+          if (folderBin) {
+            form.deleted = true;
+            folderBin.addForm(form);
+          }
+        }
       }
 
       return state;

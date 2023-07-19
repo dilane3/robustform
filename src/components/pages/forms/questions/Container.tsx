@@ -14,7 +14,6 @@ import { redirect } from "next/navigation";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Form from "src/entities/form/Form";
-import { NavigateToResource } from "@refinedev/nextjs-router";
 import Link from "next/link";
 import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";

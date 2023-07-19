@@ -3,6 +3,7 @@ import { Box, Tab as BaseTab, SxProps, Theme  } from "@mui/material";
 import React from "react";
 import { Colors } from "src/constants";
 import QuestionsContainer from "../pages/forms/questions/Container";
+import ResponseContainer from "@components/pages/forms/responses/Container";
 
 export default function Tab() {
   const [value, setValue] = React.useState("1");
@@ -28,7 +29,9 @@ export default function Tab() {
             <TabPanel value="1" sx={{ height: '100%', padding: "0" }}>
               <QuestionsContainer />
             </TabPanel>
-            <TabPanel value="2" sx={{ height: '100%', padding: "0" }}>Item Two</TabPanel>
+            <TabPanel value="2" sx={{ height: '100%', padding: "0" }}>
+              <ResponseContainer />
+            </TabPanel>
             <TabPanel value="3" sx={{ height: '100%', padding: "0" }}>Item Three</TabPanel>
           </Box>
         </Box>

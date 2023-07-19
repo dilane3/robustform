@@ -13,6 +13,7 @@ type FormData = {
   cards?: Card[];
   responses?: Response[];
   key: string;
+  deleted: boolean
 };
 
 export default class Form {
@@ -26,6 +27,7 @@ export default class Form {
   private _cards: Card[];
   private _responses: Response[];
   private _key: string;
+  private _deleted: boolean;
 
   constructor(data: FormData) {
     this._id = data.id;
@@ -38,6 +40,7 @@ export default class Form {
     this._cards = data.cards || [];
     this._responses = data.responses || [];
     this._key = data.key;
+    this._deleted = data.deleted;
   }
 
   get id() {
@@ -52,7 +55,7 @@ export default class Form {
     return this._description;
   }
 
-  get folderId() {
+  get folderId(): number | null {
     return this._folderId;
   }
 
@@ -80,6 +83,10 @@ export default class Form {
     return this._key;
   }
 
+  get deleted() {
+    return this._deleted;
+  }
+
   // Setters
 
   set title(title: string) {
@@ -96,6 +103,14 @@ export default class Form {
 
   set key(key: string) {
     this._key = key;
+  }
+
+  set deleted(deleted: boolean) {
+    this._deleted = deleted;
+  }
+
+  set folderId(folderId: number) {
+    this._folderId = folderId;
   }
 
   // Methods
