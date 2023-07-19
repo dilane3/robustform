@@ -109,7 +109,7 @@ export default class Form {
     this._deleted = deleted;
   }
 
-  set folderId(folderId: number) {
+  set folderId(folderId: number | null) {
     this._folderId = folderId;
   }
 
