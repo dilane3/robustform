@@ -23,12 +23,17 @@ import { Colors } from "src/constants";
 import notFoundImage from "src/assets/images/notfound.png";
 import Button from "@components/buttons/Button";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import NotFoundForm from "./NotFound";
 
-export default function QuestionContainer() {
-  // URL handler
-  const { query, isReady } = useRouter();
-  const { id } = query as { id: string };
+type QuestionContainerProps = {
+  form: Form | null;
+  isReady: boolean;
+};
 
+export default function QuestionContainer({
+  form,
+  isReady,
+}: QuestionContainerProps) {
   // Local state
   const [active, setActive] = React.useState(false);
 
@@ -36,23 +41,6 @@ export default function QuestionContainer() {
   const { forms } = useSignal<FormsState>("forms");
 
   const { setCardActive, setAllCardsInactive } = useActions("forms");
-
-  // Memoized values
-  const form = React.useMemo(() => {
-    if (!id) return null;
-
-    let form: Form | null = null;
-
-    for (let folder of forms) {
-      for (let f of folder.forms) {
-        if (f.id === +id) {
-          form = f;
-        }
-      }
-    }
-
-    return form;
-  }, [JSON.stringify(forms)]) as Form | null;
 
   const otherFormsFolder = React.useMemo(() => {
     return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
@@ -190,35 +178,8 @@ export default function QuestionContainer() {
   // Render
 
   const renderContent = () => {
-    console.log({ isReady, form });
     if (isReady && !form) {
-      return (
-        <Box sx={styles.centeredBox}>
-          <Image alt="form submitted" src={notFoundImage} width={250} />
-
-          <Typography
-            sx={{ fontFamily: "OutfitBold", fontSize: "1.5rem", mt: 2 }}
-          >
-            Form not found
-          </Typography>
-
-          <Typography
-            sx={{ fontFamily: "OutfitRegular", fontSize: "1rem", mt: 2 }}
-          >
-            The form you are looking for does not exist or haven't been loaded
-            yet.
-          </Typography>
-
-          <Link href="/forms">
-            <Button styles={{ borderRadius: 3, width: 280, height: 40, mt: 3 }}>
-              <SpaceDashboardIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
-              <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
-                Come back to dashboard
-              </Typography>
-            </Button>
-          </Link>
-        </Box>
-      );
+      return <NotFoundForm />;
     }
 
     if (!isReady || !form) return null;

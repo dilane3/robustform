@@ -4,9 +4,37 @@ import React from "react";
 import { Colors } from "src/constants";
 import QuestionsContainer from "../pages/forms/questions/Container";
 import ResponseContainer from "@components/pages/forms/responses/Container";
+import { useRouter } from "next/router";
+import { useActions, useSignal } from "@dilane3/gx";
+import { FormsState } from "src/gx/signals";
+import Form from "src/entities/form/Form";
 
 export default function Tab() {
   const [value, setValue] = React.useState("1");
+
+  // URL handler
+  const { query, isReady } = useRouter();
+  const { id } = query as { id: string };
+
+  // Global state
+  const { forms } = useSignal<FormsState>("forms");
+
+  // Memoized values
+  const form = React.useMemo(() => {
+    if (!id) return null;
+
+    let form: Form | null = null;
+
+    for (let folder of forms) {
+      for (let f of folder.forms) {
+        if (f.id === +id) {
+          form = f;
+        }
+      }
+    }
+
+    return form;
+  }, [JSON.stringify(forms)]) as Form | null;
 
   // Handlers
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -27,10 +55,10 @@ export default function Tab() {
 
           <Box component="section" sx={styles.tabBody}>
             <TabPanel value="1" sx={{ height: '100%', padding: "0" }}>
-              <QuestionsContainer />
+              <QuestionsContainer form={form} isReady={isReady} />
             </TabPanel>
             <TabPanel value="2" sx={{ height: '100%', padding: "0" }}>
-              <ResponseContainer />
+              <ResponseContainer form={form} isReady={isReady} />
             </TabPanel>
             <TabPanel value="3" sx={{ height: '100%', padding: "0" }}>Item Three</TabPanel>
           </Box>

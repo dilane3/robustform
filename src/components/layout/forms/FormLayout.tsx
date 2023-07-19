@@ -19,6 +19,7 @@ import { useSignal } from "@dilane3/gx";
 import HeaderAvatar from "../dashboard/HeaderAvatar";
 import { FormsState } from "src/gx/signals";
 import useResponses from "src/hooks/useResponses";
+import { useMemo } from "react";
 
 export type FormLayoutProps = {
   children: React.ReactNode;
@@ -35,10 +36,29 @@ export default function FormLayout({
 }: FormLayoutProps) {
   // Global state
   const { user } = useSignal<AuthState>("auth");
-  const { updateLoading, updateStatus } = useSignal<FormsState>("forms");
+  const { updateLoading, updateStatus, forms } = useSignal<FormsState>("forms");
+
+  // Memoized values
+  const folderId = useMemo(() => {
+    let folderId = 0;
+
+    for (const folder of forms) {
+      for (const form of folder.forms) {
+        if (form.id === formId) {
+          folderId = folder.id;
+
+          break;
+        }
+      }
+
+      if (folderId) break;
+    }
+
+    return folderId;
+  }, [forms]);
 
   // Fetch responses
-  useResponses(6);
+  useResponses(folderId, formId);
 
   return (
     <>
@@ -71,7 +91,7 @@ export default function FormLayout({
                 <ColorLensOutlinedIcon color="action" />
               </Icon>
 
-              <Link href={`/forms/view/${formId}?key=${formKey}`} target="_blanc">
+              <Link href={`/forms/view/${formId}?key=${formKey}`} target="_blank">
                 <Icon>
                   <VisibilityOutlinedIcon color="action" />
                 </Icon>

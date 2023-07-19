@@ -27,6 +27,7 @@ export type FormsState = {
   selectedFolder: Folder | null;
   updateLoading: boolean;
   updateStatus: boolean;
+  responsesLoading: boolean;
 };
 
 export const formsSignal = createSignal<FormsState>({
@@ -38,6 +39,7 @@ export const formsSignal = createSignal<FormsState>({
     selectedForm: null,
     updateLoading: false,
     updateStatus: true,
+    responsesLoading: true,
   },
   actions: {
     setForms: (state, forms: Folder[]) => {
@@ -315,6 +317,8 @@ export const formsSignal = createSignal<FormsState>({
           form.responses = payload.responses;
         }
       }
+
+      state.responsesLoading = false;
 
       return state;
     },

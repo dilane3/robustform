@@ -1,17 +1,16 @@
-import { useActions } from "@dilane3/gx";
+import { useActions, useSignal } from "@dilane3/gx";
 import React from "react";
 import responseProvider from "src/api/responses";
 import Response from "src/entities/response/Response";
 import ResponseItem from "src/entities/response/ResponseItem";
 
-export default function useResponses(formId: number) {
+export default function useResponses(folderId: number | null, formId?: number) {
   // Global state
   const { setResponses } = useActions("forms");
 
   // Effects
   React.useEffect(() => {
     const fetchResponses = async () => {
-      console.log("dedans");
       await handleFetchResponses();
     };
 
@@ -20,14 +19,15 @@ export default function useResponses(formId: number) {
 
   // Handlers
   const handleFetchResponses = async () => {
-    const { success, data, error } = await responseProvider.findAll(formId);
+    if (!formId || !folderId) return;
+
+    const { success, data, error } = await responseProvider.findAll(
+      folderId,
+      formId
+    );
 
     if (success && data) {
       if (data.length > 0) {
-        const folderId = data[0].responses
-          ? data[0].responses.forms.folder_id
-          : null;
-
         if (folderId !== null) {
           const responses: Response[] = [];
           for (const {
@@ -62,6 +62,9 @@ export default function useResponses(formId: number) {
               }
             }
           }
+
+          console.log(responses);
+
           setResponses({ folderId, formId, responses });
         }
       }
