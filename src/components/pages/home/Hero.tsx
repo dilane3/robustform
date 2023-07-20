@@ -16,13 +16,11 @@ export default function Hero() {
 
       <Typography component="span" sx={styles.description}>
         Generate your forms in an easy way and share the link with people around
-        you through you network
+        you through your network
       </Typography>
 
-      <Link href="/login" style={{ marginTop: "50px" }}>
-        <Button styles={{ borderRadius: 5, width: 250 }}>
-          Join us now
-        </Button>
+      <Link href="/login" style={{ marginTop: "50px", marginBottom: "40px" }}>
+        <Button styles={{ borderRadius: 5, width: 250 }}>Join us now</Button>
       </Link>
     </Box>
   );

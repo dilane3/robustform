@@ -20,16 +20,11 @@ export default function EmptyForm() {
   return (
     <Box component="section" sx={styles.container}>
       <Image src={emptyImage} alt="Empty form" width={300} />
-      <Typography sx={{ fontSize: "1.5rem", fontFamily: "OutfitBold" }}>
+      <Typography sx={styles.title}>
         YOU DON'T HAVE ANY FORM
       </Typography>
       <Typography
-        sx={{
-          fontSize: "1.2rem",
-          fontFamily: "OutfitRegular",
-          mt: 1,
-          color: "#555",
-        }}
+        sx={styles.description}
       >
         Yours forms will be here
       </Typography>
@@ -48,12 +43,43 @@ export default function EmptyForm() {
 }
 
 const styles: Record<string, SxProps<Theme>> = {
-  container: {
+  container: (theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
     height: "100%",
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 1rem",
+
+      "& > img": {
+        width: 200,
+        height: "auto"
+      }
+    }
+  }),
+
+  title: (theme) => ({ 
+    fontSize: "1.5rem", 
+    fontFamily: "OutfitBold",
+    textAlign: "center",
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    }
+  }),
+
+  description: (theme) => ({
+    fontSize: "1.2rem",
+    fontFamily: "OutfitRegular",
+    mt: 1,
+    color: "#555",
+    textAlign: "center",
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
+    }
+  })
 };

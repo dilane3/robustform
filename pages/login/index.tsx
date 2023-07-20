@@ -78,6 +78,10 @@ export default function Login() {
     setLoading(false);
   };
 
+  const handleGoogleLogin = async () => {
+    await authProvider.googleLogin();
+  };
+
   // Methods
 
   const validate = async () => {
@@ -102,7 +106,7 @@ export default function Login() {
           <Typography sx={styles.title}>Login into your account</Typography>
 
           <Box sx={styles.box}>
-            <Box sx={styles.googleLogin}>
+            <Box sx={styles.googleLogin} onClick={handleGoogleLogin}>
               <Box sx={styles.googleIcon}>
                 <Image
                   src={googleImage}
@@ -113,9 +117,9 @@ export default function Login() {
               </Box>
 
               <Typography
-                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 4 }}
+                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 3 }}
               >
-                Signin with google
+                Continue with google
               </Typography>
             </Box>
 
@@ -172,7 +176,7 @@ export default function Login() {
 
             <Button disabled={!verified || loading} onClick={handleSubmit}>
               <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
-                Login
+                {loading ? "Loading..." : "Login"}
               </Typography>
             </Button>
           </Box>
@@ -194,9 +198,7 @@ export default function Login() {
             <Typography sx={styles.logo}>Robustform</Typography>
           </Link>
 
-          <Box
-            sx={styles.imageContainer}
-          >
+          <Box sx={styles.imageContainer}>
             <Image src={loginImage} alt="Login" width={500} />
           </Box>
 
@@ -345,18 +347,26 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     alignItems: "center",
   },
 
-  accountQuestion: {
+  accountQuestion: (theme) => ({
     fontFamily: "OutfitMedium",
     fontSize: 16,
     color: Colors.background,
-  },
 
-  action: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 14,
+    },
+  }),
+
+  action: (theme) => ({
     fontFamily: "OutfitBold",
     fontSize: 16,
     color: Colors.primary,
     marginLeft: 2,
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 14,
+    },
+  }),
 
   imageContainer: (theme) => ({
     width: "100%",
@@ -370,7 +380,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
       "& img": {
         width: "100%",
         height: "auto",
-      }
+      },
     },
   }),
 };

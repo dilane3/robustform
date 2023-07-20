@@ -103,6 +103,7 @@ export const styles: Record<string, SxProps<Theme>> = {
     flexDirection: "column",
     padding: "2rem 5rem",
     background: Colors.background,
+    overflowY: "auto",
 
     [theme.breakpoints.down("md")]: {
       padding: "2rem 3rem",

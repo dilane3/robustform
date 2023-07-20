@@ -91,6 +91,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             width: "250px",
             backgroundColor: Colors.background,
             zIndex: 100,
+            overflowY: "auto",
+            overflowX: "hidden",
 
             // transitions
             transition: "all 0.3s ease-in-out",

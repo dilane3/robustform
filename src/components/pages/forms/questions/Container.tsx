@@ -191,7 +191,9 @@ export default function QuestionContainer({
 
   const renderContent = () => {
     if (isReady && !form) {
-      return <NotFoundForm />;
+      return (
+          <NotFoundForm />
+      );
     }
 
     if (!isReady || !form) return null;
@@ -282,6 +284,7 @@ export const styles: Record<string, SxProps<Theme>> = {
     width: "100%",
     height: "100%",
     display: "flex",
+    overflowY: "auto",
   },
 
   formContainer: (theme) => ({

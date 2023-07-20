@@ -32,7 +32,7 @@ export default function VerifyEmail() {
           />
           <Typography sx={styles.title}>Verify your email</Typography>
           <Typography sx={styles.description}>
-            Please check you email, we sent to you a confirmation link that you
+            Please check your email, we sent to you a confirmation link that you
             will use to activate your account
           </Typography>
         </Box>

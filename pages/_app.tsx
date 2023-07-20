@@ -64,14 +64,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
             notificationProvider={notificationProvider}
             resources={
               [
-                // {
-                //   name: "forms",
-                //   list: "/forms",
-                //   show: "/forms/:id",
-                //   meta: {
-                //     canDelete: true,
-                //   },
-                // },
+                {
+                  name: "forms",
+                  list: "/forms",
+                  show: "/forms/:id",
+                  meta: {
+                    canDelete: true,
+                  },
+                },
               ]
             }
             options={{

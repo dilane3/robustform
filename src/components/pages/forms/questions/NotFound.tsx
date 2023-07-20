@@ -11,7 +11,7 @@ export default function NotFoundForm() {
     <Box sx={styles.centeredBox}>
       <Image alt="form submitted" src={notFoundImage} width={250} />
 
-      <Typography sx={{ fontFamily: "OutfitBold", fontSize: "1.5rem", mt: 2 }}>
+      <Typography component="h4" sx={{ fontFamily: "OutfitBold", fontSize: "1.5rem", mt: 2 }}>
         Form not found
       </Typography>
 
@@ -20,10 +20,10 @@ export default function NotFoundForm() {
       </Typography>
 
       <Link href="/forms">
-        <Button styles={{ borderRadius: 3, width: 280, height: 40, mt: 3 }}>
+        <Button styles={{ borderRadius: 3, width: "auto", height: 40, mt: 3 }}>
           <SpaceDashboardIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
           <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
-            Come back to dashboard
+            dashboard
           </Typography>
         </Button>
       </Link>
@@ -40,5 +40,23 @@ export const styles: Record<string, SxProps<Theme>> = {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: Colors.background,
+    px: 2,
+
+    [theme.breakpoints.down("sm")]: {
+      "& > img": {
+        width: 150,
+        height: "auto"
+      },
+
+      "& > h4": {
+        fontSize: "1.2rem",
+        textAlign: "center"
+      },
+
+      "& > p": {
+        fontSize: "1rem",
+        textAlign: "center"
+      }
+    }
   }),
 };

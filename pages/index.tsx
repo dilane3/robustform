@@ -24,6 +24,9 @@ export default function Home() {
       <Head>
         <title>Welcome | Robustform</title>
         <meta charSet="utf-8" />
+        <meta 
+          name=""
+        />
         <meta
           name="description"
           content="robustform is a form builder for generating forms quickly and in an easy way."
@@ -46,9 +49,9 @@ export default function Home() {
               <GitHubIcon color="action" />
             </Link>
 
-            <Link href={"/login"}>
+            <Link href={"/login"} style={{ marginLeft: "40px", }}>
               <Button
-                styles={{ borderRadius: 50, width: 80, height: 35, ml: 4 }}
+                styles={{ borderRadius: 50, width: 80, height: 35 }}
               >
                 <Typography
                   sx={{ fontSize: "0.8rem", fontFamily: "OutfitMedium" }}

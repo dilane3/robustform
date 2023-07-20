@@ -128,7 +128,7 @@ export default function FormLayout({
 const styles: Record<string, SxProps<Theme>> = {
   bodyContainer: (theme) => ({
     width: "100%",
-    height: "calc(100vh - 60px)",
+    height: "calc(100vh - 110px)",
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-start",
