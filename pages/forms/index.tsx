@@ -87,9 +87,6 @@ Forms.noLayout = true;
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   const { authenticated } = await authProvider.check(context);
 
-  console.log({authenticated, context});
-  
-
   if (!authenticated) {
     return {
       props: {context},
