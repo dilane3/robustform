@@ -1,9 +1,4 @@
-import {
-  Box,
-  SxProps,
-  Theme,
-  Typography,
-} from "@mui/material";
+import { Box, SxProps, Theme, Typography } from "@mui/material";
 import Head from "next/head";
 import Main from "../Main";
 import { styles as headerStyles } from "src/styles/mui-styles/header";
@@ -16,6 +11,8 @@ import { useSignal } from "@dilane3/gx";
 import { AuthState } from "src/gx/signals/auth";
 import useForms from "src/hooks/useForms";
 import HeaderAvatar from "./HeaderAvatar";
+import Image from "next/image";
+import Logo from "src/assets/images/logo.png";
 
 export type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -41,6 +38,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <Box component="header" sx={headerStyles.header}>
           <Typography sx={headerStyles.logo}>robustform</Typography>
 
+          <Box sx={headerStyles.logoImage}>
+            <Image src={Logo} alt="Logo" width={50} />
+          </Box>
+
           <Box sx={styles.input}>
             <Input
               label="Search"
@@ -65,7 +66,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     </>
   );
 }
-
 
 const styles: Record<string, SxProps<Theme>> = {
   input: (theme) => ({

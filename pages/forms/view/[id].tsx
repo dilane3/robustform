@@ -37,6 +37,7 @@ import { toast } from "react-toastify";
 
 import formSubmittedImage from "src/assets/images/submit2.png";
 import notFoundImage from "src/assets/images/notfound.png";
+import Link from "next/link";
 
 export default function FormView() {
   // URL handler
@@ -396,19 +397,23 @@ export default function FormView() {
           </Typography>
 
           {user ? (
-            <Button styles={{ borderRadius: 3, width: 180, height: 40, mt: 3 }}>
-              <SpaceDashboardIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
-              <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
-                Dashboard
-              </Typography>
-            </Button>
+            <Link href="/forms">
+              <Button styles={{ borderRadius: 3, width: 180, height: 40, mt: 3 }}>
+                <SpaceDashboardIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
+                <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
+                  Dashboard
+                </Typography>
+              </Button>
+            </Link>
           ) : (
-            <Button styles={{ borderRadius: 3, width: 150, height: 40, mt: 3 }}>
-              <HomeIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
-              <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
-                Home
-              </Typography>
-            </Button>
+            <Link href="/">
+              <Button styles={{ borderRadius: 3, width: 150, height: 40, mt: 3 }}>
+                <HomeIcon sx={{ fontSize: "1.5rem", mr: 2 }} />
+                <Typography sx={{ fontSize: "0.9rem", fontFamily: "OutfitBold" }}>
+                  Home
+                </Typography>
+              </Button>
+            </Link>
           )}
         </Box>
       );

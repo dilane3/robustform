@@ -29,8 +29,24 @@ export const styles: Record<string, SxProps<Theme>> = {
     color: Colors.primary,
 
     [theme.breakpoints.down("sm")]: {
+      display: "none",
       fontSize: "1.3rem",
     },
+  }),
+
+  logoImage: (theme) => ({
+    display: "none",
+    alignItems: "center",
+    justifyContent: "center",
+
+    "& img": {
+      width: 50,
+      height: 50,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+    }
   }),
 
   avatar: {

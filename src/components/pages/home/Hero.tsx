@@ -48,7 +48,7 @@ const styles: Record<string, SxProps<Theme>> = {
     },
     [theme.breakpoints.down("sm")]: {
       padding: "0 1.5rem",
-      backgroundSize: "contain",
+      // backgroundSize: "contain",
       backgroundPositionY: "0",
     },
   }),

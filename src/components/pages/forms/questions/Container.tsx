@@ -233,17 +233,13 @@ export const styles: Record<string, SxProps<Theme>> = {
     top: 30,
     left: "50%",
     transform: "translateX(-50%)",
-    width: 600,
+    maxWidth: 600,
+    width: "calc(100% - 20px)",
     height: "auto",
     mx: "auto",
-    // mb: 3,
     borderRadius: 2,
     overflow: "hidden",
     zIndex: 2,
-
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
   }),
 
   bg: {
