@@ -100,12 +100,12 @@ export default function FormItem({ form }: FormItemProps) {
       <Box sx={styles.formBody}>
         {form.deleted ? (
           <Typography sx={styles.title} title={form.title}>
-            {truncate(form.title,125)}
+            {form.title}
           </Typography>
         ) : (
           <Link href={`forms/${form.id}`} style={{ width: "auto" }}>
             <Typography sx={styles.title} title={form.title}>
-              {truncate(form.title, 15)}
+              {form.title}
             </Typography>
           </Link>
         )}
@@ -207,6 +207,11 @@ const styles: Record<string, SxProps<Theme>> = {
     fontSize: "1.5rem",
     fontFamily: "OutfitBold",
     color: Colors.black,
+
+    // truncate text
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 
   date: {

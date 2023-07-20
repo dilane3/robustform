@@ -45,7 +45,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    pb: 5,
+    py: 5,
     gap: "5rem",
     mb: 4,
     border: "1px solid #eaeaea",
@@ -71,7 +71,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     display: "flex",
     flexDirection: "row-reverse",
     alignItems: "center",
-    pb: 5,
+    py: 5,
     gap: "5rem",
     mb: 4,
     border: "1px solid #eaeaea",
@@ -98,6 +98,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
       alignItems: "center",
       textAlign: "center",
       width: "100%",
+      pb: 4
     },
   }),
 

@@ -135,7 +135,7 @@ export default function PublishContainer({
 
           <Box sx={styles.boxRowBetween}>
             <Button
-              styles={{ borderRadius: 1, mt: 6, width: "auto", height: 40 }}
+              styles={{ borderRadius: 1, mt: 8, width: "auto", height: 40 }}
               onClick={handleRevokeLink}
               disabled={isRevoking}
             >
@@ -163,7 +163,8 @@ const styles: Record<string, SxProps<Theme>> = {
     flexDirection: "column",
     padding: "2rem 5rem",
     alignItems: "center",
-    background: Colors.sidenav,
+    background: Colors.background,
+    overflowY: "auto",
 
     [theme.breakpoints.down("md")]: {
       padding: "2rem 3rem",
@@ -220,6 +221,7 @@ const styles: Record<string, SxProps<Theme>> = {
     fontSize: "1.3rem",
     fontFamily: "OutfitRegular",
     my: 1,
+    mb: 3,
     color: Colors.black,
   }),
 

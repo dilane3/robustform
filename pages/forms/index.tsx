@@ -89,7 +89,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
 
   if (!authenticated) {
     return {
-      props: {context},
+      props: { context },
       redirect: {
         destination: `/`,
         permanent: false,

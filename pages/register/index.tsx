@@ -115,9 +115,9 @@ export default function Register() {
               </Box>
 
               <Typography
-                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 4 }}
+                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 3 }}
               >
-                Signup with google
+                Continue with google
               </Typography>
             </Box>
 
@@ -174,7 +174,9 @@ export default function Register() {
 
             <Button disabled={!verified || loading} onClick={handleSubmit}>
               <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
-                Sign up
+                {
+                  loading ? "Loading..." : "Create account"
+                }
               </Typography>
             </Button>
           </Box>

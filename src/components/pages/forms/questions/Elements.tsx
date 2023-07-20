@@ -204,6 +204,94 @@ export default function Elements({ formId, folderId, style }: ElementsProps) {
             color="action"
           />
         </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
+        <SidenavItem
+          text={isExpanded ? "Date" : ""}
+          className="not-expanded"
+          onClick={() => handleSelectCard(QuestionType.DATE)}
+          title="Date"
+        >
+          <CalendarMonthOutlinedIcon
+            sx={{ fontSize: "1.5rem", mr: 2 }}
+            color="action"
+          />
+        </SidenavItem>
       </Box>
     </Box>
   );

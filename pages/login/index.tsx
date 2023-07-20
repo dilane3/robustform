@@ -113,9 +113,9 @@ export default function Login() {
               </Box>
 
               <Typography
-                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 4 }}
+                sx={{ fontSize: 16, fontFamily: "OutfitMedium", ml: 3 }}
               >
-                Signin with google
+                Continue with google
               </Typography>
             </Box>
 
@@ -172,7 +172,9 @@ export default function Login() {
 
             <Button disabled={!verified || loading} onClick={handleSubmit}>
               <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
-                Login
+                {
+                  loading ? "Loading..." : "Login"
+                }
               </Typography>
             </Button>
           </Box>
@@ -345,18 +347,26 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     alignItems: "center",
   },
 
-  accountQuestion: {
+  accountQuestion: (theme) => ({
     fontFamily: "OutfitMedium",
     fontSize: 16,
     color: Colors.background,
-  },
 
-  action: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 14,
+    }
+  }),
+
+  action: (theme) => ({
     fontFamily: "OutfitBold",
     fontSize: 16,
     color: Colors.primary,
     marginLeft: 2,
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 14,
+    }
+  }),
 
   imageContainer: (theme) => ({
     width: "100%",

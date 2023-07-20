@@ -1,4 +1,5 @@
 import { Box, SxProps, Theme, Typography } from "@mui/material";
+import Link from "next/link";
 import { Colors } from "src/constants";
 
 export default function Footer() {
@@ -9,7 +10,10 @@ export default function Footer() {
         <span>&copy;</span>
         <span>{new Date().getFullYear()}</span>
       </Typography>
-      <Typography sx={styles.author}>by Dilane3</Typography>
+
+      <Link href="https://dilane3.com" target="_blank">
+        <Typography sx={styles.author}>by Dilane3</Typography>
+      </Link>
     </Box>
   );
 }
@@ -35,24 +39,36 @@ const styles: Record<string, SxProps<Theme>> = {
     },
   }),
 
-  logo: {
+  logo: (theme) => ({
     fontSize: "1.2rem",
     fontFamily: "OutfitBlack",
     color: Colors.background,
-  },
 
-  year: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
+    },
+  }),
+
+  year: (theme) => ({
     fontSize: "1rem",
     fontFamily: "OutfitMedium",
     color: Colors.background,
     gap: "1rem",
     display: "flex",
     alignItems: "center",
-  },
 
-  author: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem",
+    },
+  }),
+
+  author: (theme) => ({
     fontSize: "1rem",
     fontFamily: "OutfitBold",
     color: Colors.background,
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem",
+    },
+  }),
 };
