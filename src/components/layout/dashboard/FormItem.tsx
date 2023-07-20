@@ -204,7 +204,7 @@ const styles: Record<string, SxProps<Theme>> = {
   },
 
   title: {
-    fontSize: "1rem",
+    fontSize: "1.5rem",
     fontFamily: "OutfitBold",
     color: Colors.black,
   },

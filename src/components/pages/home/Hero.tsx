@@ -19,8 +19,8 @@ export default function Hero() {
         you through you network
       </Typography>
 
-      <Link href="/login">
-        <Button styles={{ borderRadius: 5, mt: 6, width: 250 }}>
+      <Link href="/login" style={{ marginTop: "50px" }}>
+        <Button styles={{ borderRadius: 5, width: 250 }}>
           Join us now
         </Button>
       </Link>

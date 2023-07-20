@@ -18,7 +18,6 @@ import Image1 from "src/assets/images/home/step1.png";
 import Image2 from "src/assets/images/home/step2.png";
 import Image3 from "src/assets/images/home/step3.png";
 
-
 export default function Home() {
   return (
     <>
@@ -49,7 +48,7 @@ export default function Home() {
 
             <Link href={"/login"}>
               <Button
-                styles={{ borderRadius: 1, width: 80, height: 35, ml: 4 }}
+                styles={{ borderRadius: 50, width: 80, height: 35, ml: 4 }}
               >
                 <Typography
                   sx={{ fontSize: "0.8rem", fontFamily: "OutfitMedium" }}
@@ -101,6 +100,7 @@ export default function Home() {
 Home.noLayout = true;
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  console.log({ context });
   const { authenticated } = await authProvider.check(context);
 
   if (authenticated) {

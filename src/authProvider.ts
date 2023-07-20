@@ -2,7 +2,6 @@ import { AuthBindings } from "@refinedev/core";
 import nookies from "nookies";
 
 import { supabaseClient } from "./utility";
-import userProvider from "./api/users";
 
 export const authProvider: AuthBindings = {
   login: async ({ email, password }) => {
