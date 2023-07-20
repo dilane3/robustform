@@ -80,6 +80,10 @@ export default function Register() {
     setLoading(false);
   };
 
+  const handleGoogleLogin = async () => {
+    await authProvider.googleLogin();
+  }
+
   // Methods
 
   const validate = async () => {
@@ -104,7 +108,7 @@ export default function Register() {
           <Typography sx={styles.title}>Create an account</Typography>
 
           <Box sx={styles.box}>
-            <Box sx={styles.googleLogin}>
+            <Box sx={styles.googleLogin} onClick={handleGoogleLogin}>
               <Box sx={styles.googleIcon}>
                 <Image
                   src={googleImage}

@@ -78,6 +78,10 @@ export default function Login() {
     setLoading(false);
   };
 
+  const handleGoogleLogin = async () => {
+    await authProvider.googleLogin();
+  };
+
   // Methods
 
   const validate = async () => {
@@ -102,7 +106,7 @@ export default function Login() {
           <Typography sx={styles.title}>Login into your account</Typography>
 
           <Box sx={styles.box}>
-            <Box sx={styles.googleLogin}>
+            <Box sx={styles.googleLogin} onClick={handleGoogleLogin}>
               <Box sx={styles.googleIcon}>
                 <Image
                   src={googleImage}
@@ -172,9 +176,7 @@ export default function Login() {
 
             <Button disabled={!verified || loading} onClick={handleSubmit}>
               <Typography sx={{ fontSize: "1rem", fontFamily: "OutfitMedium" }}>
-                {
-                  loading ? "Loading..." : "Login"
-                }
+                {loading ? "Loading..." : "Login"}
               </Typography>
             </Button>
           </Box>
@@ -196,9 +198,7 @@ export default function Login() {
             <Typography sx={styles.logo}>Robustform</Typography>
           </Link>
 
-          <Box
-            sx={styles.imageContainer}
-          >
+          <Box sx={styles.imageContainer}>
             <Image src={loginImage} alt="Login" width={500} />
           </Box>
 
@@ -354,7 +354,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
 
     [theme.breakpoints.down("sm")]: {
       fontSize: 14,
-    }
+    },
   }),
 
   action: (theme) => ({
@@ -365,7 +365,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
 
     [theme.breakpoints.down("sm")]: {
       fontSize: 14,
-    }
+    },
   }),
 
   imageContainer: (theme) => ({
@@ -380,7 +380,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
       "& img": {
         width: "100%",
         height: "auto",
-      }
+      },
     },
   }),
 };

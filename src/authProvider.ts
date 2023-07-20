@@ -3,7 +3,7 @@ import nookies from "nookies";
 
 import { supabaseClient } from "./utility";
 
-export const authProvider: AuthBindings = {
+export const authProvider: AuthBindings & { googleLogin: () => any } = {
   login: async ({ email, password }) => {
     const { data, error } = await supabaseClient.auth.signInWithPassword({
       email,
@@ -91,6 +91,41 @@ export const authProvider: AuthBindings = {
       },
     };
   },
+
+  googleLogin: async () => {
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
+
+    if (error) {
+      return {
+        success: false,
+        error,
+      };
+    }
+
+    if (data) {
+      return {
+        success: true,
+        redirectTo: "/",
+      };
+    }
+
+    return {
+      success: false,
+      error: {
+        message: "Login failed",
+        name: "Invalid email or password",
+      },
+    };
+  },
+
   check: async (ctx) => {
     const { token } = nookies.get(ctx);
     const { data } = await supabaseClient.auth.getUser(token);
