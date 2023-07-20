@@ -22,9 +22,10 @@ import Folder from "src/entities/form/Folder";
 type ElementsProps = {
   formId: number;
   folderId?: number;
+  style?: any
 };
 
-export default function Elements({ formId, folderId }: ElementsProps) {
+export default function Elements({ formId, folderId, style }: ElementsProps) {
   // Local state
   const [isExpanded, setIsExpanded] = React.useState<boolean>(true);
 
@@ -103,6 +104,7 @@ export default function Elements({ formId, folderId }: ElementsProps) {
     <Box
       sx={styles.container}
       className={`${!isExpanded ? "not-expanded" : ""}`}
+      style={style}
     >
       <Box sx={styles.header}>
         <Typography
@@ -209,6 +211,7 @@ export default function Elements({ formId, folderId }: ElementsProps) {
 
 Elements.defaultProps = {
   formId: OTHERS_FORMS_FOLDER_ID,
+  style: {},
 };
 
 const styles: Record<string, SxProps<Theme>> = {

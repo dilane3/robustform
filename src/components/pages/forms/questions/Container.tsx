@@ -25,6 +25,8 @@ import Button from "@components/buttons/Button";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import NotFoundForm from "./NotFound";
 import { authProvider } from "src/authProvider";
+import Icon from "@components/icons/Icon";
+import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftOutlined";
 
 type QuestionContainerProps = {
   form: Form | null;
@@ -37,6 +39,7 @@ export default function QuestionContainer({
 }: QuestionContainerProps) {
   // Local state
   const [active, setActive] = React.useState(false);
+  const [isExpanded, setIsExpanded] = React.useState(false);
 
   // Global state
   const { forms } = useSignal<FormsState>("forms");
@@ -50,7 +53,7 @@ export default function QuestionContainer({
   React.useEffect(() => {
     const check = async () => {
       const response = await authProvider.check();
-    }
+    };
 
     check();
   }, []);
@@ -195,10 +198,60 @@ export default function QuestionContainer({
 
     return (
       <>
-        <Elements
-          formId={form?.id}
-          folderId={form?.folderId || otherFormsFolder?.id}
-        />
+        <Box
+          sx={(theme) => ({
+            [theme.breakpoints.down("sm")]: {
+              display: "none",
+            },
+          })}
+        >
+          <Elements
+            formId={form?.id}
+            folderId={form?.folderId || otherFormsFolder?.id}
+          />
+        </Box>
+
+        <Box
+          sx={styles.elementFloatIcon}
+          onClick={() => setIsExpanded((prev) => !prev)}
+        >
+          <KeyboardDoubleArrowLeftOutlinedIcon
+            color="action"
+            className={isExpanded ? "expanded" : ""}
+          />
+        </Box>
+
+        <Box
+          sx={(theme) => ({
+            display: "none",
+            position: "absolute",
+            top: 60,
+            left: 10,
+            width: 80,
+            height: 250,
+            overflowY: "auto",
+            borderRadius: 2,
+            zIndex: 10,
+
+            // transitions
+            transition: "all 0.3s ease-in-out",
+            transform: isExpanded ? "translateX(0)" : "translateX(-120%)",
+
+            [theme.breakpoints.down("sm")]: {
+              display: "block",
+            },
+          })}
+        >
+          <Elements
+            formId={form?.id}
+            folderId={form?.folderId || otherFormsFolder?.id}
+            style={{
+              border: "1px solid #eee",
+              borderRadius: 10,
+              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+            }}
+          />
+        </Box>
 
         <Box sx={styles.formContainer}>
           <Box sx={styles.form}>
@@ -225,6 +278,7 @@ export default function QuestionContainer({
 
 export const styles: Record<string, SxProps<Theme>> = {
   container: {
+    position: "relative",
     width: "100%",
     height: "100%",
     display: "flex",
@@ -249,6 +303,10 @@ export const styles: Record<string, SxProps<Theme>> = {
     borderRadius: 2,
     overflow: "hidden",
     zIndex: 2,
+
+    [theme.breakpoints.down("sm")]: {
+      top: 60,
+    },
   }),
 
   bg: {
@@ -268,5 +326,33 @@ export const styles: Record<string, SxProps<Theme>> = {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: Colors.background,
+  }),
+
+  elementFloatIcon: (theme) => ({
+    display: "none",
+    position: "absolute",
+    top: 10,
+    left: 25,
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    backgroundColor: Colors.background,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 20,
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+
+    "& .MuiSvgIcon-root": {
+      transform: "rotate(180deg)",
+      transition: "all 0.3s ease-in-out",
+    },
+
+    "& .expanded": {
+      transform: "rotate(0deg)",
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+    },
   }),
 };
