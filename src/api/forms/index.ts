@@ -115,6 +115,36 @@ const formProvider = {
     }
   },
 
+  revokeLink: async (payload: any) => {
+    try {
+      const { error, data } = await supabaseClient
+        .from("forms")
+        .update({
+          form_key: generateUID(),
+        })
+        .eq("id", payload.id)
+        .select("form_key")
+        .single();
+
+      if (error) {
+        return {
+          success: false,
+          error,
+        };
+      }
+
+      return {
+        success: true,
+        data,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error,
+      };
+    }
+  },
+
   findAll: async (userId: number) => {
     try {
       const { data, error } = await supabaseClient

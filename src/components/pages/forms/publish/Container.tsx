@@ -8,6 +8,9 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import NotFoundForm from "../questions/NotFound";
 import React from "react";
+import formProvider from "src/api/forms";
+import { toast } from "react-toastify";
+import { useActions } from "@dilane3/gx";
 
 type ResponseContainerProps = {
   form: Form | null;
@@ -20,6 +23,10 @@ export default function PublishContainer({
 }: ResponseContainerProps) {
   // Local state
   const [isCopied, setIsCopied] = React.useState(false);
+  const [isRevoking, setIsRevoking] = React.useState(false);
+
+  // Global actions
+  const { revokeLink } = useActions("forms");
 
   // Effects
 
@@ -39,6 +46,34 @@ export default function PublishContainer({
 
     // Set copied
     setIsCopied(true);
+  };
+
+  const handleRevokeLink = async () => {
+    if (!form) return;
+
+    // Set revoking
+    setIsRevoking(true);
+
+    // Revoke link
+    const { data, error } = await formProvider.revokeLink({ id: form.id });
+
+    console.log(error)
+
+    // Set revoking
+    setIsRevoking(false);
+
+    // Update form
+    if (data) {
+      revokeLink({
+        folderId: form.folderId,
+        formId: form.id,
+        formKey: data.form_key,
+      });
+
+      toast.success("Link revoked successfully");
+    } else {
+      toast.error("Error revoking link");
+    }
   };
 
   // Render
@@ -101,12 +136,14 @@ export default function PublishContainer({
           <Box sx={styles.boxRowBetween}>
             <Button
               styles={{ borderRadius: 1, mt: 6, width: "auto", height: 40 }}
+              onClick={handleRevokeLink}
+              disabled={isRevoking}
             >
               <RestartAltIcon sx={{ color: "#fff", mr: 2 }} />
               <Typography
                 sx={{ fontSize: "0.8rem", fontFamily: "OutfitMedium" }}
               >
-                Generate new link
+                {isRevoking ? "Generating..." : "Generate new link"}
               </Typography>
             </Button>
           </Box>
