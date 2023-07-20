@@ -11,6 +11,12 @@ import { styles } from "src/styles/mui-styles/header";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Link from "next/link";
 import Button from "@components/buttons/Button";
+import Image from "next/image";
+
+import Logo from "src/assets/images/logo.png";
+import Image1 from "src/assets/images/home/step1.png";
+import Image2 from "src/assets/images/home/step2.png";
+import Image3 from "src/assets/images/home/step3.png";
 
 export default function Home() {
   return (
@@ -28,6 +34,10 @@ export default function Home() {
         <Box component="header" sx={styles.header}>
           <Typography sx={styles.logo}>robustform</Typography>
 
+          <Box sx={styles.logoImage}>
+            <Image src={Logo} alt="Logo" width={50} />
+          </Box>
+
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Link
               href={"https://github.com/dilane3/robustform"}
@@ -38,7 +48,7 @@ export default function Home() {
 
             <Link href={"/login"}>
               <Button
-                styles={{ borderRadius: 1, width: 80, height: 35, ml: 4 }}
+                styles={{ borderRadius: 50, width: 80, height: 35, ml: 4 }}
               >
                 <Typography
                   sx={{ fontSize: "0.8rem", fontFamily: "OutfitMedium" }}
@@ -58,6 +68,7 @@ export default function Home() {
             description={
               "Choose the different type of question that you want and generate your form"
             }
+            image={Image1}
           />
 
           <Block
@@ -66,6 +77,7 @@ export default function Home() {
             description={
               "Generate a link of your form and share it with people around you"
             }
+            image={Image3}
           />
 
           <Block
@@ -73,6 +85,7 @@ export default function Home() {
             description={
               "See all responses received from people and export them into an excel file easily."
             }
+            image={Image2}
           />
 
           <Start />
@@ -87,6 +100,7 @@ export default function Home() {
 Home.noLayout = true;
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  console.log({ context });
   const { authenticated } = await authProvider.check(context);
 
   if (authenticated) {

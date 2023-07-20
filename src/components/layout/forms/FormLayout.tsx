@@ -20,6 +20,9 @@ import HeaderAvatar from "../dashboard/HeaderAvatar";
 import { FormsState } from "src/gx/signals";
 import useResponses from "src/hooks/useResponses";
 import { useMemo } from "react";
+import Image from "next/image";
+import Logo from "src/assets/images/logo.png";
+
 
 export type FormLayoutProps = {
   children: React.ReactNode;
@@ -32,7 +35,7 @@ export default function FormLayout({
   children,
   title,
   formId,
-  formKey
+  formKey,
 }: FormLayoutProps) {
   // Global state
   const { user } = useSignal<AuthState>("auth");
@@ -75,10 +78,19 @@ export default function FormLayout({
         >
           <Box sx={styles.headerTitle}>
             <Typography sx={headerStyles.logo}>robustform</Typography>
+
+            <Box sx={headerStyles.logoImage}>
+              <Image src={Logo} alt="Logo" width={50} />
+            </Box>
+
             <Typography
               sx={styles.formSaved}
               style={{
-                color: updateLoading ? Colors.gray : updateStatus ? "green" : "red",
+                color: updateLoading
+                  ? Colors.gray
+                  : updateStatus
+                  ? "green"
+                  : "red",
               }}
             >
               {updateLoading ? "Saving..." : "form saved"}
@@ -91,7 +103,10 @@ export default function FormLayout({
                 <ColorLensOutlinedIcon color="action" />
               </Icon>
 
-              <Link href={`/forms/view/${formId}?key=${formKey}`} target="_blank">
+              <Link
+                href={`/forms/view/${formId}?key=${formKey}`}
+                target="_blank"
+              >
                 <Icon>
                   <VisibilityOutlinedIcon color="action" />
                 </Icon>
@@ -122,27 +137,35 @@ const styles: Record<string, SxProps<Theme>> = {
 
   headerTitle: {
     display: "flex",
-    alignItems: "baseline",
+    alignItems: "center",
   },
 
-  formSaved: {
+  formSaved: (theme) => ({
     marginLeft: "20px",
     fontFamily: "OutfitRegular",
-  },
+
+    [theme.breakpoints.down(400)]: {
+      display: "none",
+    }
+  }),
 
   headerRight: {
     display: "flex",
     alignItems: "center",
   },
 
-  icons: {
+  icons: (theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     marginRight: "50px",
-  },
 
-  icon: {
+    [theme.breakpoints.down("sm")]: {
+      marginRight: "20px",
+    }
+  }),
+
+  icon: (theme) => ({
     width: "40px",
     height: "40px",
     borderRadius: "50%",
@@ -156,5 +179,9 @@ const styles: Record<string, SxProps<Theme>> = {
     "&:hover": {
       backgroundColor: Colors.grayLight,
     },
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      marginRight: "7px",
+    }
+  }),
 };

@@ -13,7 +13,7 @@ type FormData = {
   cards?: Card[];
   responses?: Response[];
   key: string;
-  deleted?: boolean
+  deleted?: boolean;
 };
 
 export default class Form {
@@ -126,5 +126,9 @@ export default class Form {
 
   addResponse(response: Response) {
     this._responses.push(response);
+  }
+
+  getFullLink() {
+    return `${window.location.origin}/forms/view/${this._id}?key=${this._key}`;
   }
 }

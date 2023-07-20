@@ -120,13 +120,17 @@ export const styles: Record<string, SxProps<Theme>> = {
     alignItems: "flex-start",
   }),
 
-  title: {
+  title: (theme) => ({
     fontSize: "3rem",
     fontFamily: "OutfitBold",
     color: Colors.black,
     lineHeight: 1.2,
     mb: 0.8,
-  },
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2rem"
+    }
+  }),
 
   dateContainer: {
     display: "flex",

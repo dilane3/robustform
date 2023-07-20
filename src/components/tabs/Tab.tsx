@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Form from "src/entities/form/Form";
+import PublishContainer from "@components/pages/forms/publish/Container";
 
 export default function Tab() {
   const [value, setValue] = React.useState("1");
@@ -60,7 +61,9 @@ export default function Tab() {
             <TabPanel value="2" sx={{ height: '100%', padding: "0" }}>
               <ResponseContainer form={form} isReady={isReady} />
             </TabPanel>
-            <TabPanel value="3" sx={{ height: '100%', padding: "0" }}>Item Three</TabPanel>
+            <TabPanel value="3" sx={{ height: '100%', padding: "0" }}>
+              <PublishContainer form={form} isReady={isReady} />
+            </TabPanel>
           </Box>
         </Box>
       </TabContext>

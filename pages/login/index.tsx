@@ -67,8 +67,6 @@ export default function Login() {
 
         window.location.href = redirectTo as string;
       } else {
-        console.log({ error });
-
         if ((error as HttpError)?.status === 400) {
           toast.error("Email or password is incorrect.");
         } else {

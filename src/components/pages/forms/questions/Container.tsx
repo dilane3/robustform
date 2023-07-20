@@ -24,6 +24,7 @@ import notFoundImage from "src/assets/images/notfound.png";
 import Button from "@components/buttons/Button";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import NotFoundForm from "./NotFound";
+import { authProvider } from "src/authProvider";
 
 type QuestionContainerProps = {
   form: Form | null;
@@ -45,6 +46,14 @@ export default function QuestionContainer({
   const otherFormsFolder = React.useMemo(() => {
     return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
   }, [forms]);
+
+  React.useEffect(() => {
+    const check = async () => {
+      const response = await authProvider.check();
+    }
+
+    check();
+  }, []);
 
   // Handlers
   const handleGlobalActive = (card?: Card) => {
@@ -233,17 +242,13 @@ export const styles: Record<string, SxProps<Theme>> = {
     top: 30,
     left: "50%",
     transform: "translateX(-50%)",
-    width: 600,
+    maxWidth: 600,
+    width: "calc(100% - 20px)",
     height: "auto",
     mx: "auto",
-    // mb: 3,
     borderRadius: 2,
     overflow: "hidden",
     zIndex: 2,
-
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
   }),
 
   bg: {

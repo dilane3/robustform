@@ -1,15 +1,15 @@
 import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { Colors } from "src/constants";
-import blockImage from "src/assets/images/home/block.png";
 import Image from "next/image";
 
 type BlockProps = {
   type?: "left" | "right";
   title: string;
+  image: any;
   description: string;
 };
 
-export default function Block({ type, title, description }: BlockProps) {
+export default function Block({ type, title, description, image }: BlockProps) {
   const containerStyle =
     type === "right" ? styles.containerRight : styles.container;
 
@@ -22,7 +22,7 @@ export default function Block({ type, title, description }: BlockProps) {
 
       <Box sx={styles.right}>
         <Image
-          src={blockImage}
+          src={image}
           style={styles.image as React.CSSProperties}
           alt="block"
           width={500}
@@ -47,6 +47,8 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     alignItems: "center",
     pb: 5,
     gap: "5rem",
+    mb: 4,
+    border: "1px solid #eaeaea",
 
     [theme.breakpoints.down("md")]: {
       padding: "0 3rem",
@@ -71,6 +73,8 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
     alignItems: "center",
     pb: 5,
     gap: "5rem",
+    mb: 4,
+    border: "1px solid #eaeaea",
 
     [theme.breakpoints.down("md")]: {
       padding: "0 3rem",
@@ -106,6 +110,7 @@ const styles: Record<string, SxProps<Theme> | React.CSSProperties> = {
 
     [theme.breakpoints.down("md")]: {
       width: "100%",
+      mt: 5
     },
   }),
 

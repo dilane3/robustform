@@ -141,6 +141,22 @@ export const formsSignal = createSignal<FormsState>({
       return state;
     },
 
+    revokeLink: (state, payload: { folderId: number; formId: number, formKey: string }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          form.key = payload.formKey;
+        }
+      }
+
+      return state;
+    },
+
     updateTitleAndDescription: (
       state,
       payload: {
