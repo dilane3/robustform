@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { authProvider } from "src/authProvider";
 import Form from "src/entities/form/Form";
 import { FormsState } from "src/gx/signals";
+import { FOLDER_BIN_ID } from "src/gx/signals/forms/constants";
 import useAuth from "src/hooks/useAuth";
 
 export default function Forms() {
@@ -20,40 +21,61 @@ export default function Forms() {
   useAuth();
 
   // Memoized values
-  const allForms = useMemo(() => {
+  const [allForms, deletedForms] = useMemo(() => {
     const myForms: Form[] = [];
+    const deletedForms: Form[] = [];
 
     forms.forEach((folder) => {
       folder.forms.forEach((form) => {
-        myForms.push(form);
+        if (form.deleted) {
+          deletedForms.push(form);
+        } else {
+          myForms.push(form);
+        }
       });
     });
 
-    return myForms;
+    return [myForms, deletedForms];
   }, [JSON.stringify(forms)]);
 
-  console.log({ selectedFolder })
+  const renderContent = () => {
+    if (selectedFolder) {
+      if (selectedFolder.id === FOLDER_BIN_ID) {
+        return deletedForms.map((form) => (
+          <Box sx={styles.formItem} key={form.id}>
+            <FormItem form={form} />
+          </Box>
+        ));
+      } else {
+        return selectedFolder.forms.map((form) => {
+          if (form.deleted) return null;
+
+          return (
+            <Box sx={styles.formItem} key={form.id}>
+              <FormItem form={form} />
+            </Box>
+          );
+        });
+      }
+    }
+
+    return allForms.map((form) => (
+      <Box sx={styles.formItem} key={form.id}>
+        <FormItem form={form} />
+      </Box>
+    ));
+  };
 
   return (
     <DashboardLayout>
-      {allForms.length === 0 ? (
+      {allForms.length === 0 && deletedForms.length === 0 ? (
         <EmptyForm />
       ) : (
         <FormsContainer
           title={selectedFolder ? selectedFolder.name : "All forms"}
           count={selectedFolder ? selectedFolder.forms.length : allForms.length}
         >
-          {selectedFolder
-            ? selectedFolder.forms.map((form) => (
-                <Box sx={styles.formItem} key={form.id}>
-                  <FormItem form={form} />
-                </Box>
-              ))
-            : allForms.map((form) => (
-                <Box sx={styles.formItem} key={form.id}>
-                  <FormItem form={form} />
-                </Box>
-              ))}
+          {renderContent()}
         </FormsContainer>
       )}
     </DashboardLayout>
@@ -64,6 +86,9 @@ Forms.noLayout = true;
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   const { authenticated } = await authProvider.check(context);
+
+  console.log(authenticated);
+  
 
   if (!authenticated) {
     return {

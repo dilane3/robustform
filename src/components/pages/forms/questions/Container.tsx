@@ -14,17 +14,26 @@ import { redirect } from "next/navigation";
 import { useActions, useSignal } from "@dilane3/gx";
 import { FormsState } from "src/gx/signals";
 import Form from "src/entities/form/Form";
-import { NavigateToResource } from "@refinedev/nextjs-router";
 import Link from "next/link";
 import { CardType, QuestionType } from "src/entities/card/type";
 import Card from "src/entities/card/Card";
 import { OTHERS_FORMS_FOLDER } from "src/gx/signals/forms/constants";
+import Image from "next/image";
+import { Colors } from "src/constants";
+import notFoundImage from "src/assets/images/notfound.png";
+import Button from "@components/buttons/Button";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import NotFoundForm from "./NotFound";
 
-export default function QuestionContainer() {
-  // URL handler
-  const { query, isReady } = useRouter();
-  const { id } = query as { id: string };
+type QuestionContainerProps = {
+  form: Form | null;
+  isReady: boolean;
+};
 
+export default function QuestionContainer({
+  form,
+  isReady,
+}: QuestionContainerProps) {
   // Local state
   const [active, setActive] = React.useState(false);
 
@@ -32,23 +41,6 @@ export default function QuestionContainer() {
   const { forms } = useSignal<FormsState>("forms");
 
   const { setCardActive, setAllCardsInactive } = useActions("forms");
-
-  // Memoized values
-  const form = React.useMemo(() => {
-    if (!id) return null;
-
-    let form: Form | null = null;
-
-    for (let folder of forms) {
-      for (let f of folder.forms) {
-        if (f.id === +id) {
-          form = f;
-        }
-      }
-    }
-
-    return form;
-  }, [JSON.stringify(forms)]) as Form | null;
 
   const otherFormsFolder = React.useMemo(() => {
     return forms.find((folder) => folder.name === OTHERS_FORMS_FOLDER);
@@ -185,43 +177,41 @@ export default function QuestionContainer() {
 
   // Render
 
-  if (isReady && !form) {
+  const renderContent = () => {
+    if (isReady && !form) {
+      return <NotFoundForm />;
+    }
+
+    if (!isReady || !form) return null;
+
     return (
-      <Link href="/forms">
-        <Typography sx={{ fontFamily: "OutfitRegular", fontSize: "1rem" }}>
-          Go back
-        </Typography>
-      </Link>
-    );
-  }
+      <>
+        <Elements
+          formId={form?.id}
+          folderId={form?.folderId || otherFormsFolder?.id}
+        />
 
-  if (!isReady || !form) return null;
+        <Box sx={styles.formContainer}>
+          <Box sx={styles.form}>
+            <TitleCard
+              active={active}
+              onActive={() => handleActive(true)}
+              form={form}
+              folderId={form?.folderId}
+            />
 
-  return (
-    <Box sx={styles.container}>
-      <Elements
-        formId={form.id}
-        folderId={form.folderId || otherFormsFolder?.id}
-      />
+            {renderQuestions()}
 
-      <Box sx={styles.formContainer}>
-        <Box sx={styles.form}>
-          <TitleCard
-            active={active}
-            onActive={() => handleActive(true)}
-            form={form}
-            folderId={form?.folderId}
-          />
+            <SubmitCard />
+          </Box>
 
-          {renderQuestions()}
-
-          <SubmitCard />
+          <Box sx={styles.bg} onClick={handleDesactivateAll} />
         </Box>
+      </>
+    );
+  };
 
-        <Box sx={styles.bg} onClick={handleDesactivateAll} />
-      </Box>
-    </Box>
-  );
+  return <Box sx={styles.container}>{renderContent()}</Box>;
 }
 
 export const styles: Record<string, SxProps<Theme>> = {
@@ -264,4 +254,14 @@ export const styles: Record<string, SxProps<Theme>> = {
     height: "100%",
     zIndex: 0,
   },
+
+  centeredBox: (theme) => ({
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.background,
+  }),
 };

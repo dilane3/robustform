@@ -27,6 +27,7 @@ export type FormsState = {
   selectedFolder: Folder | null;
   updateLoading: boolean;
   updateStatus: boolean;
+  responsesLoading: boolean;
 };
 
 export const formsSignal = createSignal<FormsState>({
@@ -38,6 +39,7 @@ export const formsSignal = createSignal<FormsState>({
     selectedForm: null,
     updateLoading: false,
     updateStatus: true,
+    responsesLoading: true,
   },
   actions: {
     setForms: (state, forms: Folder[]) => {
@@ -65,7 +67,57 @@ export const formsSignal = createSignal<FormsState>({
       );
 
       if (folder) {
-        folder.deleteForm(payload.formId);
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          folder.deleteForm(payload.formId);
+
+          // Add the form to the bin
+          const folderBin = state.forms.find(
+            (folder) => folder.id === FOLDER_BIN_ID
+          );
+
+          console.log({ folderBin });
+
+          if (folderBin) {
+            form.deleted = true;
+            folderBin.addForm(form);
+          }
+        }
+      }
+
+      return state;
+    },
+
+    deleteFormDefinitely: (state, payload: { folderId: number; formId: number }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const formIndex = folder.forms.findIndex((form) => form.id === payload.formId);
+
+        if (formIndex !== -1) {
+          // restore the form
+          folder.forms.splice(formIndex, 1);
+        }
+      }
+
+      return state;
+    },
+
+    restoreForm: (state, payload: { folderId: number; formId: number }) => {
+      const folder = state.forms.find(
+        (folder) => folder.id === payload.folderId
+      );
+
+      if (folder) {
+        const form = folder.forms.find((form) => form.id === payload.formId);
+
+        if (form) {
+          // restore the form
+          form.deleted = false;
+        }
       }
 
       return state;
@@ -265,6 +317,8 @@ export const formsSignal = createSignal<FormsState>({
           form.responses = payload.responses;
         }
       }
+
+      state.responsesLoading = false;
 
       return state;
     },

@@ -18,6 +18,9 @@ import AdjustIcon from "@mui/icons-material/Adjust";
 import Link from "next/link";
 import Form from "src/entities/form/Form";
 import { truncate, formatDate } from "src/utility";
+import formProvider from "src/api/forms";
+import { toast } from "react-toastify";
+import { useActions } from "@dilane3/gx";
 
 type FormItemProps = {
   form: Form;
@@ -26,11 +29,68 @@ type FormItemProps = {
 export default function FormItem({ form }: FormItemProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  // Global actions
+  const { deleteForm, restoreForm, deleteFormDefinitely } = useActions("forms");
+
+  // Handlers
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDelete = async () => {
+    deleteForm({
+      folderId: form.folderId,
+      formId: form.id,
+    });
+
+    handleClose();
+
+    const { error } = await formProvider.delete({ id: form.id });
+
+    if (error) {
+      toast.error("Failed to delete form");
+    } else {
+      toast.success("Form deleted successfully");
+    }
+  };
+
+  const handleRestore = async () => {
+    restoreForm({
+      folderId: form.folderId,
+      formId: form.id,
+    });
+
+    handleClose();
+
+    const { error } = await formProvider.restore({ id: form.id });
+
+    if (error) {
+      toast.error("Failed to restore the form");
+    } else {
+      toast.success("Form has been restored successfully");
+    }
+  };
+
+  const handleDeleteDefinitely = async () => {
+    deleteFormDefinitely({
+      folderId: form.folderId,
+      formId: form.id,
+    });
+
+    handleClose();
+
+    const { error } = await formProvider.deleteDefinitely({ id: form.id });
+
+    if (error) {
+      toast.error("Failed to delete the form");
+    } else {
+      toast.success("Form has been deleted successfully");
+    }
   };
 
   return (
@@ -38,11 +98,17 @@ export default function FormItem({ form }: FormItemProps) {
       <Box sx={styles.formHeader} />
 
       <Box sx={styles.formBody}>
-        <Link href={`forms/${form.id}`} style={{ width: "auto" }}>
+        {form.deleted ? (
           <Typography sx={styles.title} title={form.title}>
             {truncate(form.title, 25)}
           </Typography>
-        </Link>
+        ) : (
+          <Link href={`forms/${form.id}`} style={{ width: "auto" }}>
+            <Typography sx={styles.title} title={form.title}>
+              {truncate(form.title, 25)}
+            </Typography>
+          </Link>
+        )}
 
         <Box sx={styles.formBottom}>
           <Box sx={styles.date}>
@@ -73,19 +139,37 @@ export default function FormItem({ form }: FormItemProps) {
               horizontal: "left",
             }}
           >
-            <MenuItem onClick={handleClose}>
-              <AdjustIcon sx={styles.menuItemIcon} color="action" />
-              <Typography sx={styles.menuItemText}>Open</Typography>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <ModeEditIcon sx={styles.menuItemIcon} color="action" />
-              <Typography sx={styles.menuItemText}>Update</Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>
-              <DeleteIcon sx={styles.menuItemIcon} color="action" />
-              <Typography sx={styles.menuItemText}>Delete</Typography>
-            </MenuItem>
+            {form.deleted ? (
+              <>
+                <MenuItem onClick={handleRestore}>
+                  <AdjustIcon sx={styles.menuItemIcon} color="action" />
+                  <Typography sx={styles.menuItemText}>Restore</Typography>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleDeleteDefinitely}>
+                  <DeleteIcon sx={styles.menuItemIcon} color="action" />
+                  <Typography sx={styles.menuItemText}>Delete</Typography>
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <Link href={`forms/${form.id}`}>
+                  <MenuItem onClick={handleClose}>
+                    <AdjustIcon sx={styles.menuItemIcon} color="action" />
+                    <Typography sx={styles.menuItemText} style={{ color: Colors.black }}>Open</Typography>
+                  </MenuItem>
+                </Link>
+                <MenuItem onClick={handleClose}>
+                  <ModeEditIcon sx={styles.menuItemIcon} color="action" />
+                  <Typography sx={styles.menuItemText}>Update</Typography>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleDelete}>
+                  <DeleteIcon sx={styles.menuItemIcon} color="action" />
+                  <Typography sx={styles.menuItemText}>Delete</Typography>
+                </MenuItem>
+              </>
+            )}
           </Menu>
         </Box>
       </Box>

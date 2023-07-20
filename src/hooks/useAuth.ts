@@ -55,6 +55,7 @@ export default function useAuth() {
     });
 
     if (success) {
+      console.log({ userData });
       if (userData?.length === 0) {
         // User is not registered, so we register it
         const { error, data: userData } = await userProvider.createUser({

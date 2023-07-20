@@ -105,12 +105,20 @@ export default function UniqueChoiceCard({
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     deleteCard({
       folderId,
       formId: card.formId,
       cardId: card.id,
     });
+
+
+    // Delete question on supabase
+    setUpdateProcess({ loading: true });
+
+    await questionProvider.delete({ id: card.id });
+
+    setUpdateProcess({ loading: false, status: true });
   };
 
   const handleAddResponse = (value: string) => {

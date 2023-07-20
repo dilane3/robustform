@@ -3,6 +3,7 @@ import Tab from "@components/tabs/Tab";
 import { useActions, useSignal } from "@dilane3/gx";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import { authProvider } from "src/authProvider";
 import Form from "src/entities/form/Form";
@@ -14,7 +15,7 @@ export default function SpecificForm() {
   const { id } = query as { id: string };
 
   // Global state
-  const { forms, selectedFolder } = useSignal<FormsState>("forms");
+  const { forms } = useSignal<FormsState>("forms");
 
   // Memoized values
   const form = React.useMemo(() => {
@@ -24,17 +25,25 @@ export default function SpecificForm() {
 
     for (let folder of forms) {
       for (let f of folder.forms) {
-        if (f.id === +id) {
+        if (f.id === +id && !f.deleted) {
           form = f;
+
+          break;
         }
       }
+
+      if (form) break;
     }
 
     return form;
   }, [JSON.stringify(forms)]) as Form | null;
 
   return (
-    <FormLayout title={form ? form.title : ""} formId={form?.id}>
+    <FormLayout
+      title={form ? form.title : ""}
+      formId={+id}
+      formKey={form ? form.key : ""}
+    >
       <Tab />
     </FormLayout>
   );

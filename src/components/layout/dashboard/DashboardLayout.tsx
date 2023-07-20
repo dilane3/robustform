@@ -66,10 +66,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   );
 }
 
+
 const styles: Record<string, SxProps<Theme>> = {
   input: (theme) => ({
     width: "100%",
-    maxWidth: 600,
+    maxWidth: 400,
     mx: 5,
 
     [theme.breakpoints.down("md")]: {

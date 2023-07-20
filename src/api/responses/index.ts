@@ -86,12 +86,13 @@ const responseProvider = {
     }
   },
 
-  findAll: async (formId: number) => {
+  findAll: async (folderId: number, formId: number) => {
     try {
       const { data, error } = await supabaseClient
         .from("response_items")
         .select("*, responses(id, created_at, form_id, forms(folder_id))")
-        .eq("responses.form_id", formId);
+        .eq("responses.form_id", formId)
+        .eq("responses.forms.folder_id", folderId);
 
       if (data) {
         return {

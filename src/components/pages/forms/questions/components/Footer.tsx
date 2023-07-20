@@ -48,7 +48,8 @@ const styles: Record<string, SxProps<Theme>> = {
     fontSize: "0.9rem",
     color: Colors.gray,
     width: "100%",
-    mb: 2
+    mb: 2,
+    textAlign: "center",
   },
 
   text: {

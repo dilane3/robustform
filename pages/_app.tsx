@@ -1,5 +1,6 @@
 import "@styles/globals.css";
 import React from "react";
+import "react-toastify/dist/ReactToastify.min.css";
 import { AppProps } from "next/app";
 import type { NextPage } from "next";
 import { Refine } from "@refinedev/core";
@@ -21,6 +22,9 @@ import ModalProvider from "@components/modals/ModalProvider";
 import GXProvider from "@dilane3/gx";
 import { store } from "src/gx/store";
 import LoadLayout from "@components/layout/LoadLayout";
+import { ToastContainer } from "react-toastify";
+import NextNprogress from "nextjs-progressbar";
+import { Colors } from "src/constants";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean;
@@ -32,7 +36,18 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const renderComponent = () => {
-    return <Component {...pageProps} />;
+    return (
+      <>
+        <NextNprogress
+          color={Colors.primary}
+          startPosition={0.3}
+          stopDelayMs={200}
+          height={3}
+          options={{ easing: "ease", speed: 500 }}
+        />
+        <Component {...pageProps} />
+      </>
+    );
   };
 
   return (
@@ -68,6 +83,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
               <LoadLayout>
                 {renderComponent()}
                 <ModalProvider />
+
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={true}
+                  newestOnTop={false}
+                  closeOnClick
+                />
               </LoadLayout>
             </GXProvider>
 

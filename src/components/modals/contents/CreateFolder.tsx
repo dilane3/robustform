@@ -10,6 +10,7 @@ import { FormsState } from "src/gx/signals";
 import { AuthState } from "src/gx/signals/auth";
 import { styles as baseStyles } from "src/styles/mui-styles/form-card";
 import { object, string } from "yup";
+import { toast } from "react-toastify";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -68,7 +69,11 @@ export default function CreateFolder() {
   
       // Close modal
       close();
-    } else {}
+
+      toast.success("New folder added successfully.");
+    } else {
+      toast.error("Something went wrong, please try again later.");
+    }
   };
 
   /**

@@ -11,6 +11,8 @@ import loginImage from "src/assets/images/signup.png";
 import googleImage from "src/assets/images/google.png";
 import Link from "next/link";
 import { object, string } from "yup";
+import { toast } from "react-toastify";
+import { HttpError } from "@refinedev/core";
 
 const schema = object({
   email: string().email().required(),
@@ -55,13 +57,23 @@ export default function Register() {
     setLoading(true);
 
     if (register) {
-      const response = await register({
+      const { redirectTo, success, error } = await register({
         email,
         password,
       });
 
-      if (response.success) {
-        window.location.href = response.redirectTo as string;
+      if (success) {
+        toast.success(`You're almost there, please check your email`);
+
+        window.location.href = redirectTo as string;
+      } else {
+        console.log({ error });
+
+        if ((error as HttpError)?.status === 400) {
+          toast.error("Email or password is incorrect.");
+        } else {
+          toast.error("Something went wrong, please try again later.");
+        }
       }
     }
 
@@ -185,11 +197,7 @@ export default function Register() {
           </Link>
 
           <Box sx={styles.imageContainer}>
-            <Image
-              src={loginImage}
-              alt="Login"
-              width={500}
-            />
+            <Image src={loginImage} alt="Login" width={500} />
           </Box>
 
           <Box sx={styles.box}>
