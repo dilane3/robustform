@@ -103,8 +103,9 @@ export default function Home() {
 Home.noLayout = true;
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  console.log({ context });
   const { authenticated } = await authProvider.check(context);
+
+  console.log({authenticated})
 
   if (authenticated) {
     return {

@@ -110,10 +110,17 @@ export const authProvider: AuthBindings & { googleLogin: () => any } = {
       };
     }
 
-    if (data) {
+    if (data?.session) {
+      nookies.set(null, "token", data.session.access_token, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        path: "/",
+        sameSite: "none",
+        secure: true,
+      });
+
       return {
         success: true,
-        redirectTo: "/",
+        redirectTo: "/forms",
       };
     }
 
