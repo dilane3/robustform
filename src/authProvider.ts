@@ -97,8 +97,8 @@ export const authProvider: AuthBindings & { googleLogin: () => any } = {
       provider: "google",
       options: {
         queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
+          access_type: "offline",
+          prompt: "consent",
         },
       },
     });
@@ -111,10 +111,29 @@ export const authProvider: AuthBindings & { googleLogin: () => any } = {
     }
 
     if (data) {
-      return {
-        success: true,
-        redirectTo: "/",
-      };
+      const { data: sessionData, error } =
+        await supabaseClient.auth.getSession();
+
+      if (error) {
+        return {
+          success: false,
+          error,
+        };
+      }
+
+      if (sessionData?.session) {
+        nookies.set(null, "token", sessionData.session?.access_token, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          path: "/",
+          sameSite: "none",
+          secure: true,
+        });
+
+        return {
+          success: true,
+          redirectTo: "/forms",
+        };
+      }
     }
 
     return {

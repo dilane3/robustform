@@ -22,7 +22,7 @@ import Folder from "src/entities/form/Folder";
 type ElementsProps = {
   formId: number;
   folderId?: number;
-  style?: any
+  style?: any;
 };
 
 export default function Elements({ formId, folderId, style }: ElementsProps) {
@@ -38,7 +38,7 @@ export default function Elements({ formId, folderId, style }: ElementsProps) {
   const form = useMemo(() => {
     const folder: Folder | undefined = forms.find((f) => f.id === folderId);
 
-    console.log(folder, formId)
+    console.log(folder, formId);
 
     if (!folder) return null;
 
@@ -47,7 +47,7 @@ export default function Elements({ formId, folderId, style }: ElementsProps) {
 
   // Handlers
   const handleSelectCard = async (elementType: QuestionType) => {
-    console.log(form, folderId)
+    console.log(form, folderId);
     if (!form) return;
 
     const cardId = Math.floor(Math.random() * 1000000000) + 2;
@@ -68,7 +68,7 @@ export default function Elements({ formId, folderId, style }: ElementsProps) {
 
     const card = new Card(cardPayload);
 
-    console.log({ folderId, formId, card })
+    console.log({ folderId, formId, card });
 
     // Add card to global state
     addCard({
@@ -193,94 +193,6 @@ export default function Elements({ formId, folderId, style }: ElementsProps) {
           />
         </SidenavItem>
 
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
-        <SidenavItem
-          text={isExpanded ? "Date" : ""}
-          className="not-expanded"
-          onClick={() => handleSelectCard(QuestionType.DATE)}
-          title="Date"
-        >
-          <CalendarMonthOutlinedIcon
-            sx={{ fontSize: "1.5rem", mr: 2 }}
-            color="action"
-          />
-        </SidenavItem>
         <SidenavItem
           text={isExpanded ? "Date" : ""}
           className="not-expanded"
